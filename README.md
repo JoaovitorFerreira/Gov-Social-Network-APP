@@ -25,3 +25,89 @@ Run `ng e2e` to execute the end-to-end tests via a platform of your choice. To u
 ## Further help
 
 To get more help on the Angular CLI use `ng help` or go check out the [Angular CLI Overview and Command Reference](https://angular.io/cli) page.
+
+## Script para inserção de novos procuradores
+
+```typescript
+import * as admin from 'firebase-admin';
+
+interface Especialidades {
+    direito_administrativo: boolean;
+    direito_civil: boolean;
+    direito_empresarial: boolean;
+    propriedade_intelectual: boolean;
+    direito_ambiental: boolean;
+    direito_financeiro_tributário: boolean;
+    direito_processual: boolean;
+    direito_trabalho: boolean;
+    direito_previdenciário: boolean;
+    direito_constitucional: boolean;
+    direito_econômico_concorrencial: boolean;
+    direito_penal: boolean;
+    filosofia_direito: boolean;
+    outros?: {[key: string]: boolean};
+}
+
+interface Usuario {
+    username: string;
+    firstAccess: boolean;
+    especialidades: Especialidades;
+}
+
+interface NovoUsuario extends Usuario {
+    email: string;
+}
+
+const users: NovoUsuario[] = [
+    {
+        username: 'teste',
+        email: 'teste@teste.com',
+        firstAccess: true,
+        especialidades: {
+            direito_administrativo: false,
+            direito_ambiental: false,
+            direito_civil: false,
+            direito_constitucional: false,
+            direito_econômico_concorrencial: false,
+            direito_empresarial: false,
+            direito_financeiro_tributário: false,
+            direito_penal: false,
+            direito_previdenciário: false,
+            direito_processual: false,
+            direito_trabalho: false,
+            filosofia_direito: false,
+            propriedade_intelectual: false
+        }
+    }
+];
+
+admin.initializeApp({credential: admin.credential.cert(require('./pge-environment-credentials.json'))});
+
+async function addUsers(users: NovoUsuario[]) {
+    const promises: Promise<boolean>[] = [];
+    for (const user of users) {
+        promises.push(admin.auth().createUser({password: 'procurador-pge', email: user.email, displayName: user.username}).then(created => {
+            if (!created || !created.uid) { return false; }
+            console.log('usuário criado --> ', created.uid, user.email);
+            const novoUser = {...user};
+            delete novoUser.email;
+            return admin.firestore().doc(`usuarios/${created.uid}`).create(user).then(() => true).catch((err) => {
+                console.error('error creating doc --> ', created.uid, err);
+                return false;
+            });
+        }).catch(error => {
+            console.error('error generating new user ----> ', error);
+            return false;
+        }));
+    }
+    const complete = await Promise.all(promises);
+    if (complete.every((promise) => promise)) {
+        console.log('CONCLUIDO');
+    } else {
+        console.log('Algo deu errado...');
+    }
+}
+
+addUsers(users);
+```
+
