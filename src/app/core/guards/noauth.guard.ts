@@ -21,6 +21,9 @@ export class NoAuthGuard implements CanActivate {
             this.router.navigateByUrl('/usuario');
             return false;
           }
+        }).catch(error => {
+          console.log('error no auth guard --> ', error);
+          return true;
         });
   }
 }

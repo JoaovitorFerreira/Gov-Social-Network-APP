@@ -12,5 +12,5 @@ export interface Especialidades {
     direito_econômico_concorrencial: boolean;
     direito_penal: boolean;
     filosofia_direito: boolean;
-    outros: {[key: string]: boolean};
+    outros?: {[key: string]: boolean};
 }

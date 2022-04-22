@@ -1,6 +1,6 @@
 <div clas="usuario-page">
     <mat-progress-spinner [hidden]="!loading"></mat-progress-spinner>
-    <div class="usuario-container">
+    <div *ngIf="!loading" class="usuario-container">
         <span>Por favor selecione sua(s) área(s) de conhecimento para controle e conhecimento da PGE-RJ</span>
         <form [formGroup]="formGroup">
             <mat-form-field *ngFor="let control of formGroup.controls | keyvalue">

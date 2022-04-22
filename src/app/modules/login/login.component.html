@@ -19,9 +19,9 @@
             </form>
         </mat-card-content>
         <mat-card-actions>
-            <button class="maria-secondary-button" [disabled]="loading" (click)="forgotPassword()">Esqueceu sua
+            <button mat-button [disabled]="loading" (click)="forgotPassword()">Esqueceu sua
                 senha?</button>
-            <button class="maria-primary-button" [disabled]="formGroup.invalid || loading"
+            <button mat-button [disabled]="formGroup.invalid || loading"
                 (click)="login()">Entrar</button>
         </mat-card-actions>
     </mat-card>
