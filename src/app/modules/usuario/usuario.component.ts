@@ -7,6 +7,7 @@ import { Especialidades } from 'src/app/core/models/especialidades.model';
 import { AuthService } from 'src/app/core/services/auth.service';
 import { ChangePasswordComponent } from 'src/app/shared/change-password/change-password.component';
 import { UsuarioService } from './usuario.service';
+import { MatSnackBar } from '@angular/material/snack-bar';
 
 @Component({
   selector: 'pge-usuario',
@@ -17,7 +18,8 @@ export class UsuarioComponent implements OnInit {
   public loading: boolean = true;
   public user: Usuario;
   public formGroup: FormGroup;
-  constructor(private authService: AuthService, private usuarioService: UsuarioService, private dialog: MatDialog, private fb: FormBuilder) { }
+  public outrosInput: FormGroup;
+  constructor(private authService: AuthService, private usuarioService: UsuarioService, private dialog: MatDialog, private fb: FormBuilder, private snack: MatSnackBar) { }
 
   ngOnInit(): void {
     this.usuarioService.getUsuario(this.authService.getUserId).then(user => {
@@ -41,6 +43,9 @@ export class UsuarioComponent implements OnInit {
   }
 
   private createForms(especialidades?: Especialidades) {
+    this.outrosInput = this.fb.group({
+      outros: [null]
+    });
     if (especialidades) {
       this.formGroup = this.fb.group({
         direito_administrativo: [especialidades.direito_administrativo],
@@ -56,33 +61,38 @@ export class UsuarioComponent implements OnInit {
         direito_econômico_concorrencial: [especialidades.direito_econômico_concorrencial],
         direito_penal: [especialidades.direito_penal],
         filosofia_direito: [especialidades.filosofia_direito],
-        outros: [null]
       });
       for (const key in especialidades.outros) {
         this.addControl(key);
       }
     } else {
       this.formGroup = this.fb.group({
-        direito_administrativo: [null],
-        direito_civil: [null],
-        direito_empresarial: [null],
-        propriedade_intelectual: [null],
-        direito_ambiental: [null],
-        direito_financeiro_tributário: [null],
-        direito_processual: [null],
-        direito_trabalho: [null],
-        direito_previdenciário: [null],
-        direito_constitucional: [null],
-        direito_econômico_concorrencial: [null],
-        direito_penal: [null],
-        filosofia_direito: [null],
-        outros: [null]
+        direito_administrativo: [false],
+        direito_civil: [false],
+        direito_empresarial: [false],
+        propriedade_intelectual: [false],
+        direito_ambiental: [false],
+        direito_financeiro_tributário: [false],
+        direito_processual: [false],
+        direito_trabalho: [false],
+        direito_previdenciário: [false],
+        direito_constitucional: [false],
+        direito_econômico_concorrencial: [false],
+        direito_penal: [false],
+        filosofia_direito: [false],
       });
     }
   }
 
-  public addControl(key: string) {
+  private addControl(key: string) {
     this.formGroup.addControl(key, new FormControl([true]));
+  }
+
+  public addConhecimento(input: HTMLInputElement) {
+    const valor = input.value;
+    const key = valor.split(' ').join('_');
+    this.addControl(key);
+    input.value = '';
   }
 
 
@@ -91,7 +101,36 @@ export class UsuarioComponent implements OnInit {
   }
 
   public salvarInformacoes() {
-    
+    const padroes = [
+      'direito_administrativo',
+      'direito_civil',
+      'direito_empresarial',
+      'propriedade_intelectual',
+      'direito_ambiental',
+      'direito_financeiro_tributário',
+      'direito_processual',
+      'direito_trabalho',
+      'direito_previdenciário',
+      'direito_constitucional',
+      'direito_econômico_concorrencial',
+      'direito_penal',
+      'filosofia_direito'
+    ];
+    const form = this.formGroup.getRawValue();
+    const especialidades: Especialidades = {...form};
+    for (const padrao in especialidades) {
+      if (!padroes.includes(padrao)) {
+        especialidades.outros[padrao] = especialidades[padrao];
+        delete especialidades[padrao];
+      }
+    }
+    this.usuarioService.updateUsuario(this.authService.getUserId, {especialidades: especialidades}).then(ret => {
+      if (ret) {
+        this.snack.open('Alterações salvas com sucesso', null, {duration: 5000});
+      } else {
+        this.snack.open('Erro ao salvar alterações. Por favor tente novamente', null, {duration: 5000});
+      }
+    }); 
   }
 
 }

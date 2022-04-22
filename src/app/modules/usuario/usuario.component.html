@@ -3,18 +3,16 @@
     <div class="usuario-container">
         <span>Por favor selecione sua(s) área(s) de conhecimento para controle e conhecimento da PGE-RJ</span>
         <form [formGroup]="formGroup">
-            <div class="option" *ngFor="let control of formGroup.controls | keyvalue">
-                <mat-form-field>
-                    <mat-label>{{ control.key }} | conhecimento</mat-label>
-                    <mat-checkbox *ngIf="control.key !== 'outros'" [formControlName]="control.key"></mat-checkbox>
-                </mat-form-field>
-            </div>
-            <mat-form-field>
-                <mat-label>Outros</mat-label>
-                <input matInput type="text" #outrosInput formControlName="outros" (keyup.enter)="addControl(outrosInput.value)" />
-                <mat-icon class="icon-add" (click)="addControl(outrosInput.value)" matSuffix>add</mat-icon>
+            <mat-form-field *ngFor="let control of formGroup.controls | keyvalue">
+                <mat-label>{{ control.key }} | conhecimento</mat-label>
+                <mat-checkbox [formControlName]="control.key"></mat-checkbox>
             </mat-form-field>
         </form>
-        <button mat-button (click)="salvarInformacoes()">Salvar</button>
+            <mat-form-field>
+                <mat-label>Outros</mat-label>
+                <input matInput type="text" #outrosInput (keyup.enter)="addConhecimento(outrosInput)" />
+                <mat-icon class="icon-add" (click)="addConhecimento(outrosInput)" matSuffix>add</mat-icon>
+            </mat-form-field>
+        <button mat-button [disabled]="!formGroup.dirty" (click)="salvarInformacoes()">Salvar</button>
     </div>
 </div>
