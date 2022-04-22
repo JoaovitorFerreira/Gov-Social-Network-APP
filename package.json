@@ -4,20 +4,28 @@
   "scripts": {
     "ng": "ng",
     "start": "ng serve",
+    "start:dev": "ng serve --hmr",
     "build": "ng build",
     "watch": "ng build --watch --configuration development",
-    "test": "ng test"
+    "test": "ng test",
+    "docs": "npx compodoc -p tsconfig.documentation.json -s",
+    "deploy:dev": "firebase use development && ng build --configuration=development && firebase deploy --only hosting",
+    "deploy:prod": "firebase use default && ng build --configuration=production && firebase deploy --only hosting"
   },
   "private": true,
   "dependencies": {
     "@angular/animations": "~13.3.0",
+    "@angular/cdk": "^13.3.4",
     "@angular/common": "~13.3.0",
     "@angular/compiler": "~13.3.0",
     "@angular/core": "~13.3.0",
+    "@angular/fire": "^7.3.0",
     "@angular/forms": "~13.3.0",
+    "@angular/material": "^13.3.4",
     "@angular/platform-browser": "~13.3.0",
     "@angular/platform-browser-dynamic": "~13.3.0",
     "@angular/router": "~13.3.0",
+    "firebase": "^9.6.11",
     "rxjs": "~7.5.0",
     "tslib": "^2.3.0",
     "zone.js": "~0.11.4"

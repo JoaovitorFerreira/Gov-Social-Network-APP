@@ -1,0 +1,14 @@
+{
+  "projects": {
+    "default": "pge-knowledge-environment"
+  },
+   "targets": {
+    "pge-knowledge-environment": {
+      "hosting": {
+        "pge-knowledge-client": [
+          "pge-knowledge-client"
+        ]
+      }
+    }
+  }
+}

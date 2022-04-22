@@ -1,0 +1,24 @@
+@import 'src/styles/variables.scss';
+
+.login-page {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+  margin-top: 10%;
+  .login-card {
+    width: 50%;
+  }
+  .login-form {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    mat-form-field {
+      width: 100%;
+    }
+  }
+  .maria-primary-button {
+    width: 100%;
+  }
+}
