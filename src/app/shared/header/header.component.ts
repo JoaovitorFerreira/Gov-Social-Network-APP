@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { Router } from '@angular/router';
 import { Subject, takeUntil } from 'rxjs';
 import { AuthService } from 'src/app/core/services/auth.service';
 import { HeaderService } from './header.service';
@@ -12,7 +13,7 @@ import { HeaderService } from './header.service';
 export class HeaderComponent implements OnInit {
   public username: string = 'Sr.(a) Procurador(a)';
   private subject = new Subject();
-  constructor(private authService: AuthService, private headerService: HeaderService) { }
+  constructor(private authService: AuthService, private headerService: HeaderService, private router: Router) { }
 
   ngOnInit(): void {
     this.authService.$user.pipe(takeUntil(this.subject)).subscribe(userExists => {
@@ -36,7 +37,9 @@ export class HeaderComponent implements OnInit {
   }
 
   public logout() {
-    this.authService.logout();
+    this.authService.logout().then(() => {
+      this.router.navigateByUrl('/login');
+    });
   }
 
 }

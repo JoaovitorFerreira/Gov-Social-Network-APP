@@ -19,6 +19,22 @@ export class UsuarioComponent implements OnInit {
   public user: Usuario;
   public formGroup: FormGroup;
   public outrosInput: FormGroup;
+  public padroes = [
+    'direito_administrativo',
+    'direito_civil',
+    'direito_empresarial',
+    'propriedade_intelectual',
+    'direito_ambiental',
+    'direito_financeiro_tributário',
+    'direito_processual',
+    'direito_trabalho',
+    'direito_previdenciário',
+    'direito_constitucional',
+    'direito_econômico_concorrencial',
+    'direito_penal',
+    'filosofia_direito'
+  ];
+  public outros: string[] = [];
   constructor(private authService: AuthService, private usuarioService: UsuarioService, private dialog: MatDialog, private fb: FormBuilder, private snack: MatSnackBar) { }
 
   ngOnInit(): void {
@@ -29,13 +45,13 @@ export class UsuarioComponent implements OnInit {
             if (complete) {
               this.user = user;
               this.createForms();
-              this.loading = false;
               this.usuarioService.updateUsuario(this.authService.getUserId, {firstAccess: false});
+              this.loading = false;
             }
           });
         } else {
           this.user = user;
-          this.createForms(user.especialidades);
+          this.createForms(user?.especialidades);
           this.loading = false;
         }
       }
@@ -43,6 +59,7 @@ export class UsuarioComponent implements OnInit {
   }
 
   private createForms(especialidades?: Especialidades) {
+    console.log('especialides create forms --> ', especialidades);
     this.outrosInput = this.fb.group({
       outros: [null]
     });
@@ -85,41 +102,23 @@ export class UsuarioComponent implements OnInit {
   }
 
   private addControl(key: string) {
-    this.formGroup.addControl(key, new FormControl([true]));
+    this.formGroup.addControl(key, new FormControl(true));
   }
 
-  public addConhecimento(input: HTMLInputElement) {
-    const valor = input.value;
+  public addConhecimento() {
+    const valor = this.outrosInput.get('outros').value;
     const key = valor.split(' ').join('_');
     this.addControl(key);
-    input.value = '';
-  }
-
-
-  public trackControls(index: number, item: string) {
-    return item;
+    this.outrosInput.get('outros').reset();
   }
 
   public salvarInformacoes() {
-    const padroes = [
-      'direito_administrativo',
-      'direito_civil',
-      'direito_empresarial',
-      'propriedade_intelectual',
-      'direito_ambiental',
-      'direito_financeiro_tributário',
-      'direito_processual',
-      'direito_trabalho',
-      'direito_previdenciário',
-      'direito_constitucional',
-      'direito_econômico_concorrencial',
-      'direito_penal',
-      'filosofia_direito'
-    ];
     const form = this.formGroup.getRawValue();
-    const especialidades: Especialidades = {...form};
+    const especialidades: Especialidades = {...form, outros: {}};
     for (const padrao in especialidades) {
-      if (!padroes.includes(padrao)) {
+      if (padrao === 'outros') { continue; }
+      if (!this.padroes.includes(padrao)) {
+        if (!especialidades[padrao]) { delete especialidades[padrao]; continue; }
         especialidades.outros[padrao] = especialidades[padrao];
         delete especialidades[padrao];
       }
