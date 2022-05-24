@@ -3,10 +3,10 @@
     "default": "pge-knowledge-environment"
   },
    "targets": {
-    "pge-knowledge-environment": {
+    "pge-linkedin": {
       "hosting": {
-        "pge-knowledge-client": [
-          "pge-knowledge-client"
+        "pge-linkedin": [
+          "pge-linkedin"
         ]
       }
     }
