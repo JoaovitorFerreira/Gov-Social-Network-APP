@@ -7,7 +7,7 @@
                 <mat-checkbox [formControlName]="control.key">{{ control.key | conhecimento }}</mat-checkbox>
             </div>
         </form>
-        <form *ngIf="outrosInput" [formGroup]="outrosInput">
+        <form class="input-form" *ngIf="outrosInput" [formGroup]="outrosInput">
             <mat-form-field>
                 <mat-label>Outros</mat-label>
                 <input matInput formControlName="outros" type="text" (keyup.enter)="addConhecimento()" />
