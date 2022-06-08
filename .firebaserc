@@ -3,10 +3,10 @@
     "default": "pge-knowledge-environment"
   },
    "targets": {
-    "pge-linkedin": {
+    "pge-banco-conhecimento": {
       "hosting": {
-        "pge-linkedin": [
-          "pge-linkedin"
+        "pge-banco-conhecimento": [
+          "pge-banco-conhecimento"
         ]
       }
     }

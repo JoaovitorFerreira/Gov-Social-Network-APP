@@ -7,7 +7,7 @@ import { Especialidades } from 'src/app/core/models/especialidades.model';
 import { AuthService } from 'src/app/core/services/auth.service';
 import { ChangePasswordComponent } from 'src/app/shared/change-password/change-password.component';
 import { UsuarioService } from './usuario.service';
-import { MatSnackBar } from '@angular/material/snack-bar';
+import { ModalComponent } from 'src/app/shared/modal/modal.component';
 
 @Component({
   selector: 'pge-usuario',
@@ -35,7 +35,7 @@ export class UsuarioComponent implements OnInit {
     'filosofia_direito'
   ];
   public outros: string[] = [];
-  constructor(private authService: AuthService, private usuarioService: UsuarioService, private dialog: MatDialog, private fb: FormBuilder, private snack: MatSnackBar) { }
+  constructor(private authService: AuthService, private usuarioService: UsuarioService, private dialog: MatDialog, private fb: FormBuilder) { }
 
   ngOnInit(): void {
     this.usuarioService.getUsuario(this.authService.getUserId).then(user => {
@@ -125,9 +125,9 @@ export class UsuarioComponent implements OnInit {
     }
     this.usuarioService.updateUsuario(this.authService.getUserId, {especialidades: especialidades}).then(ret => {
       if (ret) {
-        this.snack.open('Alterações salvas com sucesso', null, {duration: 5000});
+        this.dialog.open(ModalComponent, {data: {title: 'Alterações salvas com sucesso.'}});
       } else {
-        this.snack.open('Erro ao salvar alterações. Por favor tente novamente', null, {duration: 5000});
+        this.dialog.open(ModalComponent, {data: {title: 'Erro ao salvar alterações. Por favor tente novamente.'}});
       }
     }); 
   }
