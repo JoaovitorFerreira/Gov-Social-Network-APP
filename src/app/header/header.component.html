@@ -1,0 +1,9 @@
+<div class="top-header">
+  <div class="logo-container">
+    <img alt="Logo da PGE-RJ" src="../../../assets/logo_enxuta.png" loading="lazy">
+  </div>
+  <div *ngIf="isNotInLoginPage()" class="sidebar">
+    <span class="greetings">Olá {{username}}</span>
+    <mat-icon class="icon" (click)="openMenu()">menu</mat-icon>
+  </div>
+</div>

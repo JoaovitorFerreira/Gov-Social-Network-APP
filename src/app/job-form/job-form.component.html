@@ -1,0 +1,32 @@
+<form [formGroup]>
+  <mat-form-field>
+    <mat-label>Empresa</mat-label>
+    <input type="text" matInput formControlName="empresa">
+  </mat-form-field>
+  <mat-form-field>
+    <mat-label>Setor</mat-label>
+    <input type="text" matInput formControlName="setor">
+  </mat-form-field>
+  <mat-form-field>
+    <mat-label>Cargo</mat-label>
+    <input type="text" matInput formControlName="cargo">
+  </mat-form-field>
+  <mat-form-field>
+    <mat-label>Descricao</mat-label>
+    <input type="text" matInput formControlName="descricao">
+  </mat-form-field>
+  <mat-form-field (click)="dataDesejadaPicker.open()">
+    <mat-label>Data de Início</mat-label>
+    <input matInput [matDatepicker]="dataDesejadaPicker" formControlName="dataInicio" />
+    <mat-datepicker-toggle matSuffix [for]="dataDesejadaPicker"></mat-datepicker-toggle>
+    <mat-datepicker touchUi #dataDesejadaPicker></mat-datepicker>
+  </mat-form-field>
+  <mat-form-field (click)="dataDesejadaPicker.open()">
+    <mat-label>Data de Saída</mat-label>
+    <input matInput [matDatepicker]="dataDesejadaPicker" formControlName="dataFim" />
+    <mat-datepicker-toggle matSuffix [for]="dataDesejadaPicker"></mat-datepicker-toggle>
+    <mat-datepicker touchUi #dataDesejadaPicker></mat-datepicker>
+  </mat-form-field>
+
+  <button mat-button [disabled]="!formGroup.dirty" (click)="salvarInformacoes()">Salvar</button>
+</form>

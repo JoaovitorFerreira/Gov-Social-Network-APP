@@ -1,0 +1,23 @@
+<div class="container" id="feedcards">
+    <div class="search-bar">
+        <form [formGroup]="formGroup">
+            <mat-form-field>
+                <input matInput type="search" formControlName="search" (keyup.enter)="search()">
+                <mat-icon style="cursor: pointer;" (click)="search()" matSuffix>search</mat-icon>
+            </mat-form-field>
+        </form>
+    </div>
+    <h2>Meu setor</h2>
+    <div *ngIf="setor && setor.length > 0; else setorVazio" class="setor-container">
+        <mat-card *ngFor="let pessoa of setor" (click)="openProfile(pessoa)">
+            <mat-card-header>
+                <img [src]="pessoa.profilePicture" mat-card-avatar>
+                <mat-card-title>{{ pessoa.username }}</mat-card-title>
+                <mat-card-subtitle>{{ pessoa?.currentJob?.cargo }}</mat-card-subtitle>
+            </mat-card-header>
+        </mat-card>
+    </div>
+    <ng-template #setorVazio>
+        <h3>Setor vazio</h3>
+    </ng-template>
+</div>

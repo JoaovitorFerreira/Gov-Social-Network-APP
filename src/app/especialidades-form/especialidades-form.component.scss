@@ -1,0 +1,16 @@
+@import "src/styles/variables.scss";
+
+.input-form {
+  margin-top: 15px;
+  .icon-add {
+    cursor: pointer;
+  }
+}
+button {
+  color: $gray;
+  background-color: $light_blue;
+  &:disabled {
+    color: #000;
+    background-color: $gray;
+  }
+}

@@ -1,12 +1,11 @@
 export const environment = {
   production: true,
   firebase: {
-    apiKey: "AIzaSyAYcD01tXQn_LQ8H6-zkMUN-8gBB6qGZJI",
-    authDomain: "pge-rj-banco-conhecimento.firebaseapp.com",
-    projectId: "pge-rj-banco-conhecimento",
-    storageBucket: "pge-rj-banco-conhecimento.appspot.com",
-    messagingSenderId: "218088741124",
-    appId: "1:218088741124:web:f8408f57fb14e689259851",
-    measurementId: "G-HBKGXMCNY5"
+    apiKey: 'AIzaSyBdSAiLnKVj_1kGKsWIrSys4HelPSDhBDI',
+    authDomain: 'pge-knowledge-environment.firebaseapp.com',
+    projectId: 'pge-knowledge-environment',
+    storageBucket: 'pge-knowledge-environment.appspot.com',
+    messagingSenderId: '946785114191',
+    appId: '1:946785114191:web:4aa87793d448aee37a323a'
   }
 };

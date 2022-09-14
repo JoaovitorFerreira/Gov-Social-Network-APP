@@ -1,0 +1,16 @@
+<div *ngIf="formGroup" class="usuario-container">
+  <span>Por favor selecione sua(s) área(s) de conhecimento para controle e conhecimento da PGE-RJ</span>
+  <form [formGroup]="formGroup">
+      <div *ngFor="let control of formGroup.controls | keyvalue">
+          <mat-checkbox [formControlName]="control.key">{{ control.key | conhecimento }}</mat-checkbox>
+      </div>
+  </form>
+  <form class="input-form" *ngIf="outrosInput" [formGroup]="outrosInput">
+      <mat-form-field>
+          <mat-label>Outros</mat-label>
+          <input matInput formControlName="outros" type="text" (keyup.enter)="addConhecimento()" />
+          <mat-icon class="icon-add" (click)="addConhecimento()" matSuffix>add</mat-icon>
+      </mat-form-field>
+  </form>
+  <button mat-button [disabled]="!formGroup.dirty" (click)="salvarInformacoes()">Salvar</button>
+</div>

@@ -12,5 +12,11 @@ export interface Especialidades {
     direito_econômico_concorrencial: boolean;
     direito_penal: boolean;
     filosofia_direito: boolean;
+    liderança: boolean;
+    negociação: boolean;
+    mediação: boolean;
+    arbitragem: boolean;
+    gestão: boolean;
+    rh: boolean;
     outros?: {[key: string]: boolean};
 }

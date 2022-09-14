@@ -9,9 +9,13 @@ import { MatSnackBarModule } from '@angular/material/snack-bar';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { MatIconModule } from '@angular/material/icon';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
-import { MatNativeDateModule } from '@angular/material/core';
+import { MatNativeDateModule, MAT_DATE_LOCALE } from '@angular/material/core';
 import { MatCardModule } from '@angular/material/card';
 import { MatButtonModule } from '@angular/material/button';
+import { MatRadioModule } from '@angular/material/radio';
+import { MatGridListModule } from '@angular/material/grid-list';
+import { MatDatepickerModule } from '@angular/material/datepicker';
+import { MatSelectModule } from '@angular/material/select';
 
 
 @NgModule({
@@ -29,7 +33,11 @@ import { MatButtonModule } from '@angular/material/button';
     ReactiveFormsModule,
     MatIconModule,
     MatCardModule,
-    MatButtonModule
+    MatButtonModule,
+    MatRadioModule,
+    MatGridListModule,
+    MatDatepickerModule,
+    MatSelectModule
   ],
   exports: [
     MatProgressSpinnerModule,
@@ -45,7 +53,14 @@ import { MatButtonModule } from '@angular/material/button';
     ReactiveFormsModule,
     MatIconModule,
     MatCardModule,
-    MatButtonModule
+    MatButtonModule,
+    MatRadioModule,
+    MatGridListModule,
+    MatDatepickerModule,
+    MatSelectModule
+  ],
+  providers: [
+    { provide: MAT_DATE_LOCALE, useValue: 'pt-BR' },
   ]
 })
 export class AngularMaterialModule { }
