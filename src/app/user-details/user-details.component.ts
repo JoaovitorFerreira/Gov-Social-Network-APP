@@ -1,9 +1,5 @@
-import { SkillsAndExperience } from './../model/skills-experience';
 import { Component, OnInit } from '@angular/core';
-import { User } from '../model/user';
 import { Router } from '@angular/router';
-import { UserDetails } from '../model/user-details';
-import { Connection } from '../model/connection';
 import { UserDetailsService } from './user-details.service';
 import { Usuario } from '../core/models/usuario.model';
 import { HeaderService } from '../header/header.service';
@@ -19,26 +15,13 @@ import { Formacao } from '../core/models/formacao.model';
 @Component({
   selector: 'app-user-details',
   templateUrl: './user-details.component.html',
-  styleUrls: ['./user-details.component.css'],
+  styleUrls: ['./user-details.component.scss'],
   providers: [UserDetailsService]
 })
 export class UserDetailsComponent implements OnInit {
   isSelfUser: boolean = false;
   user: Usuario;
-  skillsexperience: SkillsAndExperience = new SkillsAndExperience();
-  validprofphoto = true;
-  changeButton = false;
-  userDetails: UserDetails;
-  userNetwork: User[] = new Array<User>();
-  requestConnectButton = false;
-  connectPendingButton = false;
-  connectedButton = false;
-  networkButton = false;
-
-  usersFollowing:  Connection[] = new Array<Connection>();
-  userFollowedBy:  Connection[] = new Array<Connection>();
   especialidades: string[] = [];
-  closeResult = '';
 
   constructor(
     private router: Router, 
@@ -100,7 +83,7 @@ export class UserDetailsComponent implements OnInit {
     this.user.currentJob = job;
   }
 
-  open(tipo: 'job' | 'skills' | 'formacao', index?: number) {
+  public open(tipo: 'job' | 'skills' | 'formacao', index?: number) {
     if (tipo === 'formacao') {
       this.dialog.open(FormacaoFormComponent, {data: this.user.formacao[index]}).afterClosed().pipe(take(1)).subscribe((formacao: Formacao) => {
         if (!formacao) { return; }
@@ -130,6 +113,21 @@ export class UserDetailsComponent implements OnInit {
         this.userService.saveUsuario({...this.user});  
       });
     }
+  }
+
+  public uploadImage(ref: HTMLInputElement) {
+    ref.click();
+  }
+
+  public imageSelected(event) {
+    if (!event.target.files[0]) {
+      return;
+    }
+    const file: File = event.target.files[0];
+    const fileObj = { file, id: 'profile.' + file.name.split('.').pop(), path: 'profile-pictures/' + this.user.id};
+    this.userService.saveProfileImage(fileObj).then(profilePath => {
+      this.userService.saveUsuario({...this.user, profilePicture: profilePath});
+    });
   }
   
 }

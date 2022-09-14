@@ -5,14 +5,21 @@
         <div class="card">
           <div class="card-body">
             <div class="d-flex flex-column align-items-center text-center">
-              <div *ngIf="user.profilePicture">
+              <div class="profile-image-container" *ngIf="user.profilePicture">
                 <img [src]="user.profilePicture" id="profile-image" class="card-img-top" alt="...">
+                <div *ngIf="isSelfUser" class="overlay-image" (click)="uploadImage(fileInput)">
+                  <mat-icon>photo_camera</mat-icon>
+                </div>
               </div>
-              <div *ngIf="!user.profilePicture">
+              <div class="profile-image-container" *ngIf="!user.profilePicture">
                 <img
                   src="https://www.donkey.bike/wp-content/uploads/2020/12/user-member-avatar-face-profile-icon-vector-22965342-e1608640557889.jpg"
                   id="profile-image" class="card-img-top" alt="...">
-              </div>
+                <div *ngIf="isSelfUser" class="overlay-image" (click)="uploadImage(fileInput)">
+                  <mat-icon>photo_camera</mat-icon>
+                </div>
+                </div>
+              <input #fileInput type="file" style="display: none;" accept="image/jpeg" (change)="imageSelected($event)">
               <div class="mt-3">
                 <h3>{{user.username}}</h3>
                 <p *ngIf="user.currentJob" class="text-secondary mb-1">{{user.currentJob.setor}}
