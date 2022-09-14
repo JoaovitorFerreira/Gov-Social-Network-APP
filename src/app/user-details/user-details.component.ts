@@ -8,6 +8,13 @@ import { UserDetailsService } from './user-details.service';
 import { Usuario } from '../core/models/usuario.model';
 import { HeaderService } from '../header/header.service';
 import { MatDialog } from '@angular/material/dialog';
+import { FormacaoFormComponent } from '../formacao-form/formacao-form.component';
+import { JobFormComponent } from '../job-form/job-form.component';
+import { EspecialidadesFormComponent } from '../especialidades-form/especialidades-form.component';
+import { take } from 'rxjs';
+import { Especialidades } from '../core/models/especialidades.model';
+import { Job } from '../core/models/job.model';
+import { Formacao } from '../core/models/formacao.model';
 
 @Component({
   selector: 'app-user-details',
@@ -89,6 +96,40 @@ export class UserDetailsComponent implements OnInit {
     return this.userService.getPhoto(path);
   }
 
-  open(tipo: 'job' | 'skills' | 'formacao') {}
+  private redefineCurrentJob(job: Job) {
+    this.user.currentJob = job;
+  }
+
+  open(tipo: 'job' | 'skills' | 'formacao', index?: number) {
+    if (tipo === 'formacao') {
+      this.dialog.open(FormacaoFormComponent, {data: this.user.formacao[index]}).afterClosed().pipe(take(1)).subscribe((formacao: Formacao) => {
+        if (!formacao) { return; }
+        if (index === undefined) {
+          this.user.formacao.push(formacao);
+        } else {
+          this.user.formacao[index] = formacao;
+        }
+        this.userService.saveUsuario({...this.user});
+      });
+    } else if (tipo === 'job') {
+      this.dialog.open(JobFormComponent, {data: this.user.jobs[index]}).afterClosed().pipe(take(1)).subscribe((job: Job) => {
+        if (!job) { return; }
+        if (index === undefined) {
+          this.user.jobs.push(job);
+          this.redefineCurrentJob(job);
+        } else {
+          this.user.jobs[index] = job;
+        }
+        this.userService.saveUsuario({...this.user});
+      });
+    } else {
+      this.dialog.open(EspecialidadesFormComponent, {data: index}).afterClosed().pipe(take(1)).subscribe((especialidades: Especialidades) => {
+        if (!especialidades) { return; }
+        this.user.especialidades = especialidades;
+        this.createSkillsArray();
+        this.userService.saveUsuario({...this.user});  
+      });
+    }
+  }
   
 }

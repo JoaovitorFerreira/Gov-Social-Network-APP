@@ -36,7 +36,7 @@
                   </div>
                   <hr>
                   <div *ngIf="user?.jobs.length != 0" class="container align-self-center">
-                    <mat-card *ngFor="let work of user.jobs;">
+                    <mat-card *ngFor="let work of user.jobs; let i = index">
                       <mat-card-header>
                         <mat-card-title>Empresa: {{ work.empresa }}</mat-card-title>
                         <mat-card-subtitle>Setor: {{ work.setor }}</mat-card-subtitle>

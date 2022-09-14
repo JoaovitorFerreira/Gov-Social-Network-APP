@@ -1,5 +1,5 @@
 import { Injectable } from "@angular/core";
-import { Firestore, doc, getDoc } from "@angular/fire/firestore";
+import { Firestore, doc, getDoc, setDoc } from "@angular/fire/firestore";
 import { getDownloadURL, ref, Storage } from "@angular/fire/storage";
 import { Usuario } from "src/app/core/models/usuario.model";
 
@@ -16,6 +16,12 @@ export class UserDetailsService {
       console.log('error getting user --> ', error);
       return null;
     });
+  }
+
+  public saveUsuario(usuario: Usuario): Promise<boolean> {
+    const uid = usuario.id;
+    delete usuario.id;
+    return setDoc(doc(this.firestore, 'usuarios' + uid), usuario).then(() => true);
   }
 
   public getPhoto(path: string) {
