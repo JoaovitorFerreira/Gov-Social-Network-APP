@@ -19,7 +19,8 @@ export class FeedComponent implements OnInit {
 
   async ngOnInit() {
     this.formGroup = this.fb.group({
-      search: [null]
+      search: [null],
+      filterType: ''
     });
     if (!this.headerService.dadosUsuario) {
       await new Promise((complete) => setTimeout(() => complete(true), 2000));
@@ -48,7 +49,11 @@ export class FeedComponent implements OnInit {
     }
   }
 
-  public search() {
+  public handleSearch() {
+    return this.formGroup.get('filterType').value === 'role' ? this.roleSearch : this.userSearch 
+  }
+
+  private userSearch() {
     const setor = this.formGroup.get('search').value;
     this.feedService.getUsersFromSetor(setor && setor !== '' ? setor : this.headerService.dadosUsuario.currentJob.setor).then(async usuarios => {
       for (const pessoa of usuarios) {
@@ -58,5 +63,13 @@ export class FeedComponent implements OnInit {
     });
   }
 
-
+  private roleSearch() {
+    const setor = this.formGroup.get('search').value;
+    this.feedService.getUsersFromSetor(setor && setor !== '' ? setor : this.headerService.dadosUsuario.currentJob.cargo).then(async usuarios => {
+      for (const pessoa of usuarios) {
+        pessoa.profilePicture = await this.getPhoto(pessoa.profilePicture);
+      }
+      this.setor = usuarios;
+    });
+  }
 }

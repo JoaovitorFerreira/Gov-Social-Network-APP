@@ -1,5 +1,10 @@
 .search-bar {
+  margin-top: 20px;
   width: 100%;
+}
+
+.radio-group {
+  margin-left: 10px;
 }
 
 mat-form-field {

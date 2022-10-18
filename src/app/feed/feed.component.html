@@ -1,9 +1,14 @@
 <div class="container" id="feedcards">
     <div class="search-bar">
         <form [formGroup]="formGroup">
+            <label class="example-margin">Filtrar por:</label>
+            <mat-radio-group class="radio-group" formControlName="filterType">
+                <mat-radio-button value="role">Cargo</mat-radio-button>
+                <mat-radio-button style="margin-left:8px" value="user">Nome</mat-radio-button>
+                </mat-radio-group>
             <mat-form-field>
-                <input matInput type="search" formControlName="search" (keyup.enter)="search()">
-                <mat-icon style="cursor: pointer;" (click)="search()" matSuffix>search</mat-icon>
+                <input matInput type="search" formControlName="search" (keyup.enter)="handleSearch()">
+                <mat-icon style="cursor: pointer;" (click)="handleSearch()" matSuffix>search</mat-icon>
             </mat-form-field>
         </form>
     </div>

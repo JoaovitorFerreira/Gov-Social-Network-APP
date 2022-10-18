@@ -19,7 +19,7 @@ export class FeedService {
       return usuarios;
     });
   }
-
+  
   public getPhoto(path: string) {
     return getDownloadURL(ref(this.storage, path));
   }
