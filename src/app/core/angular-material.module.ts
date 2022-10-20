@@ -16,6 +16,7 @@ import { MatRadioModule } from '@angular/material/radio';
 import { MatGridListModule } from '@angular/material/grid-list';
 import { MatDatepickerModule } from '@angular/material/datepicker';
 import { MatSelectModule } from '@angular/material/select';
+import { MatChipsModule } from '@angular/material/chips'
 
 
 @NgModule({
@@ -27,6 +28,7 @@ import { MatSelectModule } from '@angular/material/select';
     MatNativeDateModule,
     MatTabsModule,
     MatSnackBarModule,
+    MatChipsModule,
     MatSidenavModule,
     MatProgressSpinnerModule,
     FormsModule,
@@ -48,6 +50,7 @@ import { MatSelectModule } from '@angular/material/select';
     MatInputModule,
     MatSnackBarModule,
     MatTabsModule,
+    MatChipsModule,
     MatSidenavModule,
     FormsModule,
     ReactiveFormsModule,

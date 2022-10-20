@@ -119,9 +119,9 @@
                     </div>
                     <hr>
                     <div *ngIf="user?.especialidades" class="container align-self-center">
-                      <ul>
-                        <li *ngFor="let especialidade of especialidades">{{ especialidade }}</li>
-                      </ul>
+                      <mat-chip-list *ngFor="let especialidade of especialidades" aria-label="Fish selection">
+                        <mat-chip color="accent">{{ especialidade }}</mat-chip>
+                      </mat-chip-list>
                     </div>
                     <div *ngIf="!user?.especialidades" class="container align-self-center">
                       <p>Sem habilidades ou conhecimentos cadastrados</p>

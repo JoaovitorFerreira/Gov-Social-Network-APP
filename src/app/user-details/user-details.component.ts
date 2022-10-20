@@ -22,20 +22,18 @@ export class UserDetailsComponent implements OnInit {
   isSelfUser: boolean = false;
   user: Usuario;
   especialidades: string[] = [];
-
+  
   constructor(
     private router: Router, 
     private headerService: HeaderService,
     private userService: UserDetailsService,
     private dialog: MatDialog
-    ) {
-      const id = router.url.split('/').pop();
-      console.log('user details --> ', router.url, id);
-      this.isSelfUser = id === 'self';
-      this.loadUser(id);
-    }
+    ) {}
 
   ngOnInit(): void {
+    const id = this.router.url.split('/').pop();
+    this.isSelfUser = id === 'self';
+    this.loadUser(id);
   }
 
   private async loadUser(id: string) {

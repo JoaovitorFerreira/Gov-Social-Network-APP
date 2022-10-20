@@ -1,20 +1,22 @@
 <div class="container" id="feedcards">
     <div class="search-bar">
         <form [formGroup]="formGroup">
-            <label class="example-margin">Filtrar por:</label>
+            <mat-label class="example-margin">Filtrar por:</mat-label>
             <mat-radio-group class="radio-group" formControlName="filterType">
                 <mat-radio-button value="role">Cargo</mat-radio-button>
+                <mat-radio-button style="margin-left:8px" value="sector">Setor</mat-radio-button>
                 <mat-radio-button style="margin-left:8px" value="user">Nome</mat-radio-button>
-                </mat-radio-group>
+                <mat-radio-button style="margin-left:8px" value="knowhow">Especialidade</mat-radio-button>
+            </mat-radio-group>
             <mat-form-field>
-                <input matInput type="search" formControlName="search" (keyup.enter)="handleSearch()">
-                <mat-icon style="cursor: pointer;" (click)="handleSearch()" matSuffix>search</mat-icon>
+                <input matInput type="search" formControlName="search">
+                <mat-icon style="cursor: pointer;" matSuffix>search</mat-icon>
             </mat-form-field>
         </form>
     </div>
     <h2>Meu setor</h2>
     <div *ngIf="setor && setor.length > 0; else setorVazio" class="setor-container">
-        <mat-card *ngFor="let pessoa of setor" (click)="openProfile(pessoa)">
+        <mat-card class="profile-card" *ngFor="let pessoa of setor" (click)="openProfile(pessoa)">
             <mat-card-header>
                 <img [src]="pessoa.profilePicture" mat-card-avatar>
                 <mat-card-title>{{ pessoa.username }}</mat-card-title>

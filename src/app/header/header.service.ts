@@ -7,12 +7,15 @@ import { BehaviorSubject } from "rxjs";
 export class HeaderService {
   public watcher: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(false);
   public dadosUsuario: Usuario = null;
-  constructor(private firestore: Firestore) { }
+  constructor(private firestore: Firestore) {
+    this.dadosUsuario = JSON.parse(sessionStorage.getItem('userData'));
+   }
 
   public getUsuario(uid: string): Promise<Usuario> {
     return getDoc(doc(this.firestore, `usuarios/${uid}`)).then(user => {
       this.dadosUsuario = user.exists() ? { ...user.data(), id: uid } as Usuario : null;
       console.log('dados usuario load --> ', this.dadosUsuario);
+      sessionStorage.setItem('userData', JSON.stringify(this.dadosUsuario))
       return this.dadosUsuario;
     }).catch(error => {
       console.log('error getting user --> ', error);

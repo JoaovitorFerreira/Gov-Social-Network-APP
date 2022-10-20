@@ -1,6 +1,11 @@
 <div class="login-page">
   <mat-card class="login-card">
-      <mat-card-title>
+    <div style="display: flex; align-items: center; justify-content: center;">
+        <img style="height: 200px;" alt="Logo da PGE-RJ" src="../../../assets/logo_enxutaAzul.png" loading="lazy">
+        <h1 style="color: #424A93;font-size: 42px;margin: 0; font-weight: 500;">Base de <br>Conhecimento</h1>
+    </div>
+ 
+    <mat-card-title style="color:#424A93;"> 
           Login
       </mat-card-title>
       <mat-card-content>
@@ -13,16 +18,16 @@
               </mat-form-field>
               <mat-form-field>
                   <mat-label>Senha</mat-label>
-                  <input matInput type="password" formControlName="pass" />
+                  <input matInput type="password" formControlName="pass" (keyup.enter)="login()"/>
                   <mat-error *ngIf="formGroup.get('pass').hasError('required')">Campo obrigatório</mat-error>
               </mat-form-field>
           </form>
       </mat-card-content>
-      <mat-card-actions>
+      <mat-card-actions style="display: flex; justify-content: center;">
           <button mat-button [disabled]="loading" (click)="forgotPassword()">Esqueceu sua
               senha?</button>
-          <button mat-button [disabled]="formGroup.invalid || loading"
-              (click)="login()">Entrar</button>
+          <button class="login-button" mat-stroked-button [disabled]="formGroup.invalid || loading"
+            (click)="login()">Entrar</button>
       </mat-card-actions>
   </mat-card>
 </div>

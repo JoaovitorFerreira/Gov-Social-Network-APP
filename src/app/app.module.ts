@@ -11,7 +11,7 @@ import { AdminComponent } from './admin/admin.component';
 import { UserDetailsComponent } from './user-details/user-details.component';
 import { FeedComponent } from './feed/feed.component';
 import { TooltipModule } from 'ngx-bootstrap/tooltip';
-import {NgxPaginationModule} from 'ngx-pagination';
+import { NgxPaginationModule } from 'ngx-pagination';
 import { NetworkComponent } from './network/network.component';
 import { NotificationsComponent } from './notifications/notifications.component';
 import { environment } from 'src/environments/environment';
@@ -31,6 +31,8 @@ import { JobFormComponent } from './job-form/job-form.component';
 import { FormacaoFormComponent } from './formacao-form/formacao-form.component';
 import { ConhecimentoPipe } from './pipes/conhecimento.pipe';
 import { TimestampPipe } from './pipes/timestamp.pipe';
+import { ChangePasswordComponent } from './shared/change-password/change-password.component';
+import { FooterComponent } from './shared/footer/footer.component';
 
 const appRoutes: Routes = [
   {
@@ -38,15 +40,19 @@ const appRoutes: Routes = [
     redirectTo: 'login',
     pathMatch: 'full',
   },
-  { path: 'usuario', children: [
-    {path: ':id' , 
+  {
+    path: 'usuario',
     children: [
-        {path: '', component: UserDetailsComponent},
-        // {path: 'passwordchange', component: ChangePasswordComponent, canActivate: [UserGuard]},
-        // {path: 'edit', component: UserEditComponent, canActivate: [UserGuard]},
-        // { path: 'messages', component: MessagePageComponent, canActivate: [UserGuard]}
-        ] }
-    ] 
+      {
+        path: ':id',
+        children: [
+          { path: '', component: UserDetailsComponent },
+          // {path: 'passwordchange', component: ChangePasswordComponent, canActivate: [UserGuard]},
+          // {path: 'edit', component: UserEditComponent, canActivate: [UserGuard]},
+          // { path: 'messages', component: MessagePageComponent, canActivate: [UserGuard]}
+        ],
+      },
+    ],
   },
   {
     path: 'login',
@@ -56,13 +62,16 @@ const appRoutes: Routes = [
     path: 'feed',
     component: FeedComponent,
   },
-  { path: 'admin', children: [
-    {path: '', component: AdminComponent},
-    // {path: 'exportdata', component: AppDataExportComponent }
-   ] //, canActivate: [AdminGuard]
+  { path: 'change-password', component: ChangePasswordComponent },
+  {
+    path: 'admin',
+    children: [
+      { path: '', component: AdminComponent },
+      // {path: 'exportdata', component: AppDataExportComponent }
+    ], //, canActivate: [AdminGuard]
   },
-  { path: 'network', component: NetworkComponent},
-  { path: 'notifications', component: NotificationsComponent},
+  { path: 'network', component: NetworkComponent },
+  { path: 'notifications', component: NotificationsComponent },
 ];
 
 @NgModule({
@@ -76,12 +85,14 @@ const appRoutes: Routes = [
     NetworkComponent,
     NotificationsComponent,
     HeaderComponent,
+    FooterComponent,
     SidebarComponent,
     EspecialidadesFormComponent,
     JobFormComponent,
     FormacaoFormComponent,
     ConhecimentoPipe,
-    TimestampPipe
+    TimestampPipe,
+    ChangePasswordComponent
   ],
   imports: [
     NgxPaginationModule,
@@ -96,10 +107,7 @@ const appRoutes: Routes = [
     RouterModule.forRoot(appRoutes),
     TooltipModule.forRoot(),
   ],
-  providers:  [
-    AuthService,
-    HeaderService
-  ],
+  providers: [AuthService, HeaderService],
   bootstrap: [AppComponent],
 })
 export class AppModule {}

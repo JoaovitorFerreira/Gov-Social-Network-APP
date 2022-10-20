@@ -7,24 +7,33 @@ import { HeaderService } from './header.service';
 @Component({
   selector: 'pge-header',
   templateUrl: './header.component.html',
-  styleUrls: ['./header.component.scss']
+  styleUrls: ['./header.component.scss'],
 })
 export class HeaderComponent implements OnInit {
   public username: string = 'Sr.(a) Procurador(a)';
   private subject = new Subject();
   private menu: boolean = false;
-  constructor(private authService: AuthService, private headerService: HeaderService, private router: Router) { }
+  constructor(
+    private authService: AuthService,
+    private headerService: HeaderService,
+    private router: Router
+  ) {}
 
   ngOnInit(): void {
-    this.authService.$user.pipe(takeUntil(this.subject)).subscribe(userExists => {
-      if (!userExists) { this.username = 'Sr.(a) Procurador(a)'; return; }
-      this.headerService.getUsuario(this.authService.getUserId).then(user => {
-        if (!user) { return; }
-        this.username = user.username;
-      }).catch(error => {
-        console.log('error getting user --> ', error);
+    this.authService.$user
+      .pipe(takeUntil(this.subject))
+      .subscribe((userExists) => {
+        if (!userExists) {
+          this.username = 'Sr.(a) Procurador(a)';
+          return;
+        }
+        this.headerService.getUsuario(this.authService.getUserId).then(user => {
+          if (!user) { return; }
+          this.username = user.username;
+        }).catch(error => {
+          console.log('error getting user --> ', error);
+        });
       });
-    })
   }
 
   ngOnDestroy(): void {
@@ -40,5 +49,4 @@ export class HeaderComponent implements OnInit {
     this.menu = !this.menu;
     this.headerService.watcher.next(this.menu);
   }
-
 }

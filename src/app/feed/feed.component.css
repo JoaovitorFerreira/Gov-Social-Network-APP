@@ -19,6 +19,6 @@ mat-card {
   cursor: pointer;
 }
 
-mat-card:last-of-type {
-  margin-top: 20px;
+.profile-card{
+  margin-bottom: 8px;
 }
