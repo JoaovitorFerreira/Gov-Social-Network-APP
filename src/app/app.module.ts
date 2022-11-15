@@ -4,16 +4,14 @@ import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 import { AppComponent } from './app.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-import { LoginComponent } from './auth/login/login.component';
+import { LoginComponent } from './modules/auth/login/login.component';
 import { HttpClientModule } from '@angular/common/http';
-import { SignupComponent } from './auth/signup/signup.component';
-import { AdminComponent } from './admin/admin.component';
-import { UserDetailsComponent } from './user-details/user-details.component';
-import { FeedComponent } from './feed/feed.component';
+import { SignupComponent } from './modules/auth/signup/signup.component';
+import { AdminComponent } from './modules/admin/admin.component';
+import { UserDetailsComponent } from './modules/user-details/user-details.component';
+import { FeedComponent } from './modules/feed/feed.component';
 import { TooltipModule } from 'ngx-bootstrap/tooltip';
 import { NgxPaginationModule } from 'ngx-pagination';
-import { NetworkComponent } from './network/network.component';
-import { NotificationsComponent } from './notifications/notifications.component';
 import { environment } from 'src/environments/environment';
 import { provideFirebaseApp, initializeApp } from '@angular/fire/app';
 import { getFirestore, provideFirestore } from '@angular/fire/firestore';
@@ -22,17 +20,21 @@ import { provideStorage } from '@angular/fire/storage';
 import { getStorage } from 'firebase/storage';
 import { getAuth } from 'firebase/auth';
 import { AngularMaterialModule } from './core/angular-material.module';
-import { HeaderComponent } from './header/header.component';
+import { HeaderComponent } from './shared/header/header.component';
 import { AuthService } from './core/services/auth.service';
-import { HeaderService } from './header/header.service';
-import { SidebarComponent } from './sidebar/sidebar.component';
-import { EspecialidadesFormComponent } from './especialidades-form/especialidades-form.component';
-import { JobFormComponent } from './job-form/job-form.component';
-import { FormacaoFormComponent } from './formacao-form/formacao-form.component';
+import { HeaderService } from './shared/header/header.service';
+import { SidebarComponent } from './shared/sidebar/sidebar.component';
+import { EspecialidadesFormComponent } from './core/forms/especialidades-form/especialidades-form.component';
+import { HobbiesFormComponent } from './core/forms/hobbies-form/hobbies-form.component';
+import { JobFormComponent } from './core/forms/job-form/job-form.component';
+import { FormacaoFormComponent } from './core/forms/formacao-form/formacao-form.component';
 import { ConhecimentoPipe } from './pipes/conhecimento.pipe';
 import { TimestampPipe } from './pipes/timestamp.pipe';
 import { ChangePasswordComponent } from './shared/change-password/change-password.component';
 import { FooterComponent } from './shared/footer/footer.component';
+import { IdiomasFormComponent } from './core/forms/idiomas-form/idiomas-form.component';
+import { SectorComponent } from './modules/sector/sector.component';
+import { IdealLocationFormComponent } from './core/forms/locacao-ideal-form/locacao-ideal-form.component';
 
 const appRoutes: Routes = [
   {
@@ -62,6 +64,10 @@ const appRoutes: Routes = [
     path: 'feed',
     component: FeedComponent,
   },
+  {
+    path: 'sector',
+    component: SectorComponent,
+  },
   { path: 'change-password', component: ChangePasswordComponent },
   {
     path: 'admin',
@@ -70,8 +76,6 @@ const appRoutes: Routes = [
       // {path: 'exportdata', component: AppDataExportComponent }
     ], //, canActivate: [AdminGuard]
   },
-  { path: 'network', component: NetworkComponent },
-  { path: 'notifications', component: NotificationsComponent },
 ];
 
 @NgModule({
@@ -82,17 +86,19 @@ const appRoutes: Routes = [
     AdminComponent,
     UserDetailsComponent,
     FeedComponent,
-    NetworkComponent,
-    NotificationsComponent,
     HeaderComponent,
     FooterComponent,
     SidebarComponent,
     EspecialidadesFormComponent,
+    HobbiesFormComponent,
+    IdiomasFormComponent,
     JobFormComponent,
+    IdealLocationFormComponent,
     FormacaoFormComponent,
     ConhecimentoPipe,
     TimestampPipe,
-    ChangePasswordComponent
+    ChangePasswordComponent,
+    SectorComponent
   ],
   imports: [
     NgxPaginationModule,

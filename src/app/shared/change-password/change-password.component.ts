@@ -3,7 +3,7 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { Firestore, doc, setDoc } from "@angular/fire/firestore";
 import { AuthService } from 'src/app/core/services/auth.service';
-import { HeaderService } from '../../header/header.service';
+import { HeaderService } from '../header/header.service';
 import { Router } from '@angular/router';
 
 @Component({

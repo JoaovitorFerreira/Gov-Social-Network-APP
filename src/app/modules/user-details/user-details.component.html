@@ -1,0 +1,235 @@
+<div class="container" id="profilecards">
+  <div class="main-body">
+    <div class="row gutters-sm">
+      <div class="col-md-4 mb-3">
+        <div class="card">
+          <div class="card-body">
+            <div class="d-flex flex-column align-items-center text-center">
+              <div class="profile-image-container" *ngIf="user.profilePicture">
+                <img [src]="user.profilePicture" id="profile-image" class="card-img-top" alt="...">
+                <div *ngIf="isSelfUser" class="overlay-image" (click)="uploadImage(fileInput)">
+                  <mat-icon>photo_camera</mat-icon>
+                </div>
+              </div>
+              <div class="profile-image-container" *ngIf="!user.profilePicture">
+                <img
+                  src="https://www.donkey.bike/wp-content/uploads/2020/12/user-member-avatar-face-profile-icon-vector-22965342-e1608640557889.jpg"
+                  id="profile-image" class="card-img-top" alt="...">
+                <div *ngIf="isSelfUser" class="overlay-image" (click)="uploadImage(fileInput)">
+                  <mat-icon>photo_camera</mat-icon>
+                </div>
+              </div>
+              <input #fileInput type="file" style="display: none;" accept="image/jpeg" (change)="imageSelected($event)">
+              <div class="mt-3">
+                <h3>{{user.username}}</h3>
+                <p *ngIf="user.currentJob" class="text-secondary mb-1">{{user.currentJob.setor}}
+                </p>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="message-div" *ngIf="!isSelfUser">
+          <button class="message-btn" onclick="callMsgSystem(user)">Enviar mensagem</button>
+        </div>
+      </div>
+      <div class="col-md-8">
+        <div class="col-md-12">
+          <div class="card mb-3">
+            <div class="card-body">
+              <div class="container" id="main-container">
+                <div>
+                </div>
+                <div class="row">
+                  <div class="col-sm-10 col-12">
+                    <h1>Tenho interesse em...</h1>
+                  </div>
+                  <div style="margin-bottom: 10px;" *ngIf="isSelfUser">
+                    <button type="button" class="btn btn-outline-primary pull-right" (click)="open('idealLocation')">Adicionar interesse em locação</button>
+                  </div>
+                  <hr>
+                  <div *ngIf="user?.idealLocations" class="container align-self-center">
+                    <div>{{user.idealLocations.maiorInteresse}}</div>
+                    <mat-card *ngFor="let idealLocation of user.idealLocations.interesse; let i = index">
+                      <div>{{idealLocation}}</div>
+                    </mat-card>
+                  </div>
+                  <div *ngIf="!user?.idealLocations" class="container align-self-center">
+                    <p>Sem alocação ideal cadastrada</p>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="col-md-12">
+          <div class="card mb-3">
+            <div class="card-body">
+              <div class="container" id="main-container">
+                <div>
+                </div>
+                <div class="row">
+                  <div class="col-sm-10 col-12">
+                    <h1>Experiência de Trabalho</h1>
+                  </div>
+                  <div style="margin-bottom: 10px;" *ngIf="isSelfUser">
+                    <button type="button" class="btn btn-outline-primary pull-right" (click)="open('job')">Adicionar
+                      experiência</button>
+                  </div>
+                  <hr>
+                  <div *ngIf="user?.jobs.length != 0" class="container align-self-center">
+                    <mat-card *ngFor="let work of user.jobs; let i = index">
+                      <mat-card-header>
+                        <mat-card-title>Empresa: {{ work.empresa }}</mat-card-title>
+                        <mat-card-subtitle>Setor: {{ work.setor }}</mat-card-subtitle>
+                      </mat-card-header>
+                      <mat-card-content>
+                        <span class="align-middle">Descrição: {{work.descricao}}</span>
+                        <br>
+                        <br>
+                        <div class="datas-container">
+                          <span><b>Início: {{ work.dataInicio | timestamp }}</b></span>
+                          <span *ngIf="work.dataFim"><b>Fim: {{ work.dataFim | timestamp }}</b></span>
+                        </div>
+                      </mat-card-content>
+                    </mat-card>
+                  </div>
+                  <div *ngIf="user?.jobs.length == 0" class="container align-self-center">
+                    <p>Sem experiência cadastrada</p>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="col-md-12">
+          <div class="card mb-3">
+            <div class="card-body">
+              <div class="container" id="main-container">
+                <div class="row">
+                  <div class="col-sm-10 col-12">
+                    <h1>Formação Acadêmica/Estudos</h1>
+                  </div>
+                  <div style="margin-bottom: 10px;" *ngIf="isSelfUser">
+                    <button type="button" class="btn btn-outline-primary pull-right"
+                      (click)="open('formacao')">Adicionar formação/estudo</button>
+                  </div>
+                  <hr>
+                  <div *ngIf="user?.formacao.length != 0" class="container align-self-center">
+                    <mat-card *ngFor="let estudo of user.formacao;">
+                      <mat-card-header>
+                        <mat-card-title>Instituição: {{ estudo.instituicao }}</mat-card-title>
+                        <mat-card-subtitle>{{ estudo.tipo }}</mat-card-subtitle>
+                      </mat-card-header>
+                      <mat-card-content>
+                        <span class="align-middle">Descrição: {{estudo.descricao}}</span>
+                        <br>
+                        <br>
+                        <div class="datas-container">
+                          <span><b>Início: {{ estudo.dataInicio | timestamp }}</b></span>
+                          <span *ngIf="estudo.dataFim"><b>Fim: {{ estudo.dataFim | timestamp }}</b></span>
+                        </div>
+                      </mat-card-content>
+                    </mat-card>
+                  </div>
+                  <div *ngIf="user?.formacao.length == 0" class="container align-self-center">
+                    <p>Sem estudos cadastrados</p>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="row gutters-sm">
+          <div class="col-md-12 mb-3">
+            <div class="card">
+              <div class="card-body">
+                <div class="container" id="main-container">
+                  <div class="row">
+                    <div class="col-sm-10 col-12">
+                      <h1>Idiomas</h1>
+                    </div>
+                    <div style="margin-bottom: 10px;" *ngIf="isSelfUser">
+                      <button type="button" class="btn btn-outline-primary pull-right" (click)="open('idiomas')"> <i
+                          class="fas fa-plus"></i> Adicionar idiomas</button>
+                    </div>
+                    <hr>
+                    <div *ngIf="user?.idiomas" class="container align-self-center">
+                      <div class="chips-container">
+                      <mat-chip-list *ngFor="let idioma of idiomas" aria-label="Fish selection">
+                        <mat-chip class="chip" color="accent">{{ idioma }}</mat-chip>
+                      </mat-chip-list>
+                    </div>
+                    </div>
+                    <div *ngIf="!user?.idiomas" class="container align-self-center">
+                      <p>Sem idiomas cadastrados</p>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="row gutters-sm">
+          <div class="col-md-12 mb-3">
+            <div class="card">
+              <div class="card-body">
+                <div class="container" id="main-container">
+                  <div class="row">
+                    <div class="col-sm-10 col-12">
+                      <h1>Competências e Conhecimentos</h1>
+                    </div>
+                    <div style="margin-bottom: 10px;" *ngIf="isSelfUser">
+                      <button type="button" class="btn btn-outline-primary pull-right" (click)="open('skills')"> <i
+                          class="fas fa-plus"></i> Adicionar habilidades ou conhecimento</button>
+                    </div>
+                    <hr>
+                    <div *ngIf="user?.especialidades" class="container align-self-center">
+                      <div class="chips-container">
+                        <mat-chip-list *ngFor="let especialidade of especialidades" aria-label="Fish selection">
+                          <mat-chip class="chip" color="accent">{{ especialidade }}</mat-chip>
+                        </mat-chip-list>
+                      </div>
+                    </div>
+                    <div *ngIf="!user?.especialidades" class="container align-self-center">
+                      <p>Sem competências ou conhecimentos cadastrados</p>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="row gutters-sm">
+          <div class="col-md-12 mb-3">
+            <div class="card">
+              <div class="card-body">
+                <div class="container" id="main-container">
+                  <div class="row">
+                    <div class="col-sm-10 col-12">
+                      <h1>Competências - outras</h1>
+                    </div>
+                    <div style="margin-bottom: 10px;" *ngIf="isSelfUser">
+                      <button type="button" class="btn btn-outline-primary pull-right" (click)="open('hobbies')"> <i
+                          class="fas fa-plus"></i> Adicionar competências</button>
+                    </div>
+                    <hr>
+                    <div *ngIf="user?.hobbies" class="container align-self-center">
+                      <div class="chips-container">
+                        <mat-chip-list *ngFor="let hobbie of hobbies" aria-label="Fish selection">
+                          <mat-chip class="chip" color="accent">{{ hobbie }}</mat-chip>
+                        </mat-chip-list>
+                      </div>
+                    </div>
+                    <div *ngIf="!user?.hobbies" class="container align-self-center">
+                      <p>Sem outras competências cadastradas</p>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,79 @@
+.search-bar {
+  margin-top: 20px;
+  width: 100%;
+}
+
+.radio-group {
+  margin-left: 10px;
+}
+
+mat-form-field {
+  width: 100%;
+}
+
+.setor-container {
+  height: 800px;
+}
+
+mat-card {
+  cursor: pointer;
+}
+
+.profile-card {
+  margin-bottom: 8px;
+}
+
+.post-message {
+  margin-top: 16px;
+}
+
+.posts {
+  margin-top: 4px;
+  margin-bottom: 4px;
+}
+
+.card-body {
+  align-self: center;
+  display: flex;
+  justify-content: center;
+  padding: 10px 40px;
+  margin-top: 10px;
+  align-items: center;
+}
+
+.card-body-div {
+  display: flex;
+  align-items: center;
+  height: 100%;
+  width: 100%;
+  gap: 15px;
+}
+
+.on-your-mind {
+  background-color: #f0f2f5;
+    display: inline-block;
+    outline: none;
+    border: none;
+    padding: 10px 0px 10px 20px;
+    border-radius: 20px 0px 0px 20px;
+    width: 100%;
+}
+
+.on-your-mind-btn {
+  border-radius: 0px 20px 20px 0px;
+    background-color: #1597E5;
+    color: white;
+    border: 0px;
+    width: 100px
+}
+
+.post-message-header {
+  width: 100%;
+  display: flex;
+  align-items: center;
+}
+
+form {
+  flex: 1;
+  display: flex;
+}

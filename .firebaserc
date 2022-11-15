@@ -1,12 +1,12 @@
 {
   "projects": {
-    "default": "pge-knowledge-environment"
+    "default": "pge-rj-banco-conhecimento"
   },
    "targets": {
-    "pge-knowledge-environment": {
+    "pge-rj-banco-conhecimento": {
       "hosting": {
-        "pge-knowledge-environment": [
-          "pge-knowledge-environment"
+        "pge-rj-banco-conhecimento": [
+          "pge-rj-banco-conhecimento"
         ]
       }
     }

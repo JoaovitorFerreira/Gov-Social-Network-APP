@@ -1,0 +1,15 @@
+<form [formGroup]="formGroup">
+  <mat-label>Insira aqui a área na qual deseja ser alocado:</mat-label>
+  <mat-form-field>
+    <input type="text" matInput formControlName="maiorInteresse">
+  </mat-form-field>
+  <p>Gostaria de adicionar mais áreas de interesse?<br>
+  Só clicar no simbolo de "+" e inserir outras áreas</p>
+  <div>
+    <mat-form-field>
+      <mat-label>Insira aqui uma área de interesse</mat-label>
+      <input type="text" matInput formControlName="interesse">
+    </mat-form-field>
+  </div>
+  <button mat-button [disabled]="formGroup.invalid" (click)="salvarInformacoes()">Salvar</button>
+</form>
