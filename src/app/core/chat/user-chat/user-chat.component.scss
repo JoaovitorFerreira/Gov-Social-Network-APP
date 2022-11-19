@@ -1,0 +1,15 @@
+.reqMsg {
+  background-color: whiteSmoke;
+  flex-direction: row;
+  padding: 8;
+  display: flex;
+  align-items: flex-end;
+}
+
+.resMsg {
+  background-color: #e0ffff;
+  flex-direction: row-reverse;
+  padding: 8;
+  display: flex;
+  align-items: flex-end;
+}

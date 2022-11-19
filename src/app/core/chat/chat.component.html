@@ -1,8 +1,34 @@
-<div>
-    <div *ngFor="let userChat of userChats">
-        <mat-card onclick="openUserChat()">
-            <mat-card-header>{{userChat}}</mat-card-header>
-            <mat-content></mat-content>
-        </mat-card>  
+<div class="chat-container">
+    <div class="chat-lists" >
+        <form [formGroup]="formGroup" (ngChange)="searchUser()">
+            <input class="on-your-mind" formControlName="message" placeholder="Pesquise uma conversa" type="text">
+        </form>
+        <div *ngIf="userChats.length > 0; else noUserChat">
+            <div *ngFor="let userChat of userChats">
+                <mat-card class="card" (click)="openUserChat(userChat)">
+                        <mat-card-header>
+                            <mat-card-title>{{userChat.responseUser}}</mat-card-title>
+                            <mat-card-subtitle>{{ userChat.lastMsg.timestamp | timestamp }}</mat-card-subtitle>
+                        </mat-card-header>
+                          <mat-card-content>
+                            <div class="datas-container">
+                              <span>{{userChat.lastMsg.content}}</span>
+                            </div>
+                          </mat-card-content>
+                </mat-card>
+            </div>
+        </div>
+        <ng-template #noUserChat>
+            <div> Não há nenhuma conversa por aqui, inicie o contato visitando o perfil de um colega</div>
+        </ng-template>
     </div>
+    <div *ngIf="selectedUser; else noUserSelected">
+        <user-chat [userChat]="selectedUser"></user-chat>
+    </div>
+    <ng-template #noUserSelected>
+        <div class="chat">
+            <h3>Selecione um usuário para começar a conversa</h3>
+        </div>
+    </ng-template>
+
 </div>

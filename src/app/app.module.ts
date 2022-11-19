@@ -35,6 +35,8 @@ import { FooterComponent } from './shared/footer/footer.component';
 import { IdiomasFormComponent } from './core/forms/idiomas-form/idiomas-form.component';
 import { SectorComponent } from './modules/sector/sector.component';
 import { IdealLocationFormComponent } from './core/forms/locacao-ideal-form/locacao-ideal-form.component';
+import { ChatComponent } from './core/chat/chat.component';
+import { UserChatComponent } from './core/chat/user-chat/user-chat.component';
 
 const appRoutes: Routes = [
   {
@@ -68,6 +70,10 @@ const appRoutes: Routes = [
     path: 'sector',
     component: SectorComponent,
   },
+  {
+    path:'chat',
+    component: ChatComponent
+  },
   { path: 'change-password', component: ChangePasswordComponent },
   {
     path: 'admin',
@@ -86,6 +92,7 @@ const appRoutes: Routes = [
     AdminComponent,
     UserDetailsComponent,
     FeedComponent,
+    UserChatComponent,
     HeaderComponent,
     FooterComponent,
     SidebarComponent,
@@ -98,7 +105,8 @@ const appRoutes: Routes = [
     ConhecimentoPipe,
     TimestampPipe,
     ChangePasswordComponent,
-    SectorComponent
+    SectorComponent,
+    ChatComponent
   ],
   imports: [
     NgxPaginationModule,

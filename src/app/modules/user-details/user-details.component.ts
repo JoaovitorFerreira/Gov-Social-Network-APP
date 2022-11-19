@@ -17,6 +17,8 @@ import { Idiomas } from '../../core/models/idiomas.models';
 import { IdiomasFormComponent } from '../../core/forms/idiomas-form/idiomas-form.component';
 import { IdealLocationFormComponent } from '../../core/forms/locacao-ideal-form/locacao-ideal-form.component';
 import { IdealLocation } from '../../core/models/idealLocation.model';
+import { Firestore, doc, getDoc, setDoc,Timestamp } from "@angular/fire/firestore";
+import { Message } from 'src/app/model/message';
 
 @Component({
   selector: 'app-user-details',
@@ -26,23 +28,40 @@ import { IdealLocation } from '../../core/models/idealLocation.model';
 })
 export class UserDetailsComponent implements OnInit {
   isSelfUser: boolean = false;
+  alreadySentMessage: boolean = false;
   user: Usuario;
   especialidades: string[] = [];
   hobbies: string[] = [];
   idiomas: string[] = [];
-  
+  userId: string;
+  myUser: Usuario = JSON.parse(sessionStorage.getItem('userData'));
+
   constructor(
     private router: Router, 
     private headerService: HeaderService,
     private userService: UserDetailsService,
-    private dialog: MatDialog
+    private dialog: MatDialog,
+    private firestore: Firestore,
     ) {}
 
   ngOnInit(): void {
     const id = this.router.url.split('/').pop();
     this.isSelfUser = id === 'self';
+    if(!this.isSelfUser){
+      this.userId = id
+    }
     this.loadUser(id);
-    console.log('teste 2')
+    this.alreadySentMessage = this.userService.checkIfHasSentMessage(this.userId)
+    console.log(this.alreadySentMessage)
+  }
+
+  public get showMsgButton(){
+    if(this.isSelfUser){
+      return false
+    } else {
+      console.log(this.alreadySentMessage)
+      return !this.alreadySentMessage
+    }
   }
 
   private async loadUser(id: string) {
@@ -200,6 +219,20 @@ export class UserDetailsComponent implements OnInit {
     const fileObj = { file, id: 'profile.' + file.name.split('.').pop(), path: 'profile-pictures/' + this.user.id};
     this.userService.saveProfileImage(fileObj).then(profilePath => {
       this.userService.saveUsuario({...this.user, profilePicture: profilePath});
+    });
+  }
+
+  public async callMsgSystem() { 
+    let newChatId = this.myUser.id + "-chat-" + this.userId
+    let date = new Date();
+    let newChatData: Message = {
+      id: newChatId,
+      createdAt: Timestamp.fromDate(date),
+      usersId:[this.userId, this.myUser.id],
+      usersName: [this.user.username, this.myUser.username]
+    }
+    await setDoc(doc(this.firestore, "user-chats", newChatId), newChatData).then(()=>{
+      this.router.navigateByUrl('chat');
     });
   }
   

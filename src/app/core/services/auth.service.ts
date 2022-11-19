@@ -7,9 +7,11 @@ export class AuthService {
   private userId: string = null;
   private user: User = null;
   public $user = new BehaviorSubject<User>(this.user);
+
   public get getUserId(): string {
     return this.userId;
   }
+  
   public get getUser(): User {
     return this.user;
   }

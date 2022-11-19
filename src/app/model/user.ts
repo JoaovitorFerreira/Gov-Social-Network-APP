@@ -2,7 +2,6 @@ import { Picture } from './picture';
 import { Role } from './role';
 import { SkillsAndExperience } from './skills-experience';
 import { Connection } from './connection';
-import { Chat } from './chat';
 
 export class User {
   id: number;
@@ -26,6 +25,5 @@ export class User {
   website: string;
   twitter: string;
   github: string;
-  chats: Array <Chat> = new Array <Chat>();
 
 }

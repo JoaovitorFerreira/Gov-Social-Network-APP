@@ -28,8 +28,8 @@
             </div>
           </div>
         </div>
-        <div class="message-div" *ngIf="!isSelfUser">
-          <button class="message-btn" onclick="callMsgSystem(user)">Enviar mensagem</button>
+        <div class="message-div" *ngIf="showMsgButton">
+          <button class="message-btn" (click)="callMsgSystem()">Enviar mensagem</button>
         </div>
       </div>
       <div class="col-md-8">

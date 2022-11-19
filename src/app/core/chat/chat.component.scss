@@ -1,0 +1,15 @@
+.chat-container{
+    display: flex;
+}
+
+.chat-lists{
+    background-color: aquamarine;
+    width: 20%;
+}
+.chat{
+    background-color: brown;
+    width: 80%;
+}
+.card:hover {
+    box-shadow: 10px 5px 10px gray;
+}

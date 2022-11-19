@@ -1,11 +1,12 @@
 import { Injectable } from "@angular/core";
 import { Firestore, doc, getDoc, setDoc } from "@angular/fire/firestore";
 import { getDownloadURL, ref, Storage, uploadBytes } from "@angular/fire/storage";
+import { ChatService } from "src/app/core/chat/chat.service";
 import { Usuario } from "src/app/core/models/usuario.model";
 
 @Injectable()
 export class UserDetailsService {
-  constructor(private firestore: Firestore, private storage: Storage) {}
+  constructor(private firestore: Firestore, private chatService: ChatService, private storage: Storage) {}
 
   public getUsuario(uid: string): Promise<Usuario> {
     return getDoc(doc(this.firestore, `usuarios/${uid}`)).then(user => {
@@ -48,5 +49,23 @@ export class UserDetailsService {
 
   public getPhoto(path: string) {
     return getDownloadURL(ref(this.storage, path));
+  }
+
+  public checkIfHasSentMessage(userId: string){
+   let msgsIds = JSON.parse(sessionStorage.getItem('userMsgsId'))
+   if(msgsIds.length == 0){
+    msgsIds = this.chatService.getUserChats().then((messages)=> {
+      return messages.map(msg=> {return msg.id})
+    })
+   }
+   let hasSent: boolean[] = msgsIds.map((combinedUserId:string) => {
+    console.log(combinedUserId)
+    return combinedUserId.includes(userId)
+   })
+   if(hasSent.find((msg)=> msg === true)){
+    return true
+   }else{
+    return false
+   }
   }
 }
