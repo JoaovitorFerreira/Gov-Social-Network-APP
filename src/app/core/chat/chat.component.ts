@@ -14,7 +14,7 @@ import { ChatService } from './chat.service';
   styleUrls: ['./chat.component.scss'],
 })
 export class ChatComponent {
-  public userChats: any[] = [];
+  public userChats: OnlineSystemMessage[] = [];
   public messageList: string[] = [];
   public formGroup: FormGroup;
   public user: Usuario;
@@ -32,38 +32,8 @@ export class ChatComponent {
     return true;
   }
 
-  private initUserChat() {
-    this.user = JSON.parse(sessionStorage.getItem('userData'));
-    this.chatService
-      .getUserChats()
-      .then((doc) => {
-        this.userChats = doc.map((userChat: Message) => {
-          let treatedUserChat: OnlineSystemMessage = {
-            ...userChat,
-            responseUser: userChat.usersName.find((name) => {
-              return name !== this.user.username;
-            }),
-            responseId: userChat.usersId.find((id) => {
-              return id !== this.user.id;
-            }),
-            requestUser: this.user.username,
-            requestId: this.user.id,
-            lastMsg: userChat.lastMsg ?? {
-              content: 'Não há ainda nenhuma mensagem a ser exibida',
-              userId: '',
-              userName:'',
-              timestamp: userChat.createdAt,
-            },
-          };
-          return treatedUserChat;
-        });
-      })
-      .finally(() => {
-        const msgIds = this.userChats.map((userChat) => {
-          return userChat.id;
-        });
-        sessionStorage.setItem('userMsgsId', JSON.stringify(msgIds));
-      });
+  private async initUserChat() {
+    this.userChats = await this.chatService.initUserChat()
   }
 
   public openUserChat(userChat: any) {

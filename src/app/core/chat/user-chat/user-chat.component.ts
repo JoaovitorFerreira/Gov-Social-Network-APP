@@ -1,5 +1,5 @@
 import { Component, Input } from '@angular/core';
-import { ChatService } from './user-chat.component.service';
+import { ChatService } from './user-chat.service';
 import { Firestore, doc, getDoc, setDoc } from "@angular/fire/firestore";
 import { Usuario } from "src/app/core/models/usuario.model";
 import { ChatMessage, OnlineSystemMessage } from 'src/app/model/message';

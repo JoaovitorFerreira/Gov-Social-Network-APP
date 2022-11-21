@@ -1,47 +1,50 @@
 <div class="container" id="feedcards">
-    <mat-card class="post-message">
-        <mat-card-header class="post-message-header"
-                         style="padding-bottom: 20px; border-bottom: 1px solid lightgray;">
-          <img
-            alt="user image"
-            mat-card-avatar
-            [src]="user?.profilePicture">
-          <form [formGroup]="formGroup" (ngSubmit)="postMessage()">
-            <input class="on-your-mind" formControlName="message" placeholder="Escreva aqui sua última realização" type="text">
-            <button class="on-your-mind-btn" type="submit">Publicar</button>
-          </form>
-        </mat-card-header>
-        <mat-card-content class="card-body">
-          <div class="card-body-div">
-            <span>Inserir imagem</span>
-            <mat-icon color="primary">photo_album</mat-icon>
-          </div>
-          <div class="card-body-div">
+  <mat-card class="post-message">
+    <mat-card-header class="post-message-header" style="padding-bottom: 20px; border-bottom: 1px solid lightgray;">
+      <img alt="user image" mat-card-avatar [src]="user?.profilePicture">
+      <form [formGroup]="formGroup" (ngSubmit)="savePost()">
+        <input class="on-your-mind" formControlName="message" placeholder="Escreva aqui sua última realização"
+          type="text">
+        <button class="on-your-mind-btn" type="submit">Publicar</button>
+      </form>
+    </mat-card-header>
+    <mat-card-content class="card-body">
+      <div class="card-body-div" (click)="uploadImage(fileInput)">
+        <span>Inserir imagem</span>
+        <input #fileInput type="file" style="display: none;" accept="image/jpeg" (change)="imageSelected($event)">
+        <mat-icon color="primary">photo_album</mat-icon>
+      </div>
+      <!-- <div class="card-body-div">
             <span>Marcar contatos</span>
             <mat-icon color="primary">people</mat-icon>
-          </div>
-          <div class="card-body-div">
-            <span>Tipo de realização</span>
-            <mat-icon color="primary">info</mat-icon>
-          </div>
-        </mat-card-content>
-      </mat-card>
-      <mat-card *ngFor="let p of posts" class="posts">
-        <mat-card-header class="posts__header">
-          <img mat-card-avatar [src]="p?.user.profilePicture" (click)="openProfile(p.user)">
-          <div class="posts__header__right">
-            <span>{{ p?.time?.seconds * 1000 | date:'shortTime' }}</span>
-            <h3>{{ p?.title }}</h3>
-          </div>
-        </mat-card-header>
-        <mat-card-content class="posts__body">
-          <ng-template *ngIf="p?.img">teste</ng-template>
-          <p>{{ p?.message }}</p>
-          <br>
-          <form [formGroup]="messageFormGroup" (ngSubmit)="postComment()">
-            <input placeholder="Comente aqui">
-            <button>Comentar</button>
-          </form>
-        </mat-card-content>
-      </mat-card>
+          </div> -->
+      <div class="card-body-div">
+        <span>Tipo de realização</span>
+        <mat-icon color="primary">info</mat-icon>
+        <div *ngFor="let labelMode of realizationOptions">
+          <input type="radio" name="labelType" value="{{labelMode}}" (change)="setRealization($event)">
+          {{labelMode}}
+        </div>
+      </div>
+    </mat-card-content>
+  </mat-card>
+  <mat-card *ngFor="let p of posts" class="posts">
+    <mat-card-header class="posts__header">
+      <img mat-card-avatar alt="falha" [src]="p?.donoPost.profilePicture"
+        (click)="openProfile(p.donoPost)">
+      <div class="posts__header__right">
+        <span>{{ p?.dataTratada }} - realização {{p?.tipoPost}}</span>
+        <h3>{{ p?.donoPost.username }}</h3>
+      </div>
+    </mat-card-header>
+    <mat-card-content class="posts__body">
+      <img *ngIf="p?.imagensAnexadas!" [src]="p?.imagemCarregada">
+      <p>{{ p?.descricao }}</p>
+      <br>
+      <form [formGroup]="messageFormGroup" (ngSubmit)="postComment()">
+        <input placeholder="Comente aqui">
+        <button>Comentar</button>
+      </form>
+    </mat-card-content>
+  </mat-card>
 </div>

@@ -1,15 +1,31 @@
-import { User } from "./user";
-import { Comment } from "./comment";
 import { InterestReaction } from "./interestReaction";
-import { Picture } from "./picture";
+import { Timestamp } from "firebase/firestore";
+import { Usuario } from "../core/models/usuario.model";
 
-export class Post{
-    id: number;
-    content: string;
-    owner: User;
-    timestamp: Date;
-    comments: Array<Comment> = new Array<Comment>();
-    interestReactions: Array<InterestReaction> = new Array<InterestReaction>();
-    pictures: Array<Picture> = new Array<Picture>();
-    newComment: Comment;
+export interface Post {
+  id:string;
+  donoPost: Usuario;
+  tipoPost: tipoRealizacaoPost;
+  comentarios?: comentarioPost[];
+  descricao: string;
+  dataPost: Timestamp;
+  usuariosMarcados?: string[];
+  imagensAnexadas?: string;
+  reacoes?: InterestReaction[];
+}
+
+export interface OnlineSystemPost extends Post {
+  imagemCarregada
+}
+
+export enum tipoRealizacaoPost {
+judicial = 'Judicial',
+academica = 'Acadêmica',
+consultiva = 'Consultiva de Projeto',
+}
+
+export interface comentarioPost {
+    donoComentario: string;
+    comentario: string;
+    dataComentario: Timestamp;
 }
