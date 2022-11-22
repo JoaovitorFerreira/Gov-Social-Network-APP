@@ -3,7 +3,7 @@ import { FormBuilder, FormGroup, NgForm } from '@angular/forms';
 import { Router } from '@angular/router';
 import { Timestamp } from 'firebase/firestore';
 import { delay, Subject, takeUntil } from 'rxjs';
-import { Post, tipoRealizacaoPost } from 'src/app/model/post';
+import { OnlineSystemPost, Post, tipoRealizacaoPost } from 'src/app/model/post';
 import { Usuario } from '../../core/models/usuario.model';
 import { HeaderService } from '../../shared/header/header.service';
 import { FeedService } from './feed.service';
@@ -61,8 +61,17 @@ export class FeedComponent implements OnInit, OnDestroy {
     this.realizationOption = event.target.defaultValue;
   }
 
-  public postComment() {
-    return true;
+  public postComment(p: OnlineSystemPost) {
+    let comment = this.messageFormGroup.getRawValue().comment;
+    let user = this.headerService.dadosUsuario;
+    this.feedService
+      .saveComment(comment, p, user)
+      .then(() => {
+        this.formGroup.reset();
+      })
+      .catch((error) => {
+        console.log(error);
+      });
   }
 
   private getPhoto(path: string): Promise<string> {
@@ -105,7 +114,6 @@ export class FeedComponent implements OnInit, OnDestroy {
       path: 'posts-pictures/',
     };
     this.selectedImg = fileObj;
-
   }
 
   public async savePost() {

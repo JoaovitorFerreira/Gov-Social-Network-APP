@@ -28,22 +28,28 @@
       </div>
     </mat-card-content>
   </mat-card>
+  <hr>
   <mat-card *ngFor="let p of posts" class="posts">
     <mat-card-header class="posts__header">
-      <img mat-card-avatar alt="falha" [src]="p?.donoPost.profilePicture"
-        (click)="openProfile(p.donoPost)">
+      <img mat-card-avatar alt="falha" [src]="p?.donoPost.profilePicture" (click)="openProfile(p.donoPost)">
       <div class="posts__header__right">
         <span>{{ p?.dataTratada }} - realização {{p?.tipoPost}}</span>
         <h3>{{ p?.donoPost.username }}</h3>
       </div>
     </mat-card-header>
+    <hr>
     <mat-card-content class="posts__body">
       <img *ngIf="p?.imagensAnexadas!" [src]="p?.imagemCarregada">
       <p>{{ p?.descricao }}</p>
       <br>
-      <form [formGroup]="messageFormGroup" (ngSubmit)="postComment()">
-        <input placeholder="Comente aqui">
-        <button>Comentar</button>
+        <div *ngFor="let comment of p?.comentarios">
+          <span>{{comment.donoComentario.username}} - {{comment.dataComentario | timestamp}}</span>
+          <p>{{comment.comentario}}</p>
+          <hr>
+        </div>
+      <form [formGroup]="messageFormGroup" (ngSubmit)="postComment(p)">
+        <input formControlName="comment" placeholder="Comente aqui" type="text">
+        <button type="submit">Comentar</button>
       </form>
     </mat-card-content>
   </mat-card>

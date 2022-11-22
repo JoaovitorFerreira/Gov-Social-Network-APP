@@ -15,7 +15,7 @@ export interface Post {
 }
 
 export interface OnlineSystemPost extends Post {
-  imagemCarregada
+  imagemCarregada?: string
 }
 
 export enum tipoRealizacaoPost {
@@ -25,7 +25,7 @@ consultiva = 'Consultiva de Projeto',
 }
 
 export interface comentarioPost {
-    donoComentario: string;
+    donoComentario: Usuario;
     comentario: string;
     dataComentario: Timestamp;
 }
