@@ -7,6 +7,7 @@ import {
   doc,
   query,
   orderBy,
+  Timestamp,
 } from '@angular/fire/firestore';
 import {
   Storage,
@@ -14,7 +15,8 @@ import {
   ref,
   uploadBytes,
 } from '@angular/fire/storage';
-import { Post } from 'src/app/model/post';
+import { Usuario } from 'src/app/core/models/usuario.model';
+import { comentarioPost, OnlineSystemPost, Post } from 'src/app/model/post';
 
 @Injectable()
 export class FeedService implements OnInit {
@@ -57,7 +59,6 @@ export class FeedService implements OnInit {
 
   public savePost(post: Post): Promise<boolean> {
     const uid = post.id;
-
     return setDoc(doc(this.firestore, 'posts/' + uid), post).then(() => {
       return true;
     });
@@ -83,5 +84,49 @@ export class FeedService implements OnInit {
       return null;
     }
     return null;
+  }
+
+  public async saveComment(
+    comment: string,
+    post: OnlineSystemPost,
+    user: Usuario
+  ) {
+    let date = new Date();
+    let CommentToPost: comentarioPost = {
+      dataComentario: Timestamp.fromDate(date),
+      donoComentario: user,
+      comentario: comment,
+    };
+    console.log(CommentToPost)
+    let comments: comentarioPost[] = post.comentarios ?? [];
+    comments.push(CommentToPost);
+    let postSimplified: Post = {
+      id: post.id,
+      donoPost: post.donoPost,
+      tipoPost: post.tipoPost,
+      descricao: post.descricao,
+      dataPost: post.dataPost,
+      comentarios: comments,
+    };
+    if (post.reacoes!) {
+      postSimplified = {
+        ...postSimplified,
+        reacoes: post.reacoes,
+      };
+    }
+    if (post.usuariosMarcados!) {
+      postSimplified = {
+        ...postSimplified,
+        usuariosMarcados: post.usuariosMarcados,
+      };
+    }
+    if (post.imagensAnexadas!) {
+      postSimplified = {
+        ...postSimplified,
+        imagensAnexadas: post.imagensAnexadas,
+      };
+    }
+
+    await setDoc(doc(this.firestore, 'posts/' + post.id), postSimplified);
   }
 }
