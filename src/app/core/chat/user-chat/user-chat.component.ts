@@ -1,53 +1,63 @@
 import { Component, Input } from '@angular/core';
-import { ChatService } from './user-chat.service';
-import { Firestore, doc, getDoc, setDoc } from "@angular/fire/firestore";
-import { Usuario } from "src/app/core/models/usuario.model";
+import { UserChatService } from './user-chat.service';
+import { Usuario } from 'src/app/core/models/usuario.model';
 import { ChatMessage, OnlineSystemMessage } from 'src/app/model/message';
-import { FormBuilder, FormGroup } from '@angular/forms';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 
 @Component({
   selector: 'user-chat',
   templateUrl: './user-chat.component.html',
-  styleUrls: ['./user-chat.component.scss']
+  styleUrls: ['./user-chat.component.scss'],
 })
 export class UserChatComponent {
   messageList: ChatMessage[];
   usuario: Usuario;
   responseUser: Usuario;
-  _userChat: OnlineSystemMessage
+  _userChat: OnlineSystemMessage;
   public formGroup: FormGroup;
 
   @Input() set userChat(userChat: OnlineSystemMessage) {
     this._userChat = userChat;
-    this.getResponseUserData()
-    this.getMessageData()
+    this.getResponseUserData();
+    this.getMessageData();
   }
 
-  constructor(private chatService: ChatService, private fb: FormBuilder){
+  constructor(
+    private userChatService: UserChatService,
+    private fb: FormBuilder
+  ) {
     this.usuario = JSON.parse(sessionStorage.getItem('userData'));
   }
 
-  ngOnInit(){
+  ngOnInit() {
     this.formGroup = this.fb.group({
-      message: '',
+      message: [null, Validators.required],
     });
   }
 
-  private getResponseUserData(){
-    this.chatService.getReponseUserChat(this._userChat.responseUser).then((data)=>{
-      this.responseUser = data
-    })
+  private getResponseUserData() {
+    this.userChatService
+      .getReponseUserChat(this._userChat.responseUser)
+      .then((data) => {
+        this.responseUser = data;
+      });
   }
 
-  private getMessageData(){
-    
-    this.messageList = this._userChat.chat
+  private getMessageData() {
+    this.messageList = this._userChat.chat;
+    console.log(this.messageList);
   }
-  
+
   sendMessage() {
     let msg = this.formGroup.getRawValue().message;
-    this.chatService.sendMessage(this._userChat, msg);
-    this.formGroup.setValue({message: ''})
+    this.userChatService
+      .sendMessage(this._userChat, msg)
+      .then(() => {
+        this.formGroup.reset();
+        console.log('sent');
+      })
+      .catch((error) => {
+        console.log(error);
+      });
   }
-
 }

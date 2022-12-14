@@ -1,11 +1,11 @@
-@import 'src/styles/variables.scss';
+@import "src/styles/variables.scss";
 
 .login-page {
   display: flex;
   flex-direction: row;
   justify-content: center;
   align-items: center;
-  margin-top: 5%;
+  margin-top: 2%;
   .login-card {
     width: 50%;
   }
@@ -15,6 +15,47 @@
     justify-content: center;
     align-items: center;
     mat-form-field {
+      width: 100%;
+    }
+  }
+  .logo-style {
+    height: 200px;
+    @media (max-width: 752px) {
+      height: 150px;
+    }
+  }
+  .logo-text {
+    color: #424a93;
+    font-size: 42px;
+    margin: 0;
+    font-weight: 500;
+    @media (max-width: 950px) {
+      width: 100%;
+      margin-bottom: 16px;
+      font-size: 32px;
+    }
+  }
+  .logo-box {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    @media (max-width: 950px) {
+      flex-direction: column;
+    }
+  }
+
+  .login-button {
+    width: 300px;
+    align-self: center;
+    margin-bottom: 8px;
+    @media (max-width: 752px) {
+      width: 100%;
+    }
+  }
+  .lost-pass-button {
+    width: 300px;
+    align-self: center;
+    @media (max-width: 752px) {
       width: 100%;
     }
   }

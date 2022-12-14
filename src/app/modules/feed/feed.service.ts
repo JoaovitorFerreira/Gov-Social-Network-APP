@@ -32,7 +32,7 @@ export class FeedService implements OnInit {
     const docsArray = [];
     getDocs(q).then((querySnapshot) => {
       if (!querySnapshot.empty) {
-        querySnapshot.forEach((docs) => {
+        querySnapshot.forEach( async (docs) => {
           let result: any = {
             ...docs.data(),
             dataTratada: docs
@@ -43,7 +43,7 @@ export class FeedService implements OnInit {
           if (docs.data().imagensAnexadas!) {
             result = {
               ...result,
-              imagemCarregada: this.getPhoto(docs.data().imagensAnexadas),
+              imagemCarregada: await this.getPhoto(docs.data().imagensAnexadas),
             };
           }
           docsArray.push(result);
@@ -97,7 +97,6 @@ export class FeedService implements OnInit {
       donoComentario: user,
       comentario: comment,
     };
-    console.log(CommentToPost)
     let comments: comentarioPost[] = post.comentarios ?? [];
     comments.push(CommentToPost);
     let postSimplified: Post = {

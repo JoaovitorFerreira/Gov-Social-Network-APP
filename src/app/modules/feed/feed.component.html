@@ -5,7 +5,7 @@
       <form [formGroup]="formGroup" (ngSubmit)="savePost()">
         <input class="on-your-mind" formControlName="message" placeholder="Escreva aqui sua última realização"
           type="text">
-        <button class="on-your-mind-btn" type="submit">Publicar</button>
+        <button class="on-your-mind-btn" [disabled]="formGroup.invalid" type="submit">Publicar</button>
       </form>
     </mat-card-header>
     <mat-card-content class="card-body">
@@ -20,7 +20,6 @@
           </div> -->
       <div class="card-body-div">
         <span>Tipo de realização</span>
-        <mat-icon color="primary">info</mat-icon>
         <div *ngFor="let labelMode of realizationOptions">
           <input type="radio" name="labelType" value="{{labelMode}}" (change)="setRealization($event)">
           {{labelMode}}
@@ -38,19 +37,23 @@
       </div>
     </mat-card-header>
     <hr>
-    <mat-card-content class="posts__body">
-      <img *ngIf="p?.imagensAnexadas!" [src]="p?.imagemCarregada">
-      <p>{{ p?.descricao }}</p>
+    <mat-card-content class="postsBody">
+      <div *ngIf="p?.imagensAnexadas!" class="imgDiv">
+        <img [src]="p?.imagemCarregada" class="imgFeed">
+      </div>
+      <p class="postText">{{ p?.descricao }}</p>
       <br>
-        <div *ngFor="let comment of p?.comentarios">
-          <span>{{comment.donoComentario.username}} - {{comment.dataComentario | timestamp}}</span>
-          <p>{{comment.comentario}}</p>
-          <hr>
-        </div>
-      <form [formGroup]="messageFormGroup" (ngSubmit)="postComment(p)">
-        <input formControlName="comment" placeholder="Comente aqui" type="text">
-        <button type="submit">Comentar</button>
-      </form>
+      <div *ngFor="let comment of p?.comentarios">
+        <span>{{comment.donoComentario.username}} - {{comment.dataComentario | timestamp}}</span>
+        <p>{{comment.comentario}}</p>
+        <hr>
+      </div>
     </mat-card-content>
+    <mat-card-actions>
+      <form [formGroup]="messageFormGroup" (ngSubmit)="postComment(p)">
+        <input class="on-your-mind" formControlName="comment" placeholder="Comente aqui" type="text">
+        <button class="on-your-mind-btn" [disabled]="messageFormGroup.invalid" type="submit">Comentar</button>
+      </form>
+    </mat-card-actions>
   </mat-card>
 </div>

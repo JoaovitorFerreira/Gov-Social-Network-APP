@@ -1,8 +1,8 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
-import { FormBuilder, FormGroup, NgForm } from '@angular/forms';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { Timestamp } from 'firebase/firestore';
-import { delay, Subject, takeUntil } from 'rxjs';
+import { Subject } from 'rxjs';
 import { OnlineSystemPost, Post, tipoRealizacaoPost } from 'src/app/model/post';
 import { Usuario } from '../../core/models/usuario.model';
 import { HeaderService } from '../../shared/header/header.service';
@@ -38,13 +38,12 @@ export class FeedComponent implements OnInit, OnDestroy {
     }
     this.loadUserInfo();
     this.formGroup = this.fb.group({
-      message: '',
+      message: [null, Validators.required],
     });
     this.messageFormGroup = this.fb.group({
-      comment: '',
+      comment: [null, Validators.required],
     });
     this.checkFirstLogin();
-    this.getPhoto(this.headerService.dadosUsuario.id);
     this.posts = this.feedService.getPosts();
   }
 
@@ -53,8 +52,11 @@ export class FeedComponent implements OnInit, OnDestroy {
     this.destroy.complete();
   }
 
-  public loadUserInfo() {
+  public async loadUserInfo() {
     this.user = this.headerService.dadosUsuario;
+    if(!this.user.profilePicture.startsWith("http")){
+      this.user.profilePicture = await this.getPhoto(this.user.profilePicture)
+    }
   }
 
   public setRealization(event) {

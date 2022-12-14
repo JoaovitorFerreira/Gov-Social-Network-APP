@@ -1,28 +1,51 @@
 <div class="chat-container">
-    <div class="chat-lists" >
-        <form [formGroup]="formGroup" (ngChange)="searchUser()">
-            <input class="on-your-mind" formControlName="message" placeholder="Pesquise uma conversa" type="text">
+    <div class="chat-lists" #scrollMe [style.overflow]="'auto'" [style.height.px]="'600'" style="padding-top: 20px;">
+        <div *ngIf="searchedChats.length > 0;" style="display: flex; align-items:flex-start;">
+            <h4 class="on-your-mind-text">{{searchedChats.length}} Usuário(s) filtrado(s)</h4>
+            <button class="on-your-mind-text-btn" (click)="cleanFilter()">Limpar</button>
+        </div>
+        <form *ngIf="searchedChats.length == 0;" style="display: flex;" [formGroup]="formGroup"
+            (ngSubmit)="searchUser()">
+            <input class="on-your-mind" formControlName="search" placeholder="Pesquise uma conversa" type="text">
+            <button class="on-your-mind-btn" [disabled]="formGroup.invalid" type="submit">Pesquisar</button>
         </form>
-        <div *ngIf="userChats.length > 0; else noUserChat">
-            <div *ngFor="let userChat of userChats">
+        <div *ngIf="searchedChats.length > 0; else chats">
+            <div *ngFor="let userChat of searchedChats">
                 <mat-card class="card" (click)="openUserChat(userChat)">
+                    <mat-card-header>
+                        <mat-card-title>{{userChat.responseUser}}</mat-card-title>
+                        <mat-card-subtitle>{{ userChat.lastMsg.timestamp | timestamp }}</mat-card-subtitle>
+                    </mat-card-header>
+                    <mat-card-content>
+                        <div class="datas-container">
+                            <span>{{userChat.lastMsg.content}}</span>
+                        </div>
+                    </mat-card-content>
+                </mat-card>
+            </div>
+        </div>
+        <ng-template #chats>
+            <div *ngIf="userChats.length > 0; else noUserChat">
+                <div class="cardList" *ngFor="let userChat of userChats">
+                    <mat-card class="card" (click)="openUserChat(userChat)">
                         <mat-card-header>
                             <mat-card-title>{{userChat.responseUser}}</mat-card-title>
                             <mat-card-subtitle>{{ userChat.lastMsg.timestamp | timestamp }}</mat-card-subtitle>
                         </mat-card-header>
-                          <mat-card-content>
+                        <mat-card-content>
                             <div class="datas-container">
-                              <span>{{userChat.lastMsg.content}}</span>
+                                <span>{{userChat.lastMsg.content}}</span>
                             </div>
-                          </mat-card-content>
-                </mat-card>
+                        </mat-card-content>
+                    </mat-card>
+                </div>
             </div>
-        </div>
+        </ng-template>
         <ng-template #noUserChat>
-            <div> Não há nenhuma conversa por aqui, inicie o contato visitando o perfil de um colega</div>
+            <div class="noChat"> Não há nenhuma conversa por aqui, inicie o contato visitando o perfil de um colega</div>
         </ng-template>
     </div>
-    <div *ngIf="selectedUser; else noUserSelected">
+    <div style="width:100%;" *ngIf="selectedUser; else noUserSelected">
         <user-chat [userChat]="selectedUser"></user-chat>
     </div>
     <ng-template #noUserSelected>

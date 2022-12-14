@@ -16,12 +16,13 @@ import { MatRadioModule } from '@angular/material/radio';
 import { MatGridListModule } from '@angular/material/grid-list';
 import { MatDatepickerModule } from '@angular/material/datepicker';
 import { MatSelectModule } from '@angular/material/select';
-import { MatChipsModule } from '@angular/material/chips'
-
+import { MatChipsModule } from '@angular/material/chips';
+import { MatListModule } from '@angular/material/list';
 
 @NgModule({
   imports: [
     MatDialogModule,
+    MatListModule,
     MatCheckboxModule,
     MatFormFieldModule,
     MatInputModule,
@@ -39,11 +40,12 @@ import { MatChipsModule } from '@angular/material/chips'
     MatRadioModule,
     MatGridListModule,
     MatDatepickerModule,
-    MatSelectModule
+    MatSelectModule,
   ],
   exports: [
     MatProgressSpinnerModule,
     MatDialogModule,
+    MatListModule,
     MatCheckboxModule,
     MatFormFieldModule,
     MatNativeDateModule,
@@ -60,10 +62,8 @@ import { MatChipsModule } from '@angular/material/chips'
     MatRadioModule,
     MatGridListModule,
     MatDatepickerModule,
-    MatSelectModule
+    MatSelectModule,
   ],
-  providers: [
-    { provide: MAT_DATE_LOCALE, useValue: 'pt-BR' },
-  ]
+  providers: [{ provide: MAT_DATE_LOCALE, useValue: 'pt-BR' }],
 })
-export class AngularMaterialModule { }
+export class AngularMaterialModule {}

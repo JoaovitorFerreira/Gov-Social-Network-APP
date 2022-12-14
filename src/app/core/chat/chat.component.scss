@@ -1,15 +1,64 @@
-.chat-container{
-    display: flex;
+.chat-container {
+  display: flex;
 }
 
-.chat-lists{
-    background-color: aquamarine;
-    width: 20%;
+.chat-lists {
+  width: 20%;
 }
-.chat{
-    background-color: brown;
-    width: 80%;
+.chat {
+  width: 80%;
+  justify-content: center;
+  display: flex;
+  align-items: center;
+  font-size: 18px;
 }
+.noChat{
+  justify-content: center;
+  display: flex;
+  align-items: center;
+  padding: 6px;
+  font-size: 16px;
+}
+
+.card{
+  padding: 10px;
+}
+
+.cardList{
+  padding: 10px;
+}
+
 .card:hover {
-    box-shadow: 10px 5px 10px gray;
+  box-shadow: 10px 5px 10px gray;
+}
+.on-your-mind {
+  background-color: #f0f2f5;
+  display: inline-block;
+  outline: none;
+  border: none;
+  padding: 10px 0px 10px 20px;
+  width: 70%;
+}
+.on-your-mind-text {
+  background-color: #f0f2f5;
+  padding: 10px 0px 10px 20px;
+  width: 70%;
+}
+.on-your-mind-text-btn {
+  background-color: #1597e5;
+  color: white;
+  border: 0px;
+  width: 30%;
+  padding: 12px;
+}
+
+.on-your-mind-btn {
+  background-color: #1597e5;
+  color: white;
+  border: 0px;
+  width: 30%;
+}
+.on-your-mind-btn:disabled {
+  background-color: #f0f2f5;
+  color: black;
 }

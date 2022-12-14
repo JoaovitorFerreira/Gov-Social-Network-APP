@@ -22,20 +22,19 @@ import { Usuario } from '../../models/usuario.model';
 @Injectable({
   providedIn: 'root',
 })
-export class ChatService {
+export class UserChatService {
   public message$: BehaviorSubject<string> = new BehaviorSubject('');
   constructor(private firestore: Firestore) {}
 
-  public sendMessage(userData: OnlineSystemMessage, msg: string) {
+  public async sendMessage(userData: OnlineSystemMessage, msg: string) {
     let date = new Date();
     let lastMsg: ChatMessage = {
       content: msg,
       timestamp: Timestamp.fromDate(date),
       userId: userData.requestId,
-      userName: userData.requestUser
+      userName: userData.requestUser,
     };
     let newChat: ChatMessage[] = userData.chat ?? [];
-    newChat.push(lastMsg);
     let userDataSimplified: Message = {
       id: userData.id,
       createdAt: userData.createdAt,
@@ -44,11 +43,9 @@ export class ChatService {
       chat: newChat,
       lastMsg: lastMsg,
     };
-    setDoc(doc(this.firestore, 'user-chats/' + userData.id), {
+    await setDoc(doc(this.firestore, 'user-chats/' + userData.id), {
       ...userDataSimplified,
-    })
-      .then(() => console.log('updated'))
-      .catch((error) => console.log(error));
+    });
   }
 
   public userMessagesChat = (
@@ -68,7 +65,8 @@ export class ChatService {
   public getReponseUserChat = async (
     responseUsername: string
   ): Promise<Usuario> => {
-    let usersCache: any[]= JSON.parse(sessionStorage.getItem('usersCache')) ?? []
+    let usersCache: any[] =
+      JSON.parse(sessionStorage.getItem('usersCache')) ?? [];
     if (usersCache == undefined || usersCache.length == 0) {
       let q = query(
         collection(this.firestore, 'usuarios'),

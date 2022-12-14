@@ -1,5 +1,5 @@
 <div class="container" id="sectorcards">
-    <div class="search-bar">
+    <mat-card class="search-bar">
         <form [formGroup]="formGroup">
             <mat-label class="example-margin">Filtrar por:</mat-label>
             <mat-radio-group class="radio-group" formControlName="filterType">
@@ -13,8 +13,11 @@
                 <mat-icon style="cursor: pointer;" matSuffix>search</mat-icon>
             </mat-form-field>
         </form>
-    </div>
-    <h2>Meu setor</h2>
+
+    </mat-card>
+    <hr>
+    <h2 *ngIf="!seachedYet">Meu setor</h2>
+    <h2 *ngIf="seachedYet">Resultado da pesquisa</h2>
     <div *ngIf="setor && setor.length > 0; else setorVazio" class="setor-container">
         <mat-card class="profile-card" *ngFor="let pessoa of setor" (click)="openProfile(pessoa)">
             <mat-card-header>

@@ -54,7 +54,7 @@ export class UserDetailsService {
   public checkIfHasSentMessage(userId: string){
    let msgsIds = JSON.parse(sessionStorage.getItem('userMsgsId'))
    if(msgsIds.length == 0){
-    msgsIds = this.chatService.getUserChats().then((messages)=> {
+    msgsIds = this.chatService.initUserChat().then((messages)=> {
       return messages.map(msg=> {return msg.id})
     })
    }

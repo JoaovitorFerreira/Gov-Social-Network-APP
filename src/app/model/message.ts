@@ -17,6 +17,7 @@ export class OnlineSystemMessage extends Message{
     responseId: string;
     requestUser:string;
     requestId:string;
+    hasNewMsg?:boolean;
 }
 
 export class ChatMessage{
