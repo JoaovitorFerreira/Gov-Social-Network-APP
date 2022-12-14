@@ -27,7 +27,7 @@ export class SectorService implements OnInit {
       const usuarios: Usuario[] = [];
       for (const dc of this.usersCache) {
         const user = dc.data() as Usuario;
-        if (user.currentJob.setor !== setor) { continue; }
+        if (user.currentJob.setor.toLocaleLowerCase() !== setor.toLocaleLowerCase()) { continue; }
         usuarios.push({...dc.data(), id: dc.id} as Usuario);
       }
       return Promise.resolve(usuarios)
@@ -37,7 +37,7 @@ export class SectorService implements OnInit {
         if (users.empty) { return usuarios; }
         for (const dc of users.docs) {
           const user = dc.data() as Usuario;
-          if (user.currentJob.setor !== setor) { continue; }
+          if (user.currentJob.setor.toLocaleLowerCase() !== setor.toLocaleLowerCase()) { continue; }
           usuarios.push({...dc.data(), id: dc.id} as Usuario);
         }
         sessionStorage.setItem('usersCache',JSON.stringify(usuarios))
@@ -52,7 +52,7 @@ export class SectorService implements OnInit {
       const usuarios: Usuario[] = [];
         for (const dc of this.usersCache) {
           const user = dc.data() as Usuario;
-          if (!user.username.includes(name)) { continue; }
+          if (!user.username.toLocaleLowerCase().includes(name.toLocaleLowerCase())) { continue; }
           usuarios.push({...dc.data(), id: dc.id} as Usuario);
         }
         return Promise.resolve(usuarios);
@@ -62,7 +62,7 @@ export class SectorService implements OnInit {
         if (users.empty) { return usuarios; }
         for (const dc of users.docs) {
           const user = dc.data() as Usuario;
-          if (!user.username.includes(name)) { continue; }
+          if (!user.username.toLocaleLowerCase().includes(name.toLocaleLowerCase())) { continue; }
           usuarios.push({...dc.data(), id: dc.id} as Usuario);
         }
         sessionStorage.setItem('usersCache',JSON.stringify(usuarios))
@@ -77,7 +77,7 @@ export class SectorService implements OnInit {
       const usuarios: Usuario[] = [];
       for (const dc of this.usersCache) {
         const user = dc.data() as Usuario;
-        if (user.currentJob.cargo !== cargo) { continue; }
+        if (user.currentJob.cargo.toLocaleLowerCase() !== cargo.toLocaleLowerCase()) { continue; }
         usuarios.push({...dc.data(), id: dc.id} as Usuario);
       }
       return Promise.resolve(usuarios)
@@ -88,7 +88,7 @@ export class SectorService implements OnInit {
         this.usersCache = users.docs;
         for (const dc of users.docs) {
           const user = dc.data() as Usuario;
-          if (user.currentJob.cargo !== cargo) { continue; }
+          if (user.currentJob.cargo.toLocaleLowerCase() !== cargo.toLocaleLowerCase()) { continue; }
           usuarios.push({...dc.data(), id: dc.id} as Usuario);
         }
         sessionStorage.setItem('usersCache',JSON.stringify(usuarios))
