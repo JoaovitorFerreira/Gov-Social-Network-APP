@@ -155,19 +155,9 @@ export class UserDetailsComponent implements OnInit {
         this.userService.saveUsuario({...this.user});
       });
     } else if(tipo === 'idealLocation'){
-      this.dialog.open(IdealLocationFormComponent, {data:index}).afterClosed().pipe(take(1)).subscribe((idealLocation: IdealLocation) => {
-        console.log(index)
-        if (!idealLocation.interesse) { return; }
-        if (index === undefined) {
-          idealLocation.interesse.forEach(element => {
-            this.user.idealLocations.interesse.push(element)
-          });
-          this.redefineMostAttractiveLocation(idealLocation.maiorInteresse);
-        } else {
-          idealLocation.interesse.forEach(element => {
-            this.user.idealLocations.interesse.push(element)
-          });
-        }
+      this.dialog.open(IdealLocationFormComponent, {data:this.user.idealLocations}).afterClosed().pipe(take(1)).subscribe((idealLocation: IdealLocation) => {
+        console.log(idealLocation)
+        this.user.idealLocations = idealLocation
         this.userService.saveUsuario({...this.user});
       });
     }

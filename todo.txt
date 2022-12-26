@@ -1,3 +1,0 @@
---> array de locais desejados validar funcionamento
---> observable no feed de realizacoes
---> adicionar link a usuario na realizacao ciclo 2

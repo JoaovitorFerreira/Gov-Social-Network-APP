@@ -6,10 +6,11 @@
   <p>Gostaria de adicionar mais áreas de interesse?<br>
   Só clicar no simbolo de "+" e inserir outras áreas</p>
   <div>
-    <mat-form-field>
+    <mat-form-field *ngFor="let campo of arrayCampos">
       <mat-label>Insira aqui uma área de interesse</mat-label>
-      <input type="text" matInput formControlName="interesse">
+      <input type="text" matInput [formControlName] = "'interesse' + campo">
     </mat-form-field>
+    <mat-icon matSuffix (click)="adicionaCampoInteresse()">+</mat-icon>
   </div>
   <button mat-button [disabled]="formGroup.invalid" (click)="salvarInformacoes()">Salvar</button>
 </form>
