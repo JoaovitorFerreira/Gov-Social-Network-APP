@@ -86,6 +86,6 @@ export class EventModalComponent implements OnInit {
   }
 
   onClose(): void {
-    this.dialogRef.close();
+    this.dialogRef.close(false);
   }
 }

@@ -29,7 +29,7 @@ export class FeedComponent implements OnInit, OnDestroy {
   public realizationOption;
   public usuariosMarcados: Usuario[];
   public hasImgSaved = false;
-
+  public panelOpenState = false;
   constructor(
     private router: Router,
     private fb: FormBuilder,
@@ -50,7 +50,9 @@ export class FeedComponent implements OnInit, OnDestroy {
       comment: [null, Validators.required],
     });
     this.checkFirstLogin();
-    this.posts = this.feedService.getPosts().sort((a,b)=> b.dataTratada - a.dataTratada);
+    this.posts = this.feedService
+      .getPosts()
+      .sort((a, b) => b.dataTratada - a.dataTratada);
   }
 
   ngOnDestroy(): void {
@@ -126,13 +128,13 @@ export class FeedComponent implements OnInit, OnDestroy {
     this.hasImgSaved = true;
   }
 
-  public removeImage(){
-    console.log('antes da remoção', this.selectedImg)
+  public removeImage() {
+    console.log('antes da remoção', this.selectedImg);
     for (const prop of Object.getOwnPropertyNames(this.selectedImg)) {
       delete this.selectedImg[prop];
     }
     this.hasImgSaved = false;
-    console.log('apos a remocao', this.selectedImg)
+    console.log('apos a remocao', this.selectedImg);
   }
 
   public async savePost() {
@@ -162,11 +164,10 @@ export class FeedComponent implements OnInit, OnDestroy {
 
   public async saveEventPost(eventoAcriar: any) {
     let date = Timestamp.fromDate(new Date());
-    let imgPath = 
-    eventoAcriar.imagensAnexadas === null 
-    ? null
-    : await
-    this.feedService.savePostImg(eventoAcriar.imagensAnexadas);
+    let imgPath =
+      eventoAcriar.imagensAnexadas === null
+        ? null
+        : await this.feedService.savePostImg(eventoAcriar.imagensAnexadas);
     let newPost: Post = {
       id: `${this.user.id}-post-${date.seconds}`,
       donoPost: this.user,
@@ -178,7 +179,7 @@ export class FeedComponent implements OnInit, OnDestroy {
         dataFimEvento: eventoAcriar.evento.dataFimEvento,
         horarioInicio: eventoAcriar.evento.horarioInicio,
         horarioFim: eventoAcriar.evento.horarioFim,
-      }
+      },
     };
     if (imgPath != null) {
       newPost = {
@@ -203,16 +204,67 @@ export class FeedComponent implements OnInit, OnDestroy {
     });
   }
 
-  public createAnEvent(){
+  public createAnEvent() {
     const dialogRef = this.dialog.open(EventModalComponent, {
       width: '600px',
-      height: '502px',
+      height: '70%',
       disableClose: true,
     });
 
     dialogRef.afterClosed().subscribe((result) => {
-      console.log(result)
-      this.saveEventPost(result)
+      if (result === false) {
+        return;
+      }
+      this.saveEventPost(result);
     });
+  }
+
+  public participateEvent(post: Post, signal: boolean) {
+    const user = this.headerService.dadosUsuario;
+    let atendeesList = [];
+
+    if (signal) {
+      if (post.evento.participantes && post.evento.participantes.length >= 0) {
+        atendeesList = [...post.evento.participantes, user];
+      } else {
+        atendeesList = [user];
+      }
+    } else {
+      const index = post.evento.participantes.findIndex(
+        (userList) => userList.id === user.id
+      );
+      index !== -1 && post.evento.participantes.splice(index, 1);
+      atendeesList = [...post.evento.participantes];
+    }
+
+    const newEvent = {
+      dataFimEvento: post.evento.dataFimEvento,
+      dataInicioEvento: post.evento.dataInicioEvento,
+      horarioFim: post.evento.horarioFim,
+      horarioInicio: post.evento.horarioInicio,
+      nomeEvento: post.evento.nomeEvento,
+      participantes: atendeesList,
+    };
+
+    const newPost = {
+      ...post,
+      evento: newEvent,
+    };
+    this.feedService.savePost(newPost).then(() => {
+      window.location.reload();
+    });
+  }
+
+  public userIsAtendee(post: Post) {
+    const user = this.headerService.dadosUsuario;
+    const hasAtendees =
+      post.evento.participantes.length && post.evento.participantes.length > 0;
+    if (hasAtendees) {
+      return post.evento.participantes.some(
+        (atendee) => atendee.id === user.id
+      );
+    } else {
+      return false;
+    }
   }
 }

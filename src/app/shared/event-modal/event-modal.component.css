@@ -23,9 +23,11 @@
 }
 
 .save-list-btn {
+  margin-top: 20px;
   display: flex;
   justify-content: center;
   align-items: center;
+  padding-bottom: 0;
 }
 
 .close-btn {

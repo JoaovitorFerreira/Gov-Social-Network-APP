@@ -18,6 +18,7 @@ import { MatDatepickerModule } from '@angular/material/datepicker';
 import { MatSelectModule } from '@angular/material/select';
 import { MatChipsModule } from '@angular/material/chips';
 import { MatListModule } from '@angular/material/list';
+import { MatExpansionModule } from '@angular/material/expansion';
 
 @NgModule({
   imports: [
@@ -41,6 +42,7 @@ import { MatListModule } from '@angular/material/list';
     MatGridListModule,
     MatDatepickerModule,
     MatSelectModule,
+    MatExpansionModule,
   ],
   exports: [
     MatProgressSpinnerModule,
@@ -63,6 +65,7 @@ import { MatListModule } from '@angular/material/list';
     MatGridListModule,
     MatDatepickerModule,
     MatSelectModule,
+    MatExpansionModule,
   ],
   providers: [{ provide: MAT_DATE_LOCALE, useValue: 'pt-BR' }],
 })

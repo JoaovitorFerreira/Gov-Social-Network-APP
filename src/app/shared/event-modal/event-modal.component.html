@@ -6,14 +6,15 @@
         <form class="form-modal" [formGroup]="formGroup" (ngSubmit)="onSubmit()">
             <div>
                 <div *ngIf="!this.hasImgSaved; else hasImage" class="card-body-div">
-                    <input class="custom-file-input" #fileInput type="file" accept="image/jpeg" id="image" formControlName="image" (change)="imageSelected($event,fileInput)">
-                  </div>
-                  <ng-template #hasImage>
+                    <input class="custom-file-input" #fileInput type="file" accept="image/jpeg" id="image"
+                        formControlName="image" (change)="imageSelected($event,fileInput)">
+                </div>
+                <ng-template #hasImage>
                     <div class="card-body-div">
-                      <span>{{this.selectedImg.file.name}}</span>
-                      <mat-icon class="btn-clear" (click)="removeImage()">delete</mat-icon>
+                        <span>{{this.selectedImg.file.name}}</span>
+                        <mat-icon class="btn-clear" (click)="removeImage()">delete</mat-icon>
                     </div>
-                  </ng-template>
+                </ng-template>
             </div>
             <div>
                 <label class="name-label" for="name">Nome do evento:</label>
@@ -44,12 +45,12 @@
                 <label class="min-margin-right" for="endTimeInput">Horário de finalização:</label>
                 <input type="time" id="endTimeInput" formControlName="endTime">
             </div>
+            <div class="save-list-btn">
+                <button class="close-btn" [disabled]="formGroup.invalid" type="submit">
+                    Criar Evento
+                </button>
+            </div>
         </form>
-        <div class="save-list-btn">
-            <button class="close-btn" [disabled]="formGroup.invalid" type="submit">
-                Criar Evento
-            </button>
-        </div>
     </div>
     <hr>
 </div>

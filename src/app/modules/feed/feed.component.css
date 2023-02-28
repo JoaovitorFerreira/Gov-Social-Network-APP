@@ -129,3 +129,7 @@ form {
   flex: 1;
   display: flex;
 }
+
+.container{
+  margin-bottom: 60px;
+}
