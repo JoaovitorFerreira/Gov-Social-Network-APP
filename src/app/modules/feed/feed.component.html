@@ -3,21 +3,39 @@
     <mat-card-header class="post-message-header" style="padding-bottom: 20px; border-bottom: 1px solid lightgray;">
       <img alt="user image" mat-card-avatar [src]="user?.profilePicture">
       <form [formGroup]="formGroup" (ngSubmit)="savePost()">
-        <input class="on-your-mind" formControlName="message" placeholder="Escreva aqui sua última realização"
+        <input class="on-your-mind" formControlName="message" placeholder="Escreva aqui sua publicação"
           type="text">
         <button class="on-your-mind-btn" [disabled]="formGroup.invalid" type="submit">Publicar</button>
       </form>
     </mat-card-header>
     <mat-card-content class="card-body">
-      <div class="card-body-div" (click)="uploadImage(fileInput)">
+      <div *ngIf="!this.hasImgSaved; else hasImage" class="card-body-div" (click)="uploadImage(fileInput)">
         <span>Inserir imagem</span>
         <input #fileInput type="file" style="display: none;" accept="image/jpeg" (change)="imageSelected($event)">
         <mat-icon color="primary">photo_album</mat-icon>
       </div>
-      <!-- <div class="card-body-div">
-            <span>Marcar contatos</span>
-            <mat-icon color="primary">people</mat-icon>
-          </div> -->
+      <ng-template #hasImage>
+        <div class="card-body-div">
+          <span>{{this.selectedImg.file.name}}</span>
+          <mat-icon class="btn-clear" (click)="removeImage()">clear</mat-icon>
+        </div>
+      </ng-template>
+      <div class="card-body-div" (click)="createAnEvent()">
+        <span>Criar evento</span>
+        <div>
+          <mat-icon color="primary">calendar_today</mat-icon>
+          <span *ngIf=" usuariosMarcados && usuariosMarcados.length > 0"
+            class="user-badge-red">{{usuariosMarcados.length}}</span>
+        </div>
+      </div>
+      <div class="card-body-div" (click)="addContact()">
+        <span>Marcar contatos</span>
+        <div>
+          <mat-icon color="primary">people</mat-icon>
+          <span *ngIf=" usuariosMarcados && usuariosMarcados.length > 0"
+            class="user-badge-red">{{usuariosMarcados.length}}</span>
+        </div>
+      </div>
       <div class="card-body-div">
         <span>Tipo de realização</span>
         <div *ngFor="let labelMode of realizationOptions">
@@ -32,8 +50,21 @@
     <mat-card-header class="posts__header">
       <img mat-card-avatar alt="falha" [src]="p?.donoPost.profilePicture" (click)="openProfile(p.donoPost)">
       <div class="posts__header__right">
-        <span>{{ p?.dataTratada }} - realização {{p?.tipoPost}}</span>
-        <h3>{{ p?.donoPost.username }}</h3>
+        <div *ngIf="!p.evento">
+          <span>{{ p?.dataTratada }} - realização {{p?.tipoPost}}</span>
+          <h3>{{ p?.donoPost.username }}</h3>
+          <div *ngIf="p?.usuariosMarcados && p?.usuariosMarcados.length > 0" class="marked-users-div">
+            <span class="initial-marked-user-word">com</span>
+            <div *ngFor="let usuarioMarcado of p?.usuariosMarcados; let last = last; let i = index">
+              <span class="marked-users-name-separators" *ngIf="last"> e </span>
+              <span class="marked-users-name" (click)="openProfile(usuarioMarcado)">{{usuarioMarcado.username}}</span>
+              <span class="marked-users-name-comma" *ngIf="!last && i+2 < p?.usuariosMarcados.length">, </span>
+            </div>
+          </div>
+        </div>
+        <div *ngIf="p.evento">
+          <span>{{p.evento.nomeEvento}}</span>
+        </div>
       </div>
     </mat-card-header>
     <hr>
@@ -47,6 +78,12 @@
         <span>{{comment.donoComentario.username}} - {{comment.dataComentario | timestamp}}</span>
         <p>{{comment.comentario}}</p>
         <hr>
+      </div>
+      <div *ngIf="p?.evento">
+        <div *ngFor="let participante of p?.participantes">
+          <img (click)="openProfile(participante)" alt="foto participante" [src]="participante.profilePicture">
+          <hr>
+        </div>
       </div>
     </mat-card-content>
     <mat-card-actions>

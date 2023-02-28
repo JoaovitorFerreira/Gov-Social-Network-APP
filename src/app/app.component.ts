@@ -7,7 +7,7 @@ import {UserDetails} from './model/user-details';
   styleUrls: ['./app.component.css']
 })
 export class AppComponent implements OnInit {
-  title = 'LinkedIn';
+  title = 'Base de conhecimento - PGE';
   userDetails: UserDetails;
   redirectUrl: string;
 

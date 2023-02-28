@@ -1,0 +1,41 @@
+<div class="block-div-top">
+    <mat-icon class="btn-clear" (click)="onClose()">clear</mat-icon>
+</div>
+
+<div class="pass-container">
+    <div class="block-div">
+        <form [formGroup]="formGroup" (ngSubmit)="submitSearch()">
+            <input class="on-your-mind" formControlName="search" placeholder="Escreva aqui o nome que deseja procurar"
+                type="text">
+            <button class="on-your-mind-btn" [disabled]="formGroup.invalid" type="submit">Procurar</button>
+        </form>
+        <div class="save-list-btn" *ngIf="!searchedYet && addUserList.length > 0">
+            <button class="close-btn" (click)="onClose()">
+                Salvar lista
+            </button>
+        </div>
+    </div>
+    <hr>
+    <div *ngIf="searchedYet"></div>
+    <div *ngIf="!searchedYet" class="block-div">
+        <h2>Resultado da busca:</h2>
+        <div *ngIf="resultado && resultado.length > 0; else resultadoVazio" class="setor-container">
+            <div class="profile-card" *ngFor="let pessoa of resultado">
+                <div [ngStyle]="{ 'opacity': userListNames(pessoa.id) ? 0.5 : 1 }" class="card-div">
+                    <div class="right-card-div">
+                        <img [src]="pessoa.profilePicture" mat-card-avatar>
+                        <h1>{{ pessoa.username }}</h1>
+                        <p>{{ pessoa?.currentJob?.cargo }}</p>
+                    </div>
+                    <div class="left-card-div">
+                        <mat-checkbox class="check-box-right" [checked]="userListNames(pessoa.id)"
+                            (change)="handleAddUser(pessoa, $event)"></mat-checkbox>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <ng-template #resultadoVazio>
+            <p>Essa pesquisa não retornou resultado.</p>
+        </ng-template>
+    </div>
+</div>

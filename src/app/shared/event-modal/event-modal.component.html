@@ -1,0 +1,55 @@
+<div class="block-div-top">
+    <mat-icon class="btn-clear" (click)="onClose()">clear</mat-icon>
+</div>
+<div class="pass-container">
+    <div class="block-div">
+        <form class="form-modal" [formGroup]="formGroup" (ngSubmit)="onSubmit()">
+            <div>
+                <div *ngIf="!this.hasImgSaved; else hasImage" class="card-body-div">
+                    <input class="custom-file-input" #fileInput type="file" accept="image/jpeg" id="image" formControlName="image" (change)="imageSelected($event,fileInput)">
+                  </div>
+                  <ng-template #hasImage>
+                    <div class="card-body-div">
+                      <span>{{this.selectedImg.file.name}}</span>
+                      <mat-icon class="btn-clear" (click)="removeImage()">delete</mat-icon>
+                    </div>
+                  </ng-template>
+            </div>
+            <div>
+                <label class="name-label" for="name">Nome do evento:</label>
+                <input class="name-input" type="text" id="name" formControlName="name">
+            </div>
+            <div>
+                <label class="name-label" for="description">Descrição do evento:</label>
+                <textarea id="description" formControlName="description"></textarea>
+            </div>
+            <div class="date-input-div">
+                <label class="min-margin-right" for="startDate">Data de inicio:</label>
+                <input type="date" id="startDate" formControlName="startDate">
+                <div class="check-box-div">
+                    <label for="sameDateInput">Evento acabará no mesmo dia</label>
+                    <input class="check-box-input" type="checkbox" id="sameDateInput" formControlName="sameDate"
+                        (change)="setEndDate()">
+                </div>
+            </div>
+            <div class="date-input-div">
+                <label class="min-margin-right" for="startTimeInput">Horário de inicio:</label>
+                <input type="time" id="startTimeInput" formControlName="startTime">
+            </div>
+            <div *ngIf="!this.formGroup.get('sameDate').value" class="date-input-div">
+                <label class="min-margin-right" for="endDate">Data final:</label>
+                <input type="date" id="endDate" formControlName="endDate">
+            </div>
+            <div class="date-input-div">
+                <label class="min-margin-right" for="endTimeInput">Horário de finalização:</label>
+                <input type="time" id="endTimeInput" formControlName="endTime">
+            </div>
+        </form>
+        <div class="save-list-btn">
+            <button class="close-btn" [disabled]="formGroup.invalid" type="submit">
+                Criar Evento
+            </button>
+        </div>
+    </div>
+    <hr>
+</div>

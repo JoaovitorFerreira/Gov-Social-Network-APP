@@ -1,31 +1,41 @@
-import { InterestReaction } from "./interestReaction";
-import { Timestamp } from "firebase/firestore";
-import { Usuario } from "../core/models/usuario.model";
+import { InterestReaction } from './interestReaction';
+import { Timestamp } from 'firebase/firestore';
+import { Usuario } from '../core/models/usuario.model';
 
 export interface Post {
-  id:string;
+  id: string;
   donoPost: Usuario;
-  tipoPost: tipoRealizacaoPost;
+  tipoPost?: tipoRealizacaoPost;
   comentarios?: comentarioPost[];
   descricao: string;
   dataPost: Timestamp;
-  usuariosMarcados?: string[];
+  usuariosMarcados?: Usuario[];
   imagensAnexadas?: string;
   reacoes?: InterestReaction[];
+  evento?: Evento;
+}
+
+export interface Evento {
+  dataInicioEvento: Timestamp;
+  dataFimEvento: Timestamp;
+  horarioInicio: Timestamp;
+  horarioFim: Timestamp;
+  nomeEvento: string;
+  participantes?: Usuario[];
 }
 
 export interface OnlineSystemPost extends Post {
-  imagemCarregada?: string
+  imagemCarregada?: string;
 }
 
 export enum tipoRealizacaoPost {
-judicial = 'Judicial',
-academica = 'Acadêmica',
-consultiva = 'Consultiva de Projeto',
+  judicial = 'Judicial',
+  academica = 'Acadêmica',
+  consultiva = 'Consultiva de Projeto',
 }
 
 export interface comentarioPost {
-    donoComentario: Usuario;
-    comentario: string;
-    dataComentario: Timestamp;
+  donoComentario: Usuario;
+  comentario: string;
+  dataComentario: Timestamp;
 }

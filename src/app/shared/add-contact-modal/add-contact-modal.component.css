@@ -1,0 +1,90 @@
+.pass-container {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  margin-top: 16px;
+  width: 100%;
+}
+
+.block-div {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+}
+
+.card-div {
+  display: flex;
+}
+
+.right-card-div {
+  width: 90%;
+}
+
+.save-list-btn {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-top: 10px;
+}
+
+.left-card-div {
+  width: 10%;
+  justify-content: center;
+  display: flex;
+  align-items: center;
+}
+
+.block-div-top {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  direction: rtl;
+  margin-top: 0px;
+  padding: 0px;
+  margin: px;
+}
+
+.btn-clear {
+  cursor: pointer;
+}
+
+.on-your-mind {
+  background-color: #f0f2f5;
+  display: inline-block;
+  outline: none;
+  border: none;
+  padding: 10px 0px 10px 20px;
+  border-radius: 20px 0px 0px 20px;
+  width: 100%;
+}
+
+.on-your-mind-btn {
+  border-radius: 0px 20px 20px 0px;
+  background-color: #1597e5;
+  color: white;
+  border: 0px;
+  width: 100px;
+}
+.on-your-mind-btn:disabled {
+  background-color: #f0f2f5;
+  color: black;
+}
+
+.post-message-header {
+  width: 100%;
+  display: flex;
+  align-items: center;
+}
+
+form {
+  display: flex;
+}
+
+.close-btn {
+  border-radius: 20px 20px 20px 20px;
+  background-color: #1597e5;
+  color: white;
+  border: 0px;
+  width: 100px;
+}

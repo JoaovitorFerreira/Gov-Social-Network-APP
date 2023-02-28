@@ -68,6 +68,35 @@ mat-card {
   gap: 15px;
 }
 
+.marked-users-div {
+  display: flex;
+}
+
+.marked-users-name-separators{
+  margin-left: 4px;
+  margin-right: 4px;
+}
+
+.marked-users-name-comma {
+  margin-right: 4px;
+}
+
+.initial-marked-user-word {
+  margin-right: 10px;
+}
+
+.marked-users-name {
+  color: #1597e5;
+}
+
+.user-badge-red {
+  background-color: red;
+  color: #ffffff;
+  padding: 4px;
+  border-radius: 50%;
+  font-size: 10px;
+}
+
 .on-your-mind {
   background-color: #f0f2f5;
   display: inline-block;

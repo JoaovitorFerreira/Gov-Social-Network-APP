@@ -37,6 +37,9 @@ import { SectorComponent } from './modules/sector/sector.component';
 import { IdealLocationFormComponent } from './core/forms/locacao-ideal-form/locacao-ideal-form.component';
 import { ChatComponent } from './core/chat/chat.component';
 import { UserChatComponent } from './core/chat/user-chat/user-chat.component';
+import { AddContactComponent } from './shared/add-contact-modal/add-contact-modal.component';
+import { SectorService } from './modules/sector/sector.service';
+import { EventModalComponent } from './shared/event-modal/event-modal.component';
 
 const appRoutes: Routes = [
   {
@@ -104,6 +107,8 @@ const appRoutes: Routes = [
     FormacaoFormComponent,
     ConhecimentoPipe,
     TimestampPipe,
+    AddContactComponent,
+    EventModalComponent,
     ChangePasswordComponent,
     SectorComponent,
     ChatComponent
@@ -121,7 +126,7 @@ const appRoutes: Routes = [
     RouterModule.forRoot(appRoutes),
     TooltipModule.forRoot(),
   ],
-  providers: [AuthService, HeaderService],
+  providers: [AuthService, HeaderService, SectorService],
   bootstrap: [AppComponent],
 })
 export class AppModule {}

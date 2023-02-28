@@ -1,9 +1,12 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { MatDialog } from '@angular/material/dialog';
 import { Router } from '@angular/router';
 import { Timestamp } from 'firebase/firestore';
 import { Subject } from 'rxjs';
 import { OnlineSystemPost, Post, tipoRealizacaoPost } from 'src/app/model/post';
+import { AddContactComponent } from 'src/app/shared/add-contact-modal/add-contact-modal.component';
+import { EventModalComponent } from 'src/app/shared/event-modal/event-modal.component';
 import { Usuario } from '../../core/models/usuario.model';
 import { HeaderService } from '../../shared/header/header.service';
 import { FeedService } from './feed.service';
@@ -24,12 +27,15 @@ export class FeedComponent implements OnInit, OnDestroy {
   public selectedImg: { file: File; id: string; path: string };
   public realizationOptions = Object.keys(tipoRealizacaoPost);
   public realizationOption;
+  public usuariosMarcados: Usuario[];
+  public hasImgSaved = false;
 
   constructor(
     private router: Router,
     private fb: FormBuilder,
     private headerService: HeaderService,
-    private feedService: FeedService
+    private feedService: FeedService,
+    private dialog: MatDialog
   ) {}
 
   async ngOnInit() {
@@ -44,7 +50,7 @@ export class FeedComponent implements OnInit, OnDestroy {
       comment: [null, Validators.required],
     });
     this.checkFirstLogin();
-    this.posts = this.feedService.getPosts();
+    this.posts = this.feedService.getPosts().sort((a,b)=> b.dataTratada - a.dataTratada);
   }
 
   ngOnDestroy(): void {
@@ -54,8 +60,8 @@ export class FeedComponent implements OnInit, OnDestroy {
 
   public async loadUserInfo() {
     this.user = this.headerService.dadosUsuario;
-    if(!this.user.profilePicture.startsWith("http")){
-      this.user.profilePicture = await this.getPhoto(this.user.profilePicture)
+    if (!this.user.profilePicture.startsWith('http')) {
+      this.user.profilePicture = await this.getPhoto(this.user.profilePicture);
     }
   }
 
@@ -105,6 +111,7 @@ export class FeedComponent implements OnInit, OnDestroy {
 
   public imageSelected(event) {
     if (!event.target.files[0]) {
+      this.hasImgSaved = false;
       return;
     }
     const file: File = event.target.files[0];
@@ -116,6 +123,16 @@ export class FeedComponent implements OnInit, OnDestroy {
       path: 'posts-pictures/',
     };
     this.selectedImg = fileObj;
+    this.hasImgSaved = true;
+  }
+
+  public removeImage(){
+    console.log('antes da remoção', this.selectedImg)
+    for (const prop of Object.getOwnPropertyNames(this.selectedImg)) {
+      delete this.selectedImg[prop];
+    }
+    this.hasImgSaved = false;
+    console.log('apos a remocao', this.selectedImg)
   }
 
   public async savePost() {
@@ -130,6 +147,7 @@ export class FeedComponent implements OnInit, OnDestroy {
       tipoPost: this.realizationOption,
       descricao: this.formGroup.getRawValue().message,
       dataPost: date,
+      ...(this.usuariosMarcados && { usuariosMarcados: this.usuariosMarcados }),
     };
     if (imgPath != null) {
       newPost = {
@@ -139,6 +157,62 @@ export class FeedComponent implements OnInit, OnDestroy {
     }
     this.feedService.savePost(newPost).then(() => {
       window.location.reload();
+    });
+  }
+
+  public async saveEventPost(eventoAcriar: any) {
+    let date = Timestamp.fromDate(new Date());
+    let imgPath = 
+    eventoAcriar.imagensAnexadas === null 
+    ? null
+    : await
+    this.feedService.savePostImg(eventoAcriar.imagensAnexadas);
+    let newPost: Post = {
+      id: `${this.user.id}-post-${date.seconds}`,
+      donoPost: this.user,
+      descricao: eventoAcriar.descricao,
+      dataPost: date,
+      evento: {
+        nomeEvento: eventoAcriar.evento.nomeEvento,
+        dataInicioEvento: eventoAcriar.evento.dataInicioEvento,
+        dataFimEvento: eventoAcriar.evento.dataFimEvento,
+        horarioInicio: eventoAcriar.evento.horarioInicio,
+        horarioFim: eventoAcriar.evento.horarioFim,
+      }
+    };
+    if (imgPath != null) {
+      newPost = {
+        ...newPost,
+        imagensAnexadas: imgPath,
+      };
+    }
+    this.feedService.savePost(newPost).then(() => {
+      window.location.reload();
+    });
+  }
+
+  public addContact() {
+    const dialogRef = this.dialog.open(AddContactComponent, {
+      width: '600px',
+      height: '300px',
+      disableClose: true,
+    });
+
+    dialogRef.afterClosed().subscribe((result) => {
+      this.usuariosMarcados = result;
+    });
+  }
+
+  public createAnEvent(){
+    const dialogRef = this.dialog.open(EventModalComponent, {
+      width: '600px',
+      height: '502px',
+      disableClose: true,
+    });
+
+    dialogRef.afterClosed().subscribe((result) => {
+      console.log(result)
+      this.saveEventPost(result)
     });
   }
 }
