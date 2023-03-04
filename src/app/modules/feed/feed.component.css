@@ -72,7 +72,7 @@ mat-card {
   display: flex;
 }
 
-.marked-users-name-separators{
+.marked-users-name-separators {
   margin-left: 4px;
   margin-right: 4px;
 }
@@ -130,6 +130,29 @@ form {
   display: flex;
 }
 
-.container{
+.container {
   margin-bottom: 60px;
+}
+
+.atendee-card {
+  display: flex;
+  align-items: flex-end;
+  justify-content: center;
+  align-items: center;
+}
+
+.atendee-div {
+  min-width: 560px;
+}
+
+.atendee-span {
+  width: 90%;
+}
+
+.atendee-ng {
+  width: 10%;
+}
+
+.atendees-div {
+  display: flex;
 }

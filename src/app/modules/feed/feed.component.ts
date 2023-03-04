@@ -77,7 +77,7 @@ export class FeedComponent implements OnInit, OnDestroy {
     this.feedService
       .saveComment(comment, p, user)
       .then(() => {
-        this.formGroup.reset();
+        window.location.reload();
       })
       .catch((error) => {
         console.log(error);
@@ -86,6 +86,11 @@ export class FeedComponent implements OnInit, OnDestroy {
 
   private getPhoto(path: string): Promise<string> {
     if (!path) {
+      return Promise.resolve(
+        'https://www.donkey.bike/wp-content/uploads/2020/12/user-member-avatar-face-profile-icon-vector-22965342-e1608640557889.jpg'
+      );
+    }
+    if (path.startsWith('https://')) {
       return Promise.resolve(
         'https://www.donkey.bike/wp-content/uploads/2020/12/user-member-avatar-face-profile-icon-vector-22965342-e1608640557889.jpg'
       );

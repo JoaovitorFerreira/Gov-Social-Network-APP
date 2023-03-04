@@ -16,7 +16,12 @@ import {
   uploadBytes,
 } from '@angular/fire/storage';
 import { Usuario } from 'src/app/core/models/usuario.model';
-import { comentarioPost, OnlineSystemPost, Post } from 'src/app/model/post';
+import {
+  comentarioPost,
+  Evento,
+  OnlineSystemPost,
+  Post,
+} from 'src/app/model/post';
 
 @Injectable()
 export class FeedService implements OnInit {
@@ -32,7 +37,7 @@ export class FeedService implements OnInit {
     const docsArray = [];
     getDocs(q).then((querySnapshot) => {
       if (!querySnapshot.empty) {
-        querySnapshot.forEach( async (docs) => {
+        querySnapshot.forEach(async (docs) => {
           let result: any = {
             ...docs.data(),
             dataTratada: docs
@@ -40,17 +45,80 @@ export class FeedService implements OnInit {
               .dataPost.toDate()
               .toLocaleDateString('pt-BR'),
           };
-          if (docs.data().imagensAnexadas!) {
-            result = {
-              ...result,
-              imagemCarregada: await this.getPhoto(docs.data().imagensAnexadas),
-            };
-          }
+          const treatedImgData = await this.checkImageData(docs.data());
+          result = { ...result, ...treatedImgData };
+          console.log(result);
           docsArray.push(result);
         });
       }
     });
     return docsArray;
+  }
+
+  private async checkImageData(dados: any) {
+    let result;
+
+    if (dados.imagensAnexadas!) {
+      result = {
+        ...result,
+        imagemCarregada: await this.getPhoto(dados.imagensAnexadas),
+      };
+    }
+    if (dados.donoPost!) {
+      const donoPost = dados.donoPost;
+      let donoPostProfilePicture = await Promise.resolve(
+        dados.donoPost.profilePicture.startsWith('https://')
+          ? donoPost.profilePicture
+          : this.getPhoto(dados.donoPost.profilePicture)
+      );
+      donoPost.profilePicture = donoPostProfilePicture;
+      result = {
+        ...result,
+        donoPost: donoPost,
+      };
+    }
+    if (dados.evento!) {
+      const evento = dados.evento;
+      const participanteTratado = await Promise.all(
+        dados.evento.participantes.map(async (participante) => {
+          const participanteProfilePicture =
+            participante.profilePicture.startsWith('https://')
+              ? participante.profilePicture
+              : await this.getPhoto(participante.profilePicture);
+
+          return {
+            ...participante,
+            profilePicture: participanteProfilePicture,
+          };
+        })
+      );
+      evento.participantes = participanteTratado;
+      result = {
+        ...result,
+        evento: evento,
+      };
+    }
+    if (dados.comentarios!) {
+      const comentarioTratado = await Promise.all(
+        dados.comentarios.map(async (comentario) => {
+          const donoComment = comentario.donoComentario;
+          const donoComentarioProfilePicture =
+            comentario.donoComentario.profilePicture.startsWith('https://')
+              ? comentario.donoComentario.profilePicture
+              : await this.getPhoto(comentario.donoComentario.profilePicture);
+
+          comentario.donoComentario = {
+            ...donoComment,
+            profilePicture: donoComentarioProfilePicture,
+          };
+          return {
+            ...comentario,
+          };
+        })
+      );
+      result = { ...result, comentarios: comentarioTratado };
+    }
+    return result;
   }
 
   public getPhoto(path: string) {

@@ -47,7 +47,7 @@
   <hr>
   <mat-card *ngFor="let p of posts" class="posts">
     <mat-card-header class="posts__header">
-      <img mat-card-avatar alt="falha" [src]="p?.donoPost.profilePicture" (click)="openProfile(p.donoPost)">
+      <img mat-card-avatar alt="falha" [src]="p.donoPost.profilePicture" (click)="openProfile(p.donoPost)">
       <div class="posts__header__right">
         <div *ngIf="!p.evento">
           <span>{{ p?.dataTratada }} - realização {{p?.tipoPost}}</span>
@@ -62,20 +62,29 @@
           </div>
         </div>
         <div *ngIf="p.evento">
-          <span>{{ p?.dataTratada }}</span>
-          <h3>{{p.evento.nomeEvento}}</h3>
-          <span>Participantes:</span>
-          <div *ngFor="let participante of p?.evento.participantes">
-            <img (click)="openProfile(participante)" alt="foto participante" [src]="participante.profilePicture">
+          <div>
+            <span>{{ p?.dataTratada }}</span>
+            <h3>{{p.evento.nomeEvento}}</h3>
+          </div>
+          <div class="atendee-div">
+            <div class="atendee-card">
+              <span class="atendee-span">Participantes:</span>
+              <div class="atendee-ng" *ngIf="!userIsAtendee(p)">
+                <mat-icon matTooltip="Clique aqui para participar!" class="btn-clear"
+                  (click)="participateEvent(p, true)">add_circle_outline</mat-icon>
+              </div>
+              <div *ngIf="userIsAtendee(p)">
+                <mat-icon class="btn-clear" matTooltip="Clique aqui para sair do evento"
+                  (click)="participateEvent(p, false)">remove_circle_outline</mat-icon>
+              </div>
+            </div>
             <hr>
-          </div>
-          <div *ngIf="!userIsAtendee(p)">
-            <span>Clique aqui para participar!</span>
-            <mat-icon class="btn-clear" (click)="participateEvent(p,true)">add_circle_outline</mat-icon>
-          </div>
-          <div *ngIf="userIsAtendee(p)">
-            <span>Clique aqui para sair do evento</span>
-            <mat-icon class="btn-clear" (click)="participateEvent(p, false)">remove_circle_outline</mat-icon>
+            <div class="atendees-div">
+              <div *ngFor="let participante of p?.evento.participantes">
+                <img mat-card-avatar matTooltip="{{participante.username}}" (click)="openProfile(participante)"
+                  alt="{{participante.username}}" [src]="participante.profilePicture">
+              </div>
+            </div>
           </div>
         </div>
       </div>
@@ -102,8 +111,13 @@
       </div>
       <br>
       <div *ngFor="let comment of p?.comentarios">
-        <span>{{comment.donoComentario.username}} - {{comment.dataComentario | timestamp}}</span>
+        <div>
+          <img mat-card-avatar matTooltip="{{comment.donoComentario.username}}"
+            (click)="openProfile(comment.donoComentario)" [src]="comment.donoComentario.profilePicture">
+          <span>{{comment.donoComentario.username}} - {{comment.dataComentario | timestamp}}</span>
+        </div>
         <p>{{comment.comentario}}</p>
+
         <hr>
       </div>
     </mat-card-content>

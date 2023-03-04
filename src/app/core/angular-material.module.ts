@@ -19,7 +19,7 @@ import { MatSelectModule } from '@angular/material/select';
 import { MatChipsModule } from '@angular/material/chips';
 import { MatListModule } from '@angular/material/list';
 import { MatExpansionModule } from '@angular/material/expansion';
-
+import { MatTooltipModule } from '@angular/material/tooltip';
 @NgModule({
   imports: [
     MatDialogModule,
@@ -43,6 +43,7 @@ import { MatExpansionModule } from '@angular/material/expansion';
     MatDatepickerModule,
     MatSelectModule,
     MatExpansionModule,
+    MatTooltipModule,
   ],
   exports: [
     MatProgressSpinnerModule,
@@ -66,6 +67,7 @@ import { MatExpansionModule } from '@angular/material/expansion';
     MatDatepickerModule,
     MatSelectModule,
     MatExpansionModule,
+    MatTooltipModule,
   ],
   providers: [{ provide: MAT_DATE_LOCALE, useValue: 'pt-BR' }],
 })
