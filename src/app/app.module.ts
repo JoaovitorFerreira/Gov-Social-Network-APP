@@ -40,6 +40,11 @@ import { UserChatComponent } from './core/chat/user-chat/user-chat.component';
 import { AddContactComponent } from './shared/add-contact-modal/add-contact-modal.component';
 import { SectorService } from './modules/sector/sector.service';
 import { EventModalComponent } from './shared/event-modal/event-modal.component';
+import { RhAdminComponent } from './modules/rh-admin/rh-admin.component';
+import { PromotionModalComponent } from './shared/promotion-modal/promotion-modal.component';
+import { EventModalPGEComponent } from './shared/pge-modal/pge-event-modal/pge-event-modal.component';
+import { PostModalPGEComponent } from './shared/pge-modal/pge-post-modal/pge-post-modal.component';
+import { RemoveEventModalComponent } from './shared/pge-modal/pge-remove-modal/pge-remove-modal.component';
 
 const appRoutes: Routes = [
   {
@@ -62,6 +67,10 @@ const appRoutes: Routes = [
     ],
   },
   {
+    path: 'rh-admin',
+    component: RhAdminComponent,
+  },
+  {
     path: 'login',
     component: LoginComponent,
   },
@@ -74,8 +83,8 @@ const appRoutes: Routes = [
     component: SectorComponent,
   },
   {
-    path:'chat',
-    component: ChatComponent
+    path: 'chat',
+    component: ChatComponent,
   },
   { path: 'change-password', component: ChangePasswordComponent },
   {
@@ -111,7 +120,12 @@ const appRoutes: Routes = [
     EventModalComponent,
     ChangePasswordComponent,
     SectorComponent,
-    ChatComponent
+    ChatComponent,
+    RhAdminComponent,
+    PromotionModalComponent,
+    EventModalPGEComponent,
+    PostModalPGEComponent,
+    RemoveEventModalComponent,
   ],
   imports: [
     NgxPaginationModule,

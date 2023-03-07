@@ -4,6 +4,9 @@
       <div class="item" (click)="goTo('feed')">
         <mat-icon>home</mat-icon> Realizações
       </div>
+      <div class="item" *ngIf="this.user.funcionarioRh==true" (click)="goTo('rh-admin')">
+        <mat-icon>assignment_turned_in</mat-icon>Gestão<br> de pessoas
+      </div>
       <div class="item" (click)="goTo('sector')">
         <mat-icon>list</mat-icon> Setor
       </div>

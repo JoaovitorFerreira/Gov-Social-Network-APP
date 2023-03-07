@@ -47,7 +47,6 @@ export class FeedService implements OnInit {
           };
           const treatedImgData = await this.checkImageData(docs.data());
           result = { ...result, ...treatedImgData };
-          console.log(result);
           docsArray.push(result);
         });
       }

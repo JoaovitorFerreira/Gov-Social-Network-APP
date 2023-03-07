@@ -18,4 +18,5 @@ export interface Usuario {
     genero: string;
     idiomas: Idiomas;
     idealLocations: IdealLocation;
+    funcionarioRh: boolean;
 }
