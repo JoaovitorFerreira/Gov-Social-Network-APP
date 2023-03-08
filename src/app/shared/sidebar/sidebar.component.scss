@@ -10,7 +10,7 @@
 }
 
 mat-drawer {
-  background-color: $light_blue;
+  background-color: #40539c;
   box-shadow: $shadow;
 
   .list {
@@ -30,7 +30,7 @@ mat-drawer {
       padding-left: 16px;
       &:hover {
         transition: background-color 0.5s ease-in-out;
-        background-color: $medium_blue;
+        background-color: #2e449e;
       }
       &:last-of-type {
         margin-bottom: 0px;

@@ -34,7 +34,7 @@
 
 
 .sign-in-btn{
-    background-color: #158eff;
+    background-color: #40539c;
     color: white;
     text-align: center;
     margin-top: 30px;
@@ -59,7 +59,7 @@
 }
 
 .join-now-btn, .heading, .forgot-password{
-    color: #158eff;
+    color: #40539c;
 }
 
 .forgot-password, .join-now-btn{

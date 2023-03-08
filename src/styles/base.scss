@@ -29,12 +29,12 @@ body {
 }
 /* Handle */
 ::-webkit-scrollbar-thumb {
-  background: $light-blue;
+  background: #40539c;
   border-radius: 10px;
 }
 /* Handle on hover */
 ::-webkit-scrollbar-thumb:hover {
-  background: $light-blue;
+  background: #40539c;
 }
 
 input::-webkit-outer-spin-button,

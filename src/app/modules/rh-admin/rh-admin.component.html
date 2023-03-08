@@ -6,7 +6,7 @@
     </mat-card-header>
     <div class="inner-div">
       <button mat-button class="rh-button" (click)="openPromotionModal()">Promover funcionario</button>
-      <button mat-button class="rh-button" (click)="openRemoveModalPGE()">Remover postagem</button>
+      <!--<button mat-button class="rh-button" (click)="openRemoveModalPGE()">Remover postagem</button> -->
       <button mat-button class="rh-button" (click)="openEventModalPGE()">Criar evento PGE</button>
       <button mat-button class="rh-button" (click)="openPostModalPGE()">Criar postagem PGE</button>
     </div>
@@ -15,8 +15,27 @@
     <mat-card-header>
       <p class="rh-p-header">Controle de eventos</p>
     </mat-card-header>
-    <ol>
-      lista de eventos toDo
-    </ol>
+    <div class="div-cards">
+      <mat-card class="mat-cards-alignment">
+        <mat-card-header>
+          <mat-card-title>Actions Buttons</mat-card-title>
+          <mat-card-subtitle>End</mat-card-subtitle>
+        </mat-card-header>
+        <mat-card-actions align="end">
+          <button mat-button>LIKE</button>
+          <button mat-button>SHARE</button>
+        </mat-card-actions>
+      </mat-card>
+      <mat-card mat-cards-alignment>
+        <mat-card-header>
+          <mat-card-title>Actions Buttons</mat-card-title>
+          <mat-card-subtitle>End</mat-card-subtitle>
+        </mat-card-header>
+        <mat-card-actions align="end">
+          <button mat-button>LIKE</button>
+          <button mat-button>SHARE</button>
+        </mat-card-actions>
+      </mat-card>
+    </div>
   </mat-card>
 </div>

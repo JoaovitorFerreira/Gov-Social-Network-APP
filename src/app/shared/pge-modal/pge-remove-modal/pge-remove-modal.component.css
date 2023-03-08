@@ -32,7 +32,7 @@
 
 .close-btn {
   border-radius: 20px 20px 20px 20px;
-  background-color: #1597e5;
+  background-color: #40539c;
   color: white;
   border: 0px;
   width: 140px;
@@ -124,4 +124,33 @@ textarea {
 }
 .custom-file-input:hover::before {
   border-color: black;
+}
+
+
+.on-your-mind {
+  background-color: #f0f2f5;
+  display: inline-block;
+  outline: none;
+  border: none;
+  padding: 10px 0px 10px 20px;
+  border-radius: 20px 0px 0px 20px;
+  width: 70%;
+}
+
+.on-your-mind-btn {
+  border-radius: 0px 20px 20px 0px;
+  background-color: #40539c;
+  color: white;
+  border: 0px;
+  width: 30%;
+  height: 40px;
+}
+.on-your-mind-btn:disabled {
+  background-color: #f0f2f5;
+  color: black;
+}
+
+.row-div{
+  display: flex;
+  flex-direction: column;
 }

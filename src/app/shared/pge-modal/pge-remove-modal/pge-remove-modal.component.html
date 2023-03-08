@@ -1,6 +1,17 @@
 <div class="block-div-top">
    <mat-icon class="btn-clear" (click)="onClose()">clear</mat-icon>
 </div>
-<div>
-   <p>RemoveEventModalComponent</p>
+<div class="row-div">
+   <form [formGroup]="formGroup" (ngSubmit)="submitSearch()">
+      <input class="on-your-mind" formControlName="search" placeholder="Nome do evento " type="text">
+      <button class="on-your-mind-btn" [disabled]="formGroup.invalid" type="submit">Procurar</button>
+   </form>
+</div>
+<div class="row-div">
+   <p>Lista de eventos</p>
+   <ol>
+      <li>1</li>
+      <li>2</li>
+      <li>3</li>
+   </ol>
 </div>
