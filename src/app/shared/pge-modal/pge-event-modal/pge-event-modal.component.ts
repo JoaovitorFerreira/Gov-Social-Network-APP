@@ -2,12 +2,14 @@ import { Component, Inject, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { Timestamp } from 'firebase/firestore';
-
+import { Post } from 'src/app/model/post';
+import { FeedService } from 'src/app/modules/feed/feed.service';
 
 @Component({
   selector: 'pge-event-dialog',
   templateUrl: './pge-event-modal.component.html',
   styleUrls: ['./pge-event-modal.component.css'],
+  providers: [FeedService],
 })
 export class EventModalPGEComponent implements OnInit {
   public formGroup: FormGroup;
@@ -17,7 +19,8 @@ export class EventModalPGEComponent implements OnInit {
   constructor(
     public dialogRef: MatDialogRef<EventModalPGEComponent>,
     @Inject(MAT_DIALOG_DATA) public data: any,
-    private fb: FormBuilder
+    private fb: FormBuilder,
+    private feedService: FeedService
   ) {}
 
   ngOnInit() {
@@ -83,7 +86,41 @@ export class EventModalPGEComponent implements OnInit {
         nomeEvento: this.formGroup.get('name').value,
       },
     };
-    this.dialogRef.close(event);
+    this.savePGEEventPost(event)
+      .then((result) => this.dialogRef.close(result))
+      .catch((error) => {
+        this.dialogRef.close(error);
+      });
+  }
+
+  public async savePGEEventPost(eventoAcriar: any) {
+    let date = Timestamp.fromDate(new Date());
+    let imgPath =
+      eventoAcriar.imagensAnexadas === null
+        ? null
+        : await this.feedService.savePostImg(eventoAcriar.imagensAnexadas);
+    let newPost: Post = {
+      id: `pge-rh-posts-${date.seconds}`,
+      //alterar o dono post eventualmente
+      donoPost: this.data,
+      descricao: eventoAcriar.descricao,
+      dataPost: date,
+      postRh: true,
+      evento: {
+        nomeEvento: eventoAcriar.evento.nomeEvento,
+        dataInicioEvento: eventoAcriar.evento.dataInicioEvento,
+        dataFimEvento: eventoAcriar.evento.dataFimEvento,
+        horarioInicio: eventoAcriar.evento.horarioInicio,
+        horarioFim: eventoAcriar.evento.horarioFim,
+      },
+    };
+    if (imgPath != null) {
+      newPost = {
+        ...newPost,
+        imagensAnexadas: imgPath,
+      };
+    }
+    this.feedService.savePost(newPost);
   }
 
   onClose(): void {

@@ -1,6 +1,10 @@
 import { Component, Inject, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { MatDialog, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
+import {
+  MatDialog,
+  MatDialogRef,
+  MAT_DIALOG_DATA,
+} from '@angular/material/dialog';
 import { Timestamp } from 'firebase/firestore';
 import { Usuario } from 'src/app/core/models/usuario.model';
 import { Post, tipoRealizacaoPost } from 'src/app/model/post';
@@ -11,7 +15,7 @@ import { AddContactComponent } from '../../add-contact-modal/add-contact-modal.c
   selector: 'pge-post-dialog',
   templateUrl: './pge-post-modal.component.html',
   styleUrls: ['./pge-post-modal.component.css'],
-  providers: [FeedService]
+  providers: [FeedService],
 })
 export class PostModalPGEComponent implements OnInit {
   public formGroup: FormGroup;
@@ -23,7 +27,7 @@ export class PostModalPGEComponent implements OnInit {
     @Inject(MAT_DIALOG_DATA) public data: any,
     private fb: FormBuilder,
     private feedService: FeedService,
-    private dialog: MatDialog,
+    private dialog: MatDialog
   ) {}
 
   ngOnInit() {
@@ -43,6 +47,7 @@ export class PostModalPGEComponent implements OnInit {
       donoPost: this.data,
       descricao: this.formGroup.getRawValue().message,
       dataPost: date,
+      postRh: true,
       ...(this.usuariosMarcados && { usuariosMarcados: this.usuariosMarcados }),
     };
     if (imgPath != null) {
@@ -51,11 +56,12 @@ export class PostModalPGEComponent implements OnInit {
         imagensAnexadas: imgPath,
       };
     }
-    this.feedService.savePost(newPost).then((result)=>
-      this.dialogRef.close(result)
-    ).catch(error => {
-
-    });
+    this.feedService
+      .savePost(newPost)
+      .then((result) => this.dialogRef.close(result))
+      .catch((error) => {
+        this.dialogRef.close(error);
+      });
   }
 
   public removeImage() {
@@ -66,7 +72,7 @@ export class PostModalPGEComponent implements OnInit {
     this.hasImgSaved = false;
     console.log('apos a remocao', this.selectedImg);
   }
-  
+
   public addContact() {
     const dialogRef = this.dialog.open(AddContactComponent, {
       width: '600px',

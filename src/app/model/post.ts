@@ -13,6 +13,7 @@ export interface Post {
   imagensAnexadas?: string;
   reacoes?: InterestReaction[];
   evento?: Evento;
+  postRh?: boolean
 }
 
 export interface Evento {

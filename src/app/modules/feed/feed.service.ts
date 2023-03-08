@@ -15,6 +15,7 @@ import {
   ref,
   uploadBytes,
 } from '@angular/fire/storage';
+import { where } from 'firebase/firestore';
 import { Usuario } from 'src/app/core/models/usuario.model';
 import {
   comentarioPost,
@@ -32,7 +33,33 @@ export class FeedService implements OnInit {
   public getPosts() {
     let q = query(
       collection(this.firestore, 'posts'),
-      orderBy('dataPost', 'desc')
+      orderBy('dataPost', 'desc'),
+    );
+    const docsArray = [];
+    getDocs(q).then((querySnapshot) => {
+      if (!querySnapshot.empty) {
+        querySnapshot.forEach(async (docs) => {
+          let result: any = {
+            ...docs.data(),
+            dataTratada: docs
+              .data()
+              .dataPost.toDate()
+              .toLocaleDateString('pt-BR'),
+          };
+          const treatedImgData = await this.checkImageData(docs.data());
+          result = { ...result, ...treatedImgData };
+          docsArray.push(result);
+        });
+      }
+    });
+    return docsArray;
+  }
+
+  public getPGEPosts(){
+    let q = query(
+      collection(this.firestore, 'posts'),
+      orderBy('dataPost', 'desc'),
+      where('postRh',"==", true)
     );
     const docsArray = [];
     getDocs(q).then((querySnapshot) => {

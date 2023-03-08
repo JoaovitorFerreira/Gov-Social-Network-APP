@@ -15,27 +15,22 @@
     <mat-card-header>
       <p class="rh-p-header">Controle de eventos</p>
     </mat-card-header>
-    <div class="div-cards">
-      <mat-card class="mat-cards-alignment">
-        <mat-card-header>
-          <mat-card-title>Evento 1</mat-card-title>
-          <mat-card-subtitle>End</mat-card-subtitle>
-        </mat-card-header>
-        <mat-card-actions align="end">
-          <button mat-button>deletar</button>
-          <button mat-button>editar</button>
-        </mat-card-actions>
-      </mat-card>
-      <mat-card mat-cards-alignment>
-        <mat-card-header>
-          <mat-card-title>Evento 2</mat-card-title>
-          <mat-card-subtitle>End</mat-card-subtitle>
-        </mat-card-header>
-        <mat-card-actions align="end">
-          <button mat-button>deletar</button>
-          <button mat-button>editar</button>
-        </mat-card-actions>
-      </mat-card>
-    </div>
+    <ng-container *ngIf="pgeEvents && pgeEvents.length > 0; else eventosVazio">
+      <div class="div-cards" *ngFor="let pgeEvent of pgeEvents">
+        <mat-card class="mat-cards-alignment">
+          <mat-card-header>
+            <mat-card-title> {{pgeEvent.evento.nomeEvento}}</mat-card-title>
+            <mat-card-subtitle>{{pgeEvent.evento.descricao}}</mat-card-subtitle>
+          </mat-card-header>
+          <mat-card-actions align="end">
+            <button mat-button>deletar</button>
+            <button mat-button>editar</button>
+          </mat-card-actions>
+        </mat-card>
+      </div>
+    </ng-container>
+    <ng-template #eventosVazio>
+      <span>Ainda não há nenhum evento marcado por aqui</span>
+    </ng-template>
   </mat-card>
 </div>

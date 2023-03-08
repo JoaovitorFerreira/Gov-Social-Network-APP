@@ -18,59 +18,32 @@ import { FeedService } from '../feed/feed.service';
 })
 export class RhAdminComponent implements OnInit, OnDestroy {
   public user: Usuario;
+  public pgeEvents;
   constructor(
     private dialog: MatDialog,
     private feedService: FeedService,
     private headerService: HeaderService
   ) {}
 
-  ngOnInit() {
+  async ngOnInit() {
     this.user = this.headerService.dadosUsuario;
+    this.pgeEvents = await this.feedService.getPGEPosts();
   }
 
   ngOnDestroy(): void {}
-
-  public async savePGEEventPost(eventoAcriar: any) {
-    let date = Timestamp.fromDate(new Date());
-    let imgPath =
-      eventoAcriar.imagensAnexadas === null
-        ? null
-        : await this.feedService.savePostImg(eventoAcriar.imagensAnexadas);
-    let newPost: Post = {
-      id: `pge-rh-posts-${date.seconds}`,
-      //alterar o dono post eventualmente
-      donoPost: this.user,
-      descricao: eventoAcriar.descricao,
-      dataPost: date,
-      evento: {
-        nomeEvento: eventoAcriar.evento.nomeEvento,
-        dataInicioEvento: eventoAcriar.evento.dataInicioEvento,
-        dataFimEvento: eventoAcriar.evento.dataFimEvento,
-        horarioInicio: eventoAcriar.evento.horarioInicio,
-        horarioFim: eventoAcriar.evento.horarioFim,
-      },
-    };
-    if (imgPath != null) {
-      newPost = {
-        ...newPost,
-        imagensAnexadas: imgPath,
-      };
-    }
-    this.feedService.savePost(newPost);
-  }
 
   public openEventModalPGE() {
     const dialogRef = this.dialog.open(EventModalPGEComponent, {
       width: '600px',
       height: '70%',
       disableClose: true,
+      data: this.user
     });
 
     dialogRef.afterClosed().subscribe((result) => {
       if (result === false) {
         return;
       }
-      this.savePGEEventPost(result);
     });
   }
 
