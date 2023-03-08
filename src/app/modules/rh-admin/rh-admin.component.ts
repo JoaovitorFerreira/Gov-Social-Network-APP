@@ -91,8 +91,9 @@ export class RhAdminComponent implements OnInit, OnDestroy {
   public openPostModalPGE() {
     const dialogRef = this.dialog.open(PostModalPGEComponent, {
       width: '600px',
-      height: '70%',
+      height: '50%',
       disableClose: true,
+      data: this.user
     });
 
     dialogRef.afterClosed().subscribe((result) => {

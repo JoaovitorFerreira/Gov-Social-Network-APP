@@ -1,6 +1,32 @@
 <div class="block-div-top">
     <mat-icon class="btn-clear" (click)="onClose()">clear</mat-icon>
 </div>
-<div>
-    <p>post modal pge</p>
-</div>
+<mat-card class="post-message">
+    <mat-card-header class="post-message-header" style="padding-bottom: 20px; border-bottom: 1px solid lightgray;">
+      <form [formGroup]="formGroup" (ngSubmit)="savePost()">
+        <input class="on-your-mind" formControlName="message" placeholder="Escreva aqui sua publicação" type="text">
+        <button class="on-your-mind-btn" [disabled]="formGroup.invalid" type="submit">Publicar</button>
+      </form>
+    </mat-card-header>
+    <mat-card-content class="card-body">
+      <div *ngIf="!this.hasImgSaved; else hasImage" class="card-body-div" (click)="uploadImage(fileInput)">
+        <span>Inserir imagem</span>
+        <input #fileInput type="file" style="display: none;" accept="image/jpeg" (change)="imageSelected($event)">
+        <mat-icon color="primary">photo_album</mat-icon>
+      </div>
+      <ng-template #hasImage>
+        <div class="card-body-div">
+          <span>{{this.selectedImg.file.name}}</span>
+          <mat-icon class="btn-clear" (click)="removeImage()">clear</mat-icon>
+        </div>
+      </ng-template>
+      <div class="card-body-div" (click)="addContact()">
+        <span>Marcar contatos</span>
+        <div>
+          <mat-icon color="primary">people</mat-icon>
+          <span *ngIf=" usuariosMarcados && usuariosMarcados.length > 0"
+            class="user-badge-red">{{usuariosMarcados.length}}</span>
+        </div>
+      </div>
+    </mat-card-content>
+  </mat-card>

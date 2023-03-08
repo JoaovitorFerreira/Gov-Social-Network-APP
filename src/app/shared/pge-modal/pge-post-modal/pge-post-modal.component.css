@@ -125,3 +125,161 @@ textarea {
 .custom-file-input:hover::before {
   border-color: black;
 }
+.search-bar {
+  margin-top: 20px;
+  width: 100%;
+}
+
+.radio-group {
+  margin-left: 10px;
+}
+
+.postsBody {
+  display: flex;
+  flex-direction: column;
+}
+
+.imgDiv {
+  display: flex;
+  justify-content: center;
+}
+
+.postText {
+  padding: 10px;
+  font-size: 16px;
+}
+
+mat-form-field {
+  width: 100%;
+}
+.imgFeed {
+  width: 30%;
+  height: 30%;
+}
+
+.setor-container {
+  height: 800px;
+}
+
+mat-card {
+  cursor: pointer;
+}
+
+.profile-card {
+  margin-bottom: 8px;
+}
+
+.post-message {
+  margin-top: 16px;
+}
+
+.posts {
+  margin-top: 4px;
+  margin-bottom: 4px;
+}
+
+.card-body {
+  align-self: center;
+  display: flex;
+  justify-content: center;
+  padding: 10px 40px;
+  margin-top: 10px;
+  align-items: center;
+}
+
+.card-body-div {
+  display: flex;
+  align-items: center;
+  height: 100%;
+  width: 100%;
+  gap: 15px;
+}
+
+.marked-users-div {
+  display: flex;
+}
+
+.marked-users-name-separators {
+  margin-left: 4px;
+  margin-right: 4px;
+}
+
+.marked-users-name-comma {
+  margin-right: 4px;
+}
+
+.initial-marked-user-word {
+  margin-right: 10px;
+}
+
+.marked-users-name {
+  color: #40539c;
+}
+
+.user-badge-red {
+  background-color: red;
+  color: #ffffff;
+  padding: 4px;
+  border-radius: 50%;
+  font-size: 10px;
+}
+
+.on-your-mind {
+  background-color: #f0f2f5;
+  display: inline-block;
+  outline: none;
+  border: none;
+  padding: 10px 0px 10px 20px;
+  border-radius: 20px 0px 0px 20px;
+  width: 100%;
+}
+
+.on-your-mind-btn {
+  border-radius: 0px 20px 20px 0px;
+  background-color: #40539c;
+  color: white;
+  border: 0px;
+  width: 100px;
+}
+.on-your-mind-btn:disabled {
+  background-color: #f0f2f5;
+  color: black;
+}
+
+.post-message-header {
+  width: 100%;
+  display: flex;
+  align-items: center;
+}
+
+form {
+  flex: 1;
+  display: flex;
+}
+
+.container {
+  margin-bottom: 60px;
+}
+
+.atendee-card {
+  display: flex;
+  align-items: flex-end;
+  justify-content: center;
+  align-items: center;
+}
+
+.atendee-div {
+  min-width: 560px;
+}
+
+.atendee-span {
+  width: 90%;
+}
+
+.atendee-ng {
+  width: 10%;
+}
+
+.atendees-div {
+  display: flex;
+}
