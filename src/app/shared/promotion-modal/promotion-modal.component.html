@@ -1,6 +1,29 @@
 <div class="block-div-top">
     <mat-icon class="btn-clear" (click)="onClose()">clear</mat-icon>
 </div>
-<div>
-    <p>teste promotion</p>
+<div class="pass-container">
+    <div class="block-div">
+        <form [formGroup]="formGroup" (ngSubmit)="submitSearch()">
+            <input class="on-your-mind" formControlName="search" placeholder="Escreva aqui o nome que deseja procurar"
+                type="text">
+            <button class="on-your-mind-btn" [disabled]="formGroup.invalid" type="submit">Procurar</button>
+        </form>
+    </div>
+    <hr>
+    <div *ngIf="searchedYet"></div>
+    <div *ngIf="!searchedYet" class="block-div">
+        <h2>Resultado da busca:</h2>
+        <div *ngIf="resultado && resultado.length > 0; else resultadoVazio" class="setor-container">
+            <div class="profile-card" *ngFor="let pessoa of resultado">
+                    <div class="right-card-div" (click)="promoteUser(pessoa)">
+                        <img [src]="pessoa.profilePicture" mat-card-avatar>
+                        <h1>{{ pessoa.username }}</h1>
+                        <p>{{ pessoa?.currentJob?.cargo }}</p>
+                    </div>
+            </div>
+        </div>
+        <ng-template #resultadoVazio>
+            <p>Essa pesquisa não retornou resultado.</p>
+        </ng-template>
+    </div>
 </div>

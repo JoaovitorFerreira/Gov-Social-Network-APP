@@ -1,0 +1,26 @@
+<div class="block-div-top">
+   <mat-icon class="btn-clear" (click)="onClose()">clear</mat-icon>
+</div>
+<div class="block-div">
+   <form [formGroup]="promotionGroup">
+      <mat-form-field>
+        <mat-label>Setor</mat-label>
+        <input type="text" matInput formControlName="setor">
+      </mat-form-field>
+      <mat-form-field>
+        <mat-label>Cargo</mat-label>
+        <input type="text" matInput formControlName="cargo">
+      </mat-form-field>
+      <mat-form-field>
+        <mat-label>Descricao</mat-label>
+        <input type="text" matInput formControlName="descricao">
+      </mat-form-field>
+      <mat-form-field (click)="dataInicial.open()">
+        <mat-label>Data de Início</mat-label>
+        <input matInput [matDatepicker]="dataInicial" formControlName="dataInicio" />
+        <mat-datepicker-toggle matSuffix [for]="dataInicial"></mat-datepicker-toggle>
+        <mat-datepicker touchUi #dataInicial></mat-datepicker>
+      </mat-form-field>
+      <button mat-button [disabled]="formGroup.invalid" (click)="onSubmit()">Salvar</button>
+    </form>
+</div>

@@ -37,7 +37,8 @@ export class RhAdminComponent implements OnInit, OnDestroy {
         ? null
         : await this.feedService.savePostImg(eventoAcriar.imagensAnexadas);
     let newPost: Post = {
-      id: `${this.user.id}-post-${date.seconds}`,
+      id: `pge-rh-posts-${date.seconds}`,
+      //alterar o dono post eventualmente
       donoPost: this.user,
       descricao: eventoAcriar.descricao,
       dataPost: date,

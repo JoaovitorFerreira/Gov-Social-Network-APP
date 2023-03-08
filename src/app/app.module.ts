@@ -45,6 +45,7 @@ import { PromotionModalComponent } from './shared/promotion-modal/promotion-moda
 import { EventModalPGEComponent } from './shared/pge-modal/pge-event-modal/pge-event-modal.component';
 import { PostModalPGEComponent } from './shared/pge-modal/pge-post-modal/pge-post-modal.component';
 import { RemoveEventModalComponent } from './shared/pge-modal/pge-remove-modal/pge-remove-modal.component';
+import { SingleUserModalComponent } from './shared/pge-modal/single-user-modal/single-user-modal.component';
 
 const appRoutes: Routes = [
   {
@@ -126,6 +127,7 @@ const appRoutes: Routes = [
     EventModalPGEComponent,
     PostModalPGEComponent,
     RemoveEventModalComponent,
+    SingleUserModalComponent
   ],
   imports: [
     NgxPaginationModule,

@@ -22,6 +22,12 @@
   margin: px;
 }
 
+form {
+  margin-top: 40px;
+  display: flex;
+  flex-direction: column;
+}
+
 .save-list-btn {
   margin-top: 20px;
   display: flex;
@@ -126,6 +132,7 @@ textarea {
   border-color: black;
 }
 
+
 .on-your-mind {
   background-color: #f0f2f5;
   display: inline-block;
@@ -152,11 +159,4 @@ textarea {
 .row-div{
   display: flex;
   flex-direction: column;
-}
-
-.profile-card{
-
-}
-.profile-card:hover{
-  opacity: 0.5;
 }
