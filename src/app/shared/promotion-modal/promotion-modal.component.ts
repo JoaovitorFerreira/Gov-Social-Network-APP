@@ -113,9 +113,9 @@ export class PromotionModalComponent implements OnInit {
 
   openSnackBar(userUpdated:boolean ) {
     const message = userUpdated ? 'Usuario promovido com sucesso, pode fechar esse modal' : 'Tivemos um problema, tente novamente mais tarde';
-    const snackbarColor = userUpdated ? 'green' : 'red'
     this.snackBar.open(message,'close',{
       duration: 2000,
+      panelClass: userUpdated ? ['green-snackbar']: ['red-snackbar']
     });
   }
 

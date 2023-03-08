@@ -149,14 +149,23 @@ textarea {
   color: black;
 }
 
-.row-div{
+.row-div {
   display: flex;
   flex-direction: column;
 }
 
-.profile-card{
-
+.profile-card {
 }
-.profile-card:hover{
+.profile-card:hover {
   opacity: 0.5;
+}
+
+.green-snackbar {
+  background-color: green;
+  color: #fff;
+}
+
+.red-snackbar {
+  background-color: red;
+  color: #fff;
 }
