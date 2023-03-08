@@ -105,20 +105,22 @@ export class FeedService implements OnInit {
     }
     if (dados.evento!) {
       const evento = dados.evento;
-      const participanteTratado = await Promise.all(
-        dados.evento.participantes.map(async (participante) => {
-          const participanteProfilePicture =
-            participante.profilePicture.startsWith('https://')
-              ? participante.profilePicture
-              : await this.getPhoto(participante.profilePicture);
-
-          return {
-            ...participante,
-            profilePicture: participanteProfilePicture,
-          };
-        })
-      );
-      evento.participantes = participanteTratado;
+      if (evento.participantes && evento.participantes.length > 0){
+        const participanteTratado = await Promise.all(
+          dados.evento.participantes.map(async (participante) => {
+            const participanteProfilePicture =
+              participante.profilePicture.startsWith('https://')
+                ? participante.profilePicture
+                : await this.getPhoto(participante.profilePicture);
+  
+            return {
+              ...participante,
+              profilePicture: participanteProfilePicture,
+            };
+          })
+        );
+        evento.participantes = participanteTratado;
+      }
       result = {
         ...result,
         evento: evento,
