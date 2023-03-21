@@ -184,6 +184,8 @@ export class FeedComponent implements OnInit, OnDestroy {
         dataFimEvento: eventoAcriar.evento.dataFimEvento,
         horarioInicio: eventoAcriar.evento.horarioInicio,
         horarioFim: eventoAcriar.evento.horarioFim,
+        linkTransmissaoEvento: eventoAcriar.evento.linkTransmissaoEvento,
+        linkInscricaoEvento: eventoAcriar.evento.linkInscricaoEvento
       },
     };
     if (imgPath != null) {
@@ -249,6 +251,8 @@ export class FeedComponent implements OnInit, OnDestroy {
       horarioInicio: post.evento.horarioInicio,
       nomeEvento: post.evento.nomeEvento,
       participantes: atendeesList,
+      linkTransmissaoEvento:post.evento.linkTransmissaoEvento,
+      linkInscricaoEvento: post.evento.linkInscricaoEvento
     };
 
     const newPost = {
@@ -262,8 +266,7 @@ export class FeedComponent implements OnInit, OnDestroy {
 
   public userIsAtendee(post: Post) {
     const user = this.headerService.dadosUsuario;
-    const hasAtendees =
-      post.evento.participantes.length && post.evento.participantes.length > 0;
+    const hasAtendees = Array.isArray(post.evento.participantes) && post.evento.participantes.length > 0;
     if (hasAtendees) {
       return post.evento.participantes.some(
         (atendee) => atendee.id === user.id

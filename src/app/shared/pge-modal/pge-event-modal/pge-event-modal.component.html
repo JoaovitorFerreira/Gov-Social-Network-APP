@@ -45,6 +45,14 @@
                 <label class="min-margin-right" for="endTimeInput">Horário de finalização:</label>
                 <input type="time" id="endTimeInput" formControlName="endTime">
             </div>
+            <div>
+                <label class="name-label" for="transmissionLink">Link do vídeo do evento:</label>
+                <input class="name-input" type="text" id="transmissionLink" formControlName="transmissionLink">
+            </div>
+            <div>
+                <label class="name-label" for="subscriptionLink">Link do formulário do evento:</label>
+                <input class="name-input" type="text" id="subscriptionLink" formControlName="subscriptionLink">
+            </div>
             <div class="save-list-btn">
                 <button class="close-btn" [disabled]="formGroup.invalid" type="submit">
                     Criar Evento

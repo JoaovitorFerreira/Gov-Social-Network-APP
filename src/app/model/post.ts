@@ -23,6 +23,8 @@ export interface Evento {
   horarioFim: Timestamp;
   nomeEvento: string;
   participantes?: Usuario[];
+  linkTransmissaoEvento: string;
+  linkInscricaoEvento: string;
 }
 
 export interface OnlineSystemPost extends Post {

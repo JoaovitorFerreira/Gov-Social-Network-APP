@@ -104,6 +104,8 @@
             <p class="postText">dia de inicio: {{p?.evento.dataInicioEvento | date}}</p>
             <p class="postText">dia de fechamento: {{p?.evento.dataInicioEvento | date}}</p>
             <p class="postText">duração: {{p?.evento.dataInicioEvento | date}}</p>
+              <a *ngIf="p?.evento.linkTransmissaoEvento !== null" class="postText">link do vídeo: {{p?.evento.linkTransmissaoEvento}}</a>
+              <a *ngIf="p?.evento.linkInscricaoEvento !== null" class="postText">link do formulário do evento: {{p?.evento.linkInscricaoEvento}}</a>
           </mat-expansion-panel>
         </mat-accordion>
       </div>

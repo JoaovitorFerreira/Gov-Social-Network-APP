@@ -33,6 +33,8 @@ export class EventModalPGEComponent implements OnInit {
       endDate: [null, Validators.required],
       endTime: [null, Validators.required],
       sameDate: [false],
+      transmissionLink: [null],
+      subscriptionLink: [null],
     });
   }
 
@@ -84,6 +86,10 @@ export class EventModalPGEComponent implements OnInit {
         horarioInicio: this.formGroup.get('startTime').value,
         horarioFim: this.formGroup.get('endTime').value,
         nomeEvento: this.formGroup.get('name').value,
+        linkTransmissaoEvento:
+          this.formGroup.get('transmissionLink').value ?? null,
+        linkInscricaoEvento:
+          this.formGroup.get('subscriptionLink').value ?? null,
       },
     };
     this.savePGEEventPost(event)
@@ -112,6 +118,8 @@ export class EventModalPGEComponent implements OnInit {
         dataFimEvento: eventoAcriar.evento.dataFimEvento,
         horarioInicio: eventoAcriar.evento.horarioInicio,
         horarioFim: eventoAcriar.evento.horarioFim,
+        linkTransmissaoEvento: eventoAcriar.evento.linkTransmissaoEvento,
+        linkInscricaoEvento: eventoAcriar.evento.linkInscricaoEvento
       },
     };
     if (imgPath != null) {
