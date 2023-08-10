@@ -7,7 +7,6 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { LoginComponent } from './modules/auth/login/login.component';
 import { HttpClientModule } from '@angular/common/http';
 import { SignupComponent } from './modules/auth/signup/signup.component';
-import { AdminComponent } from './modules/admin/admin.component';
 import { UserDetailsComponent } from './modules/user-details/user-details.component';
 import { FeedComponent } from './modules/feed/feed.component';
 import { TooltipModule } from 'ngx-bootstrap/tooltip';
@@ -82,13 +81,6 @@ const appRoutes: Routes = [
     component: ChatComponent,
   },
   { path: 'change-password', component: ChangePasswordComponent },
-  {
-    path: 'admin',
-    children: [
-      { path: '', component: AdminComponent },
-      // {path: 'exportdata', component: AppDataExportComponent }
-    ], //, canActivate: [AdminGuard]
-  },
 ];
 
 @NgModule({
@@ -96,7 +88,6 @@ const appRoutes: Routes = [
     AppComponent,
     LoginComponent,
     SignupComponent,
-    AdminComponent,
     UserDetailsComponent,
     FeedComponent,
     UserChatComponent,
