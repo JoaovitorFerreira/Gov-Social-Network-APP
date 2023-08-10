@@ -12,7 +12,12 @@ import { AuthService } from 'src/app/core/services/auth.service';
 export class LoginComponent implements OnInit {
   public loading = false;
   public formGroup: FormGroup;
-  constructor(private fb: FormBuilder, private authService: AuthService, private router: Router, private snackBar: MatSnackBar) { }
+  constructor(
+    private fb: FormBuilder,
+    private authService: AuthService,
+    private router: Router,
+    private snackBar: MatSnackBar
+  ) {}
 
   ngOnInit(): void {
     this.initFormGroup();
@@ -21,26 +26,31 @@ export class LoginComponent implements OnInit {
   private initFormGroup() {
     this.formGroup = this.fb.group({
       email: [null, [Validators.required, Validators.email]],
-      pass: [null, [Validators.required]]
+      pass: [null, [Validators.required]],
     });
   }
 
   public login() {
-    if (this.loading) { return; }
+    if (this.loading) {
+      return;
+    }
     this.loading = true;
     const form = this.formGroup.getRawValue();
-    this.authService.login(form.email, form.pass).then(result => {
+    this.authService.login(form.email, form.pass).then((result) => {
       this.loading = false;
       if (result) {
         this.router.navigateByUrl('feed');
       } else {
-        this.snackBar.open('Email ou senha inválidos', null, {duration: 5000});
+        this.snackBar.open('Email ou senha inválidos', null, {
+          duration: 5000,
+        });
       }
     });
   }
 
   public forgotPassword() {
-    if (this.formGroup.get('email').invalid) {
+    return true;
+    /*if (this.formGroup.get('email').invalid) {
       this.snackBar.open('Por favor preencha o campo de email para recuperar sua senha', null, {duration: 5000});
     }
     const email = this.formGroup.get('email').value;
@@ -48,6 +58,6 @@ export class LoginComponent implements OnInit {
       this.snackBar.open('Email de recuperação de senha enviado com sucesso', null, {duration: 5000});
     }).catch(() => {
       this.snackBar.open('Erro ao enviar email de recuperação de senha. Por favor confirme as informações e tente novamente.', null, {duration: 5000});
-    });
+    });*/
   }
 }

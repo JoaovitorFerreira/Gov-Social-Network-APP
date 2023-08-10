@@ -3,28 +3,16 @@ import { CanActivate, Router } from '@angular/router';
 import { AuthService } from '../services/auth.service';
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class AuthGuard implements CanActivate {
+  constructor(private authService: AuthService, private router: Router) {}
 
-  constructor(
-    private authService: AuthService,
-    private router: Router
-  ) {}
-
-  canActivate(): Promise<boolean> {
-    return this.authService.isUserLoggedInAsync()
-      .then((value) => {
-        if (value) {
-            return true;
-        } else {
-            this.router.navigateByUrl('/login');
-            return false;
-        }
-      }).catch(error => {
-        console.log('erro auth guard --> ', error);
-        this.router.navigateByUrl('/login');
-        return false;
-      });
+  canActivate(): boolean {
+    if (!this.authService.isUserLoggedIn()) {
+      this.router.navigateByUrl('/login');
+      return false;
+    }
+    return true;
   }
 }

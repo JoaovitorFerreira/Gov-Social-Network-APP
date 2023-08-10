@@ -1,6 +1,5 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
-import { Timestamp } from 'firebase/firestore';
 import { Usuario } from 'src/app/core/models/usuario.model';
 import { Post } from 'src/app/model/post';
 import { HeaderService } from 'src/app/shared/header/header.service';
@@ -37,7 +36,7 @@ export class RhAdminComponent implements OnInit, OnDestroy {
       width: '600px',
       height: '70%',
       disableClose: true,
-      data: this.user
+      data: this.user,
     });
 
     dialogRef.afterClosed().subscribe((result) => {
@@ -66,7 +65,7 @@ export class RhAdminComponent implements OnInit, OnDestroy {
       width: '600px',
       height: '50%',
       disableClose: true,
-      data: this.user
+      data: this.user,
     });
 
     dialogRef.afterClosed().subscribe((result) => {

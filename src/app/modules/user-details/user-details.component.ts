@@ -12,19 +12,18 @@ import { Especialidades } from '../../core/models/especialidades.model';
 import { Job } from '../../core/models/job.model';
 import { Formacao } from '../../core/models/formacao.model';
 import { Hobbies } from '../../core/models/hobbies.model';
-import { HobbiesFormComponent } from '../../core/forms/hobbies-form/hobbies-form.component'
+import { HobbiesFormComponent } from '../../core/forms/hobbies-form/hobbies-form.component';
 import { Idiomas } from '../../core/models/idiomas.models';
 import { IdiomasFormComponent } from '../../core/forms/idiomas-form/idiomas-form.component';
 import { IdealLocationFormComponent } from '../../core/forms/locacao-ideal-form/locacao-ideal-form.component';
 import { IdealLocation } from '../../core/models/idealLocation.model';
-import { Firestore, doc, getDoc, setDoc,Timestamp } from "@angular/fire/firestore";
 import { Message } from 'src/app/model/message';
 
 @Component({
   selector: 'app-user-details',
   templateUrl: './user-details.component.html',
   styleUrls: ['./user-details.component.scss'],
-  providers: [UserDetailsService]
+  providers: [UserDetailsService],
 })
 export class UserDetailsComponent implements OnInit {
   isSelfUser: boolean = false;
@@ -37,30 +36,31 @@ export class UserDetailsComponent implements OnInit {
   myUser: Usuario = JSON.parse(sessionStorage.getItem('userData'));
 
   constructor(
-    private router: Router, 
+    private router: Router,
     private headerService: HeaderService,
     private userService: UserDetailsService,
-    private dialog: MatDialog,
-    private firestore: Firestore,
-    ) {}
+    private dialog: MatDialog
+  ) {}
 
   ngOnInit(): void {
     const id = this.router.url.split('/').pop();
     this.isSelfUser = id === 'self';
-    if(!this.isSelfUser){
-      this.userId = id
+    if (!this.isSelfUser) {
+      this.userId = id;
     }
     this.loadUser(id);
-    this.alreadySentMessage = this.userService.checkIfHasSentMessage(this.userId)
-    console.log(this.alreadySentMessage)
+    this.alreadySentMessage = this.userService.checkIfHasSentMessage(
+      this.userId
+    );
+    console.log(this.alreadySentMessage);
   }
 
-  public get showMsgButton(){
-    if(this.isSelfUser){
-      return false
+  public get showMsgButton() {
+    if (this.isSelfUser) {
+      return false;
     } else {
-      console.log(this.alreadySentMessage)
-      return !this.alreadySentMessage
+      console.log(this.alreadySentMessage);
+      return !this.alreadySentMessage;
     }
   }
 
@@ -72,13 +72,13 @@ export class UserDetailsComponent implements OnInit {
       this.createLanguagesArray();
       this.user.profilePicture = await this.getPhoto(this.user.profilePicture);
     } else {
-      this.userService.getUsuario(id).then(async usuario => {
-        this.user = usuario;
+      this.userService.getUsuario(id).then(async (usuario) => {
+        this.user = usuario as Usuario;
         this.createSkillsArray();
         this.createHobbiesArray();
         this.createLanguagesArray();
         usuario.profilePicture = await this.getPhoto(usuario.profilePicture);
-      })
+      });
     }
   }
 
@@ -98,8 +98,8 @@ export class UserDetailsComponent implements OnInit {
         this.especialidades.push(this.formatLegenda(especialidade));
       }
     }
-  }  
-  
+  }
+
   private createHobbiesArray() {
     for (const hobbie in this.user.hobbies) {
       if (hobbie === 'outros') {
@@ -128,72 +128,116 @@ export class UserDetailsComponent implements OnInit {
     }
   }
 
-  private getPhoto(path: string): Promise<string> {
+  private getPhoto(path: string): any {
     if (!path) {
-      return Promise.resolve('https://www.donkey.bike/wp-content/uploads/2020/12/user-member-avatar-face-profile-icon-vector-22965342-e1608640557889.jpg');
+      return Promise.resolve(
+        'https://www.donkey.bike/wp-content/uploads/2020/12/user-member-avatar-face-profile-icon-vector-22965342-e1608640557889.jpg'
+      );
     }
-    return this.userService.getPhoto(path);
+    return this.user.profilePicture;
   }
 
   private redefineCurrentJob(job: Job) {
     this.user.currentJob = job;
   }
 
-  private redefineMostAttractiveLocation(idealLocation : string){
-    this.user.idealLocations.maiorInteresse = idealLocation
+  private redefineMostAttractiveLocation(idealLocation: string) {
+    this.user.idealLocations.maiorInteresse = idealLocation;
   }
 
-  public open(tipo: 'idealLocation' | 'job' | 'skills' | 'hobbies' | 'formacao' | 'idiomas', index?: number) {
+  public open(
+    tipo:
+      | 'idealLocation'
+      | 'job'
+      | 'skills'
+      | 'hobbies'
+      | 'formacao'
+      | 'idiomas',
+    index?: number
+  ) {
     if (tipo === 'formacao') {
-      this.dialog.open(FormacaoFormComponent, {data: this.user.formacao[index]}).afterClosed().pipe(take(1)).subscribe((formacao: Formacao) => {
-        if (!formacao) { return; }
-        if (index === undefined) {
-          this.user.formacao.push(formacao);
-        } else {
-          this.user.formacao[index] = formacao;
-        }
-        this.userService.saveUsuario({...this.user});
-      });
-    } else if(tipo === 'idealLocation'){
-      this.dialog.open(IdealLocationFormComponent, {data:this.user.idealLocations}).afterClosed().pipe(take(1)).subscribe((idealLocation: IdealLocation) => {
-        console.log(idealLocation)
-        this.user.idealLocations = idealLocation
-        this.userService.saveUsuario({...this.user});
-      });
-    }
-     else if (tipo === 'job') {
-      this.dialog.open(JobFormComponent, {data: this.user.jobs[index]}).afterClosed().pipe(take(1)).subscribe((job: Job) => {
-        if (!job) { return; }
-        if (index === undefined) {
-          this.user.jobs.push(job);
-          this.redefineCurrentJob(job);
-        } else {
-          this.user.jobs[index] = job;
-        }
-        this.userService.saveUsuario({...this.user});
-      });
-    } else if (tipo === 'skills'){
-      this.dialog.open(EspecialidadesFormComponent, {data: index}).afterClosed().pipe(take(1)).subscribe((especialidades: Especialidades) => {
-        if (!especialidades) { return; }
-        this.user.especialidades = especialidades;
-        this.createSkillsArray();
-        this.userService.saveUsuario({...this.user});  
-      });
-    } else if(tipo === 'idiomas') {
-      this.dialog.open(IdiomasFormComponent, {data: index}).afterClosed().pipe(take(1)).subscribe((idiomas: Idiomas) => {
-        if (!idiomas) { return; }
-        this.user.idiomas = idiomas;
-        console.log('teste')
-        this.createLanguagesArray();
-        this.userService.saveUsuario({...this.user});  
-      });
+      this.dialog
+        .open(FormacaoFormComponent, { data: this.user.formacao[index] })
+        .afterClosed()
+        .pipe(take(1))
+        .subscribe((formacao: Formacao) => {
+          if (!formacao) {
+            return;
+          }
+          if (index === undefined) {
+            this.user.formacao.push(formacao);
+          } else {
+            this.user.formacao[index] = formacao;
+          }
+          this.userService.saveUsuario({ ...this.user });
+        });
+    } else if (tipo === 'idealLocation') {
+      this.dialog
+        .open(IdealLocationFormComponent, { data: this.user.idealLocations })
+        .afterClosed()
+        .pipe(take(1))
+        .subscribe((idealLocation: IdealLocation) => {
+          console.log(idealLocation);
+          this.user.idealLocations = idealLocation;
+          this.userService.saveUsuario({ ...this.user });
+        });
+    } else if (tipo === 'job') {
+      this.dialog
+        .open(JobFormComponent, { data: this.user.jobs[index] })
+        .afterClosed()
+        .pipe(take(1))
+        .subscribe((job: Job) => {
+          if (!job) {
+            return;
+          }
+          if (index === undefined) {
+            this.user.jobs.push(job);
+            this.redefineCurrentJob(job);
+          } else {
+            this.user.jobs[index] = job;
+          }
+          this.userService.saveUsuario({ ...this.user });
+        });
+    } else if (tipo === 'skills') {
+      this.dialog
+        .open(EspecialidadesFormComponent, { data: index })
+        .afterClosed()
+        .pipe(take(1))
+        .subscribe((especialidades: Especialidades) => {
+          if (!especialidades) {
+            return;
+          }
+          this.user.especialidades = especialidades;
+          this.createSkillsArray();
+          this.userService.saveUsuario({ ...this.user });
+        });
+    } else if (tipo === 'idiomas') {
+      this.dialog
+        .open(IdiomasFormComponent, { data: index })
+        .afterClosed()
+        .pipe(take(1))
+        .subscribe((idiomas: Idiomas) => {
+          if (!idiomas) {
+            return;
+          }
+          this.user.idiomas = idiomas;
+          console.log('teste');
+          this.createLanguagesArray();
+          this.userService.saveUsuario({ ...this.user });
+        });
     } else {
-      this.dialog.open(HobbiesFormComponent, {data: index}).afterClosed().pipe(take(1)).subscribe((hobbies: Hobbies) => {
-        if (!hobbies) { return; }
-        this.user.hobbies = hobbies;
-        this.createHobbiesArray();
-        this.userService.saveUsuario({...this.user});  
-      });
+      this.dialog
+        .open(HobbiesFormComponent, { data: index })
+        .afterClosed()
+        .pipe(take(1))
+        .subscribe((hobbies: Hobbies) => {
+          if (!hobbies) {
+            return;
+          }
+          this.user.hobbies = hobbies;
+          this.createHobbiesArray();
+          this.userService.saveUsuario({ ...this.user });
+        });
     }
   }
 
@@ -206,24 +250,34 @@ export class UserDetailsComponent implements OnInit {
       return;
     }
     const file: File = event.target.files[0];
-    const fileObj = { file, id: 'profile.' + file.name.split('.').pop(), path: 'profile-pictures/' + this.user.id};
-    this.userService.saveProfileImage(fileObj).then(profilePath => {
-      this.userService.saveUsuario({...this.user, profilePicture: profilePath});
+    const fileObj = {
+      file,
+      id: 'profile.' + file.name.split('.').pop(),
+      path: 'profile-pictures/' + this.user.id,
+    };
+    this.userService.saveProfileImage(fileObj).then((profilePath) => {
+      this.userService.saveUsuario({
+        profilePicture: profilePath,
+        ...this.user,
+      });
     });
   }
 
-  public async callMsgSystem() { 
-    let newChatId = this.myUser.id + "-chat-" + this.userId
+  public async callMsgSystem() {
+    let newChatId = this.myUser.id + '-chat-' + this.userId;
     let date = new Date();
     let newChatData: Message = {
       id: newChatId,
-      createdAt: Timestamp.fromDate(date),
-      usersId:[this.userId, this.myUser.id],
-      usersName: [this.user.username, this.myUser.username]
-    }
-    await setDoc(doc(this.firestore, "user-chats", newChatId), newChatData).then(()=>{
+      createdAt: date.toDateString(),
+      usersId: [this.userId, this.myUser.id],
+      usersName: [this.user.username, this.myUser.username],
+    };
+    /*await setDoc(
+      doc(this.firestore, 'user-chats', newChatId),
+      newChatData
+    ).then(() => {
       this.router.navigateByUrl('chat');
     });
+    */
   }
-  
 }

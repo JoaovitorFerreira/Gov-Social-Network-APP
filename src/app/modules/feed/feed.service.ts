@@ -1,21 +1,4 @@
 import { Injectable, OnInit } from '@angular/core';
-import {
-  Firestore,
-  getDocs,
-  collection,
-  setDoc,
-  doc,
-  query,
-  orderBy,
-  Timestamp,
-} from '@angular/fire/firestore';
-import {
-  Storage,
-  getDownloadURL,
-  ref,
-  uploadBytes,
-} from '@angular/fire/storage';
-import { where } from 'firebase/firestore';
 import { Usuario } from 'src/app/core/models/usuario.model';
 import {
   comentarioPost,
@@ -26,17 +9,17 @@ import {
 
 @Injectable()
 export class FeedService implements OnInit {
-  constructor(private firestore: Firestore, private storage: Storage) {}
+  constructor() {}
 
   ngOnInit(): void {}
 
   public getPosts() {
-    let q = query(
+    /*let q = query(
       collection(this.firestore, 'posts'),
-      orderBy('dataPost', 'desc'),
-    );
+      orderBy('dataPost', 'desc')
+    );*/
     const docsArray = [];
-    getDocs(q).then((querySnapshot) => {
+    /* getDocs(q).then((querySnapshot) => {
       if (!querySnapshot.empty) {
         querySnapshot.forEach(async (docs) => {
           let result: any = {
@@ -51,17 +34,17 @@ export class FeedService implements OnInit {
           docsArray.push(result);
         });
       }
-    });
+    });*/
     return docsArray;
   }
 
-  public getPGEPosts(){
-    let q = query(
+  public getPGEPosts() {
+    const docsArray = [];
+    /*let q = query(
       collection(this.firestore, 'posts'),
       orderBy('dataPost', 'desc'),
-      where('postRh',"==", true)
+      where('postRh', '==', true)
     );
-    const docsArray = [];
     getDocs(q).then((querySnapshot) => {
       if (!querySnapshot.empty) {
         querySnapshot.forEach(async (docs) => {
@@ -77,7 +60,7 @@ export class FeedService implements OnInit {
           docsArray.push(result);
         });
       }
-    });
+    });*/
     return docsArray;
   }
 
@@ -105,14 +88,14 @@ export class FeedService implements OnInit {
     }
     if (dados.evento!) {
       const evento = dados.evento;
-      if (evento.participantes && evento.participantes.length > 0){
+      if (evento.participantes && evento.participantes.length > 0) {
         const participanteTratado = await Promise.all(
           dados.evento.participantes.map(async (participante) => {
             const participanteProfilePicture =
               participante.profilePicture.startsWith('https://')
                 ? participante.profilePicture
                 : await this.getPhoto(participante.profilePicture);
-  
+
             return {
               ...participante,
               profilePicture: participanteProfilePicture,
@@ -150,14 +133,16 @@ export class FeedService implements OnInit {
   }
 
   public getPhoto(path: string) {
-    return getDownloadURL(ref(this.storage, path));
+    //return getDownloadURL(ref(this.storage, path));
+    return '';
   }
 
   public savePost(post: Post): Promise<boolean> {
-    const uid = post.id;
+    /*const uid = post.id;
     return setDoc(doc(this.firestore, 'posts/' + uid), post).then(() => {
       return true;
-    });
+    });*/
+    return Promise.resolve(true);
   }
 
   public async savePostImg(archive: {
@@ -165,7 +150,7 @@ export class FeedService implements OnInit {
     file: Blob;
     path: string;
   }): Promise<string> {
-    const id: string = archive.id;
+    /*const id: string = archive.id;
     const file: Blob = archive.file;
     const path: string = archive.path;
     const reference = ref(this.storage, `${path}/${id}`);
@@ -180,6 +165,8 @@ export class FeedService implements OnInit {
       return null;
     }
     return null;
+    */
+    return Promise.resolve('');
   }
 
   public async saveComment(
@@ -188,7 +175,7 @@ export class FeedService implements OnInit {
     user: Usuario
   ) {
     let date = new Date();
-    let CommentToPost: comentarioPost = {
+    /*let CommentToPost: comentarioPost = {
       dataComentario: Timestamp.fromDate(date),
       donoComentario: user,
       comentario: comment,
@@ -223,5 +210,6 @@ export class FeedService implements OnInit {
     }
 
     await setDoc(doc(this.firestore, 'posts/' + post.id), postSimplified);
+    */
   }
 }

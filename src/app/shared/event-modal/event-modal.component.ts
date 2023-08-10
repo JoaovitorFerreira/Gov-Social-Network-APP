@@ -1,7 +1,6 @@
 import { Component, Inject, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
-import { Timestamp } from 'firebase/firestore';
 
 @Component({
   selector: 'event-dialog',
@@ -55,7 +54,7 @@ export class EventModalComponent implements OnInit {
     }
     const file: File = event.target.files[0];
     let date = new Date();
-    const timestamp = Timestamp.fromDate(date);
+    const timestamp = date.toDateString();
     const fileObj = {
       file,
       id: 'postImg' + file.name.split('.').pop() + timestamp,

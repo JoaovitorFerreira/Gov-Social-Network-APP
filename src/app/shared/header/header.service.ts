@@ -1,25 +1,28 @@
-import { Injectable } from "@angular/core";
-import { Firestore, doc, getDoc } from "@angular/fire/firestore";
-import { Usuario } from "src/app/core/models/usuario.model";
-import { BehaviorSubject } from "rxjs";
+import { Injectable } from '@angular/core';
+import { Usuario } from 'src/app/core/models/usuario.model';
+import { BehaviorSubject, Observable } from 'rxjs';
+import { HttpClient } from '@angular/common/http';
 
 @Injectable()
 export class HeaderService {
-  public watcher: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(false);
+  private http: HttpClient;
+  public watcher: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(
+    false
+  );
   public dadosUsuario: Usuario = null;
-  constructor(private firestore: Firestore) {
-    this.dadosUsuario = JSON.parse(sessionStorage.getItem('userData'));
-   }
 
-  public getUsuario(uid: string): Promise<Usuario> {
-    return getDoc(doc(this.firestore, `usuarios/${uid}`)).then(user => {
-      this.dadosUsuario = user.exists() ? { ...user.data(), id: uid } as Usuario : null;
-      sessionStorage.setItem('userData', JSON.stringify(this.dadosUsuario))
-      return this.dadosUsuario;
-    }).catch(error => {
-      console.log('error getting user --> ', error);
-      return null;
-    });
+  constructor() {
+    this.dadosUsuario == JSON.parse(sessionStorage.getItem('userData'));
   }
 
+  public async getUsuario(userId: string): Promise<Usuario> {
+    if (this.dadosUsuario == null) {
+      await this.http
+        .get(`http://localhost:3000/perfil/user/${userId}`)
+        .subscribe((result) => {
+          this.dadosUsuario = result as Usuario;
+        });
+    }
+    return this.dadosUsuario;
+  }
 }

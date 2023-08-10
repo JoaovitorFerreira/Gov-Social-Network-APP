@@ -13,12 +13,6 @@ import { FeedComponent } from './modules/feed/feed.component';
 import { TooltipModule } from 'ngx-bootstrap/tooltip';
 import { NgxPaginationModule } from 'ngx-pagination';
 import { environment } from 'src/environments/environment';
-import { provideFirebaseApp, initializeApp } from '@angular/fire/app';
-import { getFirestore, provideFirestore } from '@angular/fire/firestore';
-import { provideAuth } from '@angular/fire/auth';
-import { provideStorage } from '@angular/fire/storage';
-import { getStorage } from 'firebase/storage';
-import { getAuth } from 'firebase/auth';
 import { AngularMaterialModule } from './core/angular-material.module';
 import { HeaderComponent } from './shared/header/header.component';
 import { AuthService } from './core/services/auth.service';
@@ -127,17 +121,13 @@ const appRoutes: Routes = [
     EventModalPGEComponent,
     PostModalPGEComponent,
     RemoveEventModalComponent,
-    SingleUserModalComponent
+    SingleUserModalComponent,
   ],
   imports: [
     NgxPaginationModule,
     BrowserModule,
     BrowserAnimationsModule,
     HttpClientModule,
-    provideFirebaseApp(() => initializeApp(environment.firebase)),
-    provideAuth(() => getAuth()),
-    provideFirestore(() => getFirestore()),
-    provideStorage(() => getStorage()),
     AngularMaterialModule,
     RouterModule.forRoot(appRoutes),
     TooltipModule.forRoot(),

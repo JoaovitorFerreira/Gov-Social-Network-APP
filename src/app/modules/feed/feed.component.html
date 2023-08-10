@@ -101,9 +101,9 @@
                 Informações Adicionais
               </mat-panel-title>
             </mat-expansion-panel-header>
-            <p class="postText">dia de inicio: {{p?.evento.dataInicioEvento | date}}</p>
-            <p class="postText">dia de fechamento: {{p?.evento.dataInicioEvento | date}}</p>
-            <p class="postText">duração: {{p?.evento.dataInicioEvento | date}}</p>
+            <p class="postText">dia de inicio: {{p?.evento.dataInicioEvento}}</p>
+            <p class="postText">dia de fechamento: {{p?.evento.dataInicioEvento}}</p>
+            <p class="postText">duração: {{p?.evento.dataInicioEvento}}</p>
               <a *ngIf="p?.evento.linkTransmissaoEvento !== null" class="postText">link do vídeo: {{p?.evento.linkTransmissaoEvento}}</a>
               <a *ngIf="p?.evento.linkInscricaoEvento !== null" class="postText">link do formulário do evento: {{p?.evento.linkInscricaoEvento}}</a>
           </mat-expansion-panel>
@@ -114,7 +114,7 @@
         <div>
           <img mat-card-avatar matTooltip="{{comment.donoComentario.username}}"
             (click)="openProfile(comment.donoComentario)" [src]="comment.donoComentario.profilePicture">
-          <span>{{comment.donoComentario.username}} - {{comment.dataComentario | timestamp}}</span>
+          <span>{{comment.donoComentario.username}} - {{comment.dataComentario}}</span>
         </div>
         <p>{{comment.comentario}}</p>
 

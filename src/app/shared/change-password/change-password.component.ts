@@ -1,7 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { MatSnackBar } from '@angular/material/snack-bar';
-import { Firestore, doc, setDoc } from "@angular/fire/firestore";
 import { AuthService } from 'src/app/core/services/auth.service';
 import { HeaderService } from '../header/header.service';
 import { Router } from '@angular/router';
@@ -13,7 +12,7 @@ import { Router } from '@angular/router';
 })
 export class ChangePasswordComponent implements OnInit {
   constructor(
-    private firestore: Firestore,
+    //private firestore: Firestore,
     private fb: FormBuilder,
     private router: Router,
     private headerService: HeaderService,
@@ -32,14 +31,14 @@ export class ChangePasswordComponent implements OnInit {
     };
   }
   public get userName() {
-    return this.headerService.dadosUsuario.username
+    return this.headerService.dadosUsuario.username;
   }
 
   public saveNewPass() {
     const pass = this.formGroup.getRawValue().password;
-    if (pass) {
+    /*if (pass) {
       console.log(pass)
-      
+
       this.authService.changePassword(pass).then((value) => {
         console.log(value)
         if (value) {
@@ -59,14 +58,21 @@ export class ChangePasswordComponent implements OnInit {
     } else {
       this.snack.open('Senha inválida', null, { duration: 5000 });
     }
+    */
   }
 
-  private saveNewAccess(){
-    const usuario = this.headerService.dadosUsuario
+  private saveNewAccess() {
+    /*const usuario = this.headerService.dadosUsuario;
     const uid = usuario.id;
-    delete usuario.id
+    delete usuario.id;
     const data = usuario;
     data.firstAccess = false;
-    setDoc(doc(this.firestore, 'usuarios/' + uid), {firstAccess: false, ...usuario}).then(() => console.log('updated')).catch((error)=> console.log(error));
+    setDoc(doc(this.firestore, 'usuarios/' + uid), {
+      firstAccess: false,
+      ...usuario,
+    })
+      .then(() => console.log('updated'))
+      .catch((error) => console.log(error));
+      */
   }
 }

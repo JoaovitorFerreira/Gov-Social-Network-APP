@@ -42,7 +42,7 @@ export class PromotionModalComponent implements OnInit {
   }
 
   public search(userText: string) {
-    this.sectorService
+    /*this.sectorService
       .getUsersFromName(userText)
       .then(async (usuarios) => {
         for (const pessoa of usuarios) {
@@ -54,6 +54,7 @@ export class PromotionModalComponent implements OnInit {
       .catch((error) => {
         console.log(error);
       });
+      */
   }
 
   public userListNames(userId: string): boolean {
@@ -104,18 +105,20 @@ export class PromotionModalComponent implements OnInit {
         'https://www.donkey.bike/wp-content/uploads/2020/12/user-member-avatar-face-profile-icon-vector-22965342-e1608640557889.jpg'
       );
     }
-    return this.sectorService.getPhoto(path);
+    return Promise.resolve(path);
   }
 
   submitSearch(): void {
     this.search(this.formGroup.get('search').value);
   }
 
-  openSnackBar(userUpdated:boolean ) {
-    const message = userUpdated ? 'Usuario promovido com sucesso, pode fechar esse modal' : 'Tivemos um problema, tente novamente mais tarde';
-    this.snackBar.open(message,'close',{
+  openSnackBar(userUpdated: boolean) {
+    const message = userUpdated
+      ? 'Usuario promovido com sucesso, pode fechar esse modal'
+      : 'Tivemos um problema, tente novamente mais tarde';
+    this.snackBar.open(message, 'close', {
       duration: 2000,
-      panelClass: userUpdated ? ['green-snackbar']: ['red-snackbar']
+      panelClass: userUpdated ? ['green-snackbar'] : ['red-snackbar'],
     });
   }
 

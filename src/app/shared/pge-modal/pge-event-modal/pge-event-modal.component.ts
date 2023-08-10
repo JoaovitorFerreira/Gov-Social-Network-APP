@@ -1,7 +1,6 @@
 import { Component, Inject, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
-import { Timestamp } from 'firebase/firestore';
 import { Post } from 'src/app/model/post';
 import { FeedService } from 'src/app/modules/feed/feed.service';
 
@@ -59,7 +58,7 @@ export class EventModalPGEComponent implements OnInit {
     }
     const file: File = event.target.files[0];
     let date = new Date();
-    const timestamp = Timestamp.fromDate(date);
+    const timestamp = date.toDateString();
     const fileObj = {
       file,
       id: 'postImg' + file.name.split('.').pop() + timestamp,
@@ -100,13 +99,13 @@ export class EventModalPGEComponent implements OnInit {
   }
 
   public async savePGEEventPost(eventoAcriar: any) {
-    let date = Timestamp.fromDate(new Date());
+    let date = new Date().toDateString();
     let imgPath =
       eventoAcriar.imagensAnexadas === null
         ? null
         : await this.feedService.savePostImg(eventoAcriar.imagensAnexadas);
     let newPost: Post = {
-      id: `pge-rh-posts-${date.seconds}`,
+      id: `pge-rh-posts-${date}`,
       //alterar o dono post eventualmente
       donoPost: this.data,
       descricao: eventoAcriar.descricao,
@@ -119,7 +118,7 @@ export class EventModalPGEComponent implements OnInit {
         horarioInicio: eventoAcriar.evento.horarioInicio,
         horarioFim: eventoAcriar.evento.horarioFim,
         linkTransmissaoEvento: eventoAcriar.evento.linkTransmissaoEvento,
-        linkInscricaoEvento: eventoAcriar.evento.linkInscricaoEvento
+        linkInscricaoEvento: eventoAcriar.evento.linkInscricaoEvento,
       },
     };
     if (imgPath != null) {

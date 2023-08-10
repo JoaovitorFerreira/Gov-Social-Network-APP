@@ -33,7 +33,7 @@ export class SectorComponent implements OnInit, OnDestroy {
       await new Promise((complete) => setTimeout(() => complete(true), 2000));
     }
     const setor = this.headerService.dadosUsuario.currentJob.setor || '';
-    this.sectorService.getUsersFromSetor(setor).then(async (usuarios) => {
+    /*this.sectorService.getUsersFromSetor(setor).then(async (usuarios) => {
       for (const pessoa of usuarios) {
         pessoa.profilePicture = await this.getPhoto(pessoa.profilePicture);
       }
@@ -41,6 +41,7 @@ export class SectorComponent implements OnInit, OnDestroy {
       this.handleSearch();
       this.notSearchedYet = true;
     });
+    */
   }
 
   ngOnDestroy(): void {
@@ -54,7 +55,7 @@ export class SectorComponent implements OnInit, OnDestroy {
         'https://www.donkey.bike/wp-content/uploads/2020/12/user-member-avatar-face-profile-icon-vector-22965342-e1608640557889.jpg'
       );
     }
-    return this.sectorService.getPhoto(path);
+    return Promise.resolve(path);
   }
 
   public openProfile(pessoa: Usuario) {
@@ -85,7 +86,7 @@ export class SectorComponent implements OnInit, OnDestroy {
   }
 
   private search(userText: string, filterType: string) {
-    switch (filterType) {
+    /*switch (filterType) {
       case 'role':
         this.sectorService
           .getUsersFromCargo(
@@ -154,5 +155,6 @@ export class SectorComponent implements OnInit, OnDestroy {
         this.notSearchedYet = true;
         break;
     }
+    */
   }
 }

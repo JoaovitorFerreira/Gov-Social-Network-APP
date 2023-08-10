@@ -29,7 +29,7 @@ export class AddContactComponent implements OnInit {
   }
 
   public search(userText: string) {
-    this.sectorService
+    /*this.sectorService
       .getUsersFromName(userText)
       .then(async (usuarios) => {
         for (const pessoa of usuarios) {
@@ -41,6 +41,7 @@ export class AddContactComponent implements OnInit {
       .catch((error) => {
         console.log(error);
       });
+      */
   }
 
   public userListNames(userId: string): boolean {
@@ -69,7 +70,7 @@ export class AddContactComponent implements OnInit {
         'https://www.donkey.bike/wp-content/uploads/2020/12/user-member-avatar-face-profile-icon-vector-22965342-e1608640557889.jpg'
       );
     }
-    return this.sectorService.getPhoto(path);
+    return Promise.resolve(path);
   }
 
   submitSearch(): void {

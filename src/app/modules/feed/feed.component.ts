@@ -2,7 +2,6 @@ import { Component, OnDestroy, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { MatDialog } from '@angular/material/dialog';
 import { Router } from '@angular/router';
-import { Timestamp } from 'firebase/firestore';
 import { Subject } from 'rxjs';
 import { OnlineSystemPost, Post, tipoRealizacaoPost } from 'src/app/model/post';
 import { AddContactComponent } from 'src/app/shared/add-contact-modal/add-contact-modal.component';
@@ -95,7 +94,7 @@ export class FeedComponent implements OnInit, OnDestroy {
         'https://www.donkey.bike/wp-content/uploads/2020/12/user-member-avatar-face-profile-icon-vector-22965342-e1608640557889.jpg'
       );
     }
-    return this.feedService.getPhoto(path);
+    return Promise.resolve(path);
   }
 
   public openProfile(pessoa: Usuario) {
@@ -123,7 +122,7 @@ export class FeedComponent implements OnInit, OnDestroy {
     }
     const file: File = event.target.files[0];
     let date = new Date();
-    const timestamp = Timestamp.fromDate(date);
+    const timestamp = date.toDateString();
     const fileObj = {
       file,
       id: 'postImg' + file.name.split('.').pop() + timestamp,
@@ -143,17 +142,17 @@ export class FeedComponent implements OnInit, OnDestroy {
   }
 
   public async savePost() {
-    let date = Timestamp.fromDate(new Date());
+    let date = new Date();
     let imgPath =
       this.selectedImg == undefined
         ? null
         : await this.feedService.savePostImg(this.selectedImg);
     let newPost: Post = {
-      id: `${this.user.id}-post-${date.seconds}`,
+      id: `${this.user.id}-post-${date.toDateString()}`,
       donoPost: this.user,
       tipoPost: this.realizationOption,
       descricao: this.formGroup.getRawValue().message,
-      dataPost: date,
+      dataPost: date.toDateString(),
       ...(this.usuariosMarcados && { usuariosMarcados: this.usuariosMarcados }),
     };
     if (imgPath != null) {
@@ -168,16 +167,16 @@ export class FeedComponent implements OnInit, OnDestroy {
   }
 
   public async saveEventPost(eventoAcriar: any) {
-    let date = Timestamp.fromDate(new Date());
+    let date = new Date();
     let imgPath =
       eventoAcriar.imagensAnexadas === null
         ? null
         : await this.feedService.savePostImg(eventoAcriar.imagensAnexadas);
     let newPost: Post = {
-      id: `${this.user.id}-post-${date.seconds}`,
+      id: `${this.user.id}-post-${date.toDateString()}`,
       donoPost: this.user,
       descricao: eventoAcriar.descricao,
-      dataPost: date,
+      dataPost: date.toDateString(),
       evento: {
         nomeEvento: eventoAcriar.evento.nomeEvento,
         dataInicioEvento: eventoAcriar.evento.dataInicioEvento,
@@ -185,7 +184,7 @@ export class FeedComponent implements OnInit, OnDestroy {
         horarioInicio: eventoAcriar.evento.horarioInicio,
         horarioFim: eventoAcriar.evento.horarioFim,
         linkTransmissaoEvento: eventoAcriar.evento.linkTransmissaoEvento,
-        linkInscricaoEvento: eventoAcriar.evento.linkInscricaoEvento
+        linkInscricaoEvento: eventoAcriar.evento.linkInscricaoEvento,
       },
     };
     if (imgPath != null) {
@@ -251,8 +250,8 @@ export class FeedComponent implements OnInit, OnDestroy {
       horarioInicio: post.evento.horarioInicio,
       nomeEvento: post.evento.nomeEvento,
       participantes: atendeesList,
-      linkTransmissaoEvento:post.evento.linkTransmissaoEvento,
-      linkInscricaoEvento: post.evento.linkInscricaoEvento
+      linkTransmissaoEvento: post.evento.linkTransmissaoEvento,
+      linkInscricaoEvento: post.evento.linkInscricaoEvento,
     };
 
     const newPost = {
@@ -266,7 +265,9 @@ export class FeedComponent implements OnInit, OnDestroy {
 
   public userIsAtendee(post: Post) {
     const user = this.headerService.dadosUsuario;
-    const hasAtendees = Array.isArray(post.evento.participantes) && post.evento.participantes.length > 0;
+    const hasAtendees =
+      Array.isArray(post.evento.participantes) &&
+      post.evento.participantes.length > 0;
     if (hasAtendees) {
       return post.evento.participantes.some(
         (atendee) => atendee.id === user.id

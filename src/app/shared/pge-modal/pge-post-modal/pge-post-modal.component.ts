@@ -5,7 +5,6 @@ import {
   MatDialogRef,
   MAT_DIALOG_DATA,
 } from '@angular/material/dialog';
-import { Timestamp } from 'firebase/firestore';
 import { Usuario } from 'src/app/core/models/usuario.model';
 import { Post, tipoRealizacaoPost } from 'src/app/model/post';
 import { FeedService } from 'src/app/modules/feed/feed.service';
@@ -37,6 +36,7 @@ export class PostModalPGEComponent implements OnInit {
   }
 
   public async savePost() {
+    /*
     let date = Timestamp.fromDate(new Date());
     let imgPath =
       this.selectedImg == undefined
@@ -62,19 +62,21 @@ export class PostModalPGEComponent implements OnInit {
       .catch((error) => {
         this.dialogRef.close(error);
       });
+      */
   }
 
   public removeImage() {
-    console.log('antes da remoção', this.selectedImg);
+    /*console.log('antes da remoção', this.selectedImg);
     for (const prop of Object.getOwnPropertyNames(this.selectedImg)) {
       delete this.selectedImg[prop];
     }
     this.hasImgSaved = false;
     console.log('apos a remocao', this.selectedImg);
+    */
   }
 
   public addContact() {
-    const dialogRef = this.dialog.open(AddContactComponent, {
+    /*const dialogRef = this.dialog.open(AddContactComponent, {
       width: '600px',
       height: '300px',
       disableClose: true,
@@ -83,6 +85,7 @@ export class PostModalPGEComponent implements OnInit {
     dialogRef.afterClosed().subscribe((result) => {
       this.usuariosMarcados = result;
     });
+    */
   }
 
   public uploadImage(ref: HTMLInputElement) {
@@ -96,7 +99,7 @@ export class PostModalPGEComponent implements OnInit {
     }
     const file: File = event.target.files[0];
     let date = new Date();
-    const timestamp = Timestamp.fromDate(date);
+    const timestamp = date.toDateString();
     const fileObj = {
       file,
       id: 'postImg' + file.name.split('.').pop() + timestamp,

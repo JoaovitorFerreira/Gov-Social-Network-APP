@@ -1,71 +1,85 @@
-import { Injectable } from "@angular/core";
-import { Firestore, doc, getDoc, setDoc } from "@angular/fire/firestore";
-import { getDownloadURL, ref, Storage, uploadBytes } from "@angular/fire/storage";
-import { ChatService } from "src/app/core/chat/chat.service";
-import { Usuario } from "src/app/core/models/usuario.model";
+import { HttpClient } from '@angular/common/http';
+import { Injectable } from '@angular/core';
+import { ChatService } from 'src/app/core/chat/chat.service';
+import { Usuario } from 'src/app/core/models/usuario.model';
 
 @Injectable()
 export class UserDetailsService {
-  constructor(private firestore: Firestore, private chatService: ChatService, private storage: Storage) {}
+  constructor(private http: HttpClient, private chatService: ChatService) {}
 
-  public getUsuario(uid: string): Promise<Usuario> {
-    return getDoc(doc(this.firestore, `usuarios/${uid}`)).then(user => {
-      if (!user.exists()) { return null; }
-      const dados = {...user.data(), id: uid} as Usuario;
-      return dados;
-    }).catch(error => {
-      console.log('error getting user --> ', error);
-      return null;
-    });
+  public async getUsuario(uid: string): Promise<any> {
+    const user = await this.http
+      .get(`http://localhost:3000/perfil/user/${uid}`)
+      .subscribe((result) => {
+        if (result !== null) {
+          sessionStorage.setItem('detailedUser', JSON.stringify(result));
+          return result as Usuario;
+        } else {
+          return null;
+        }
+      });
+    return user;
   }
 
-  public saveUsuario(usuario: Usuario): Promise<boolean> {
-    const uid = usuario.id;
-    delete usuario.id;
-    
-    return setDoc(doc(this.firestore, 'usuarios/' + uid), usuario).then(() => {
-      sessionStorage.setItem('userData', JSON.stringify(usuario))
-      return true
-    });
+  public async saveUsuario(usuario: Usuario) {
+    return this.http
+      .put('http://localhost:3000/editar-perfil', usuario)
+      .subscribe((result: any) => {
+        if (result as boolean) {
+          sessionStorage.setItem('userData', JSON.stringify(usuario));
+          return true;
+        }
+        return false;
+      });
   }
 
-  public async saveProfileImage(archive: { id: string, file: Blob, path: string }): Promise<string> {
-    const id: string = archive.id;
+  public async saveProfileImage(archive: {
+    id: string;
+    file: Blob;
+    path: string;
+  }) {
     const file: Blob = archive.file;
-    const path: string = archive.path;
-    const reference = ref(this.storage, `${path}/${id}`);
+    var reader = new FileReader();
+    reader.readAsDataURL(file);
+    reader.onloadend = (e: any) => {
+      const imgString = e.target.result as string;
+      const user: Usuario = JSON.parse(sessionStorage.getItem('userData'));
+      let newUser = { ...user, profilePicture: imgString };
+      this.saveUsuario(newUser);
+    };
+
+    /*const reference = ref(this.storage, `${path}/${id}`);
     const task = uploadBytes(reference, file);
     try {
-        const res = await task;
-        if (res.metadata.size > 0) {
-          return res.ref.fullPath;
-        }
+      const res = await task;
+      if (res.metadata.size > 0) {
+        return res.ref.fullPath;
+      }
     } catch (err) {
       console.log('error on upload file --> ', err);
       return null;
     }
     return null;
+    */
   }
 
-  public getPhoto(path: string) {
-    return getDownloadURL(ref(this.storage, path));
-  }
-
-  public checkIfHasSentMessage(userId: string){
-   let msgsIds = JSON.parse(sessionStorage.getItem('userMsgsId'))
-   if(msgsIds.length == 0){
-    msgsIds = this.chatService.initUserChat().then((messages)=> {
-      return messages.map(msg=> {return msg.id})
-    })
-   }
-   let hasSent: boolean[] = msgsIds.map((combinedUserId:string) => {
-    console.log(combinedUserId)
-    return combinedUserId.includes(userId)
-   })
-   if(hasSent.find((msg)=> msg === true)){
-    return true
-   }else{
-    return false
-   }
+  public checkIfHasSentMessage(userId: string) {
+    let msgsIds = JSON.parse(sessionStorage.getItem('userMsgsId'));
+    if (msgsIds.length == 0) {
+      msgsIds = this.chatService.initUserChat().then((messages) => {
+        return messages.map((msg) => {
+          return msg.id;
+        });
+      });
+    }
+    let hasSent: boolean[] = msgsIds.map((combinedUserId: string) => {
+      console.log(combinedUserId);
+      return combinedUserId.includes(userId);
+    });
+    if (hasSent.find((msg) => msg === true)) {
+      return true;
+    } else {
+      return false;
+    }
   }
 }

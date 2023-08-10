@@ -1,5 +1,4 @@
 import { InterestReaction } from './interestReaction';
-import { Timestamp } from 'firebase/firestore';
 import { Usuario } from '../core/models/usuario.model';
 
 export interface Post {
@@ -8,19 +7,19 @@ export interface Post {
   tipoPost?: tipoRealizacaoPost;
   comentarios?: comentarioPost[];
   descricao: string;
-  dataPost: Timestamp;
+  dataPost: string;
   usuariosMarcados?: Usuario[];
   imagensAnexadas?: string;
   reacoes?: InterestReaction[];
   evento?: Evento;
-  postRh?: boolean
+  postRh?: boolean;
 }
 
 export interface Evento {
-  dataInicioEvento: Timestamp;
-  dataFimEvento: Timestamp;
-  horarioInicio: Timestamp;
-  horarioFim: Timestamp;
+  dataInicioEvento: string;
+  dataFimEvento: string;
+  horarioInicio: string;
+  horarioFim: string;
   nomeEvento: string;
   participantes?: Usuario[];
   linkTransmissaoEvento: string;
@@ -40,5 +39,5 @@ export enum tipoRealizacaoPost {
 export interface comentarioPost {
   donoComentario: Usuario;
   comentario: string;
-  dataComentario: Timestamp;
+  dataComentario: string;
 }
