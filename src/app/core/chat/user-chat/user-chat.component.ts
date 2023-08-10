@@ -2,7 +2,7 @@ import { Component, Input } from '@angular/core';
 import { UserChatService } from './user-chat.service';
 import { Usuario } from 'src/app/core/models/usuario.model';
 import { ChatMessage, OnlineSystemMessage } from 'src/app/model/message';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { UntypedFormBuilder, UntypedFormGroup, Validators } from '@angular/forms';
 
 @Component({
   selector: 'user-chat',
@@ -14,7 +14,7 @@ export class UserChatComponent {
   usuario: Usuario;
   responseUser: Usuario;
   _userChat: OnlineSystemMessage;
-  public formGroup: FormGroup;
+  public formGroup: UntypedFormGroup;
 
   @Input() set userChat(userChat: OnlineSystemMessage) {
     this._userChat = userChat;
@@ -24,7 +24,7 @@ export class UserChatComponent {
 
   constructor(
     private userChatService: UserChatService,
-    private fb: FormBuilder
+    private fb: UntypedFormBuilder
   ) {
     this.usuario = JSON.parse(sessionStorage.getItem('userData'));
   }

@@ -1,5 +1,5 @@
 import { Component, Inject, OnInit } from '@angular/core';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { UntypedFormBuilder, UntypedFormGroup, Validators } from '@angular/forms';
 import { MatCheckboxChange } from '@angular/material/checkbox';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { Usuario } from 'src/app/core/models/usuario.model';
@@ -12,14 +12,14 @@ import { SectorService } from 'src/app/modules/sector/sector.service';
 })
 export class AddContactComponent implements OnInit {
   public resultado: Usuario[];
-  public formGroup: FormGroup;
+  public formGroup: UntypedFormGroup;
   public notSearchedYet = true;
   public addUserList: Usuario[] = [];
   constructor(
     public dialogRef: MatDialogRef<AddContactComponent>,
     @Inject(MAT_DIALOG_DATA) public data: any,
     private sectorService: SectorService,
-    private fb: FormBuilder
+    private fb: UntypedFormBuilder
   ) {}
 
   ngOnInit() {

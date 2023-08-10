@@ -1,5 +1,5 @@
 import { Component, Inject, OnInit } from '@angular/core';
-import { FormBuilder, FormControl, FormGroup } from '@angular/forms';
+import { UntypedFormBuilder, UntypedFormControl, UntypedFormGroup } from '@angular/forms';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { Idiomas } from '../../models/idiomas.models';
 
@@ -10,8 +10,8 @@ import { Idiomas } from '../../models/idiomas.models';
   styleUrls: ['./idiomas-form.component.scss']
 })
 export class IdiomasFormComponent implements OnInit {
-  public formGroup: FormGroup;
-  public outrosInput: FormGroup;
+  public formGroup: UntypedFormGroup;
+  public outrosInput: UntypedFormGroup;
   public padroes = [
     'ingles',
     'frances',
@@ -19,7 +19,7 @@ export class IdiomasFormComponent implements OnInit {
     'alemao',
     'portugues',
   ];
-  constructor(@Inject(MAT_DIALOG_DATA) private data: Idiomas, private matRef: MatDialogRef<IdiomasFormComponent>, private fb: FormBuilder) { }
+  constructor(@Inject(MAT_DIALOG_DATA) private data: Idiomas, private matRef: MatDialogRef<IdiomasFormComponent>, private fb: UntypedFormBuilder) { }
 
   ngOnInit(): void {
     this.createForms(this.data);
@@ -52,7 +52,7 @@ export class IdiomasFormComponent implements OnInit {
   }
 
   private addControl(key: string) {
-    this.formGroup.addControl(key, new FormControl(true));
+    this.formGroup.addControl(key, new UntypedFormControl(true));
   }
 
   public addIdiomas() {

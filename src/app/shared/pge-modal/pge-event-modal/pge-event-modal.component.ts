@@ -1,5 +1,5 @@
 import { Component, Inject, OnInit } from '@angular/core';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { UntypedFormBuilder, UntypedFormGroup, Validators } from '@angular/forms';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { Post } from 'src/app/model/post';
 import { FeedService } from 'src/app/modules/feed/feed.service';
@@ -11,14 +11,14 @@ import { FeedService } from 'src/app/modules/feed/feed.service';
   providers: [FeedService],
 })
 export class EventModalPGEComponent implements OnInit {
-  public formGroup: FormGroup;
+  public formGroup: UntypedFormGroup;
   public notSearchedYet = true;
   public selectedImg: { file: File; id: string; path: string };
   public hasImgSaved = false;
   constructor(
     public dialogRef: MatDialogRef<EventModalPGEComponent>,
     @Inject(MAT_DIALOG_DATA) public data: any,
-    private fb: FormBuilder,
+    private fb: UntypedFormBuilder,
     private feedService: FeedService
   ) {}
 

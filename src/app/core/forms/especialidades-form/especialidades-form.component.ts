@@ -1,5 +1,5 @@
 import { Component, Inject, OnInit } from '@angular/core';
-import { FormBuilder, FormControl, FormGroup } from '@angular/forms';
+import { UntypedFormBuilder, UntypedFormControl, UntypedFormGroup } from '@angular/forms';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { Especialidades } from '../../models/especialidades.model';
 
@@ -9,8 +9,8 @@ import { Especialidades } from '../../models/especialidades.model';
   styleUrls: ['./especialidades-form.component.scss']
 })
 export class EspecialidadesFormComponent implements OnInit {
-  public formGroup: FormGroup;
-  public outrosInput: FormGroup;
+  public formGroup: UntypedFormGroup;
+  public outrosInput: UntypedFormGroup;
   public padroes = [
     'direito_administrativo',
     'direito_civil',
@@ -32,7 +32,7 @@ export class EspecialidadesFormComponent implements OnInit {
     'gestão',
     'rh'
   ];
-  constructor(@Inject(MAT_DIALOG_DATA) private data: Especialidades, private matRef: MatDialogRef<EspecialidadesFormComponent>, private fb: FormBuilder) { }
+  constructor(@Inject(MAT_DIALOG_DATA) private data: Especialidades, private matRef: MatDialogRef<EspecialidadesFormComponent>, private fb: UntypedFormBuilder) { }
 
   ngOnInit(): void {
     this.createForms(this.data);
@@ -94,7 +94,7 @@ export class EspecialidadesFormComponent implements OnInit {
   }
 
   private addControl(key: string) {
-    this.formGroup.addControl(key, new FormControl(true));
+    this.formGroup.addControl(key, new UntypedFormControl(true));
   }
 
   public addConhecimento() {

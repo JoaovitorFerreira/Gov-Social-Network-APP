@@ -1,5 +1,5 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
-import { FormBuilder, FormGroup } from '@angular/forms';
+import { UntypedFormBuilder, UntypedFormGroup } from '@angular/forms';
 import { Router } from '@angular/router';
 import { delay, Subject, takeUntil } from 'rxjs';
 import { Usuario } from '../../core/models/usuario.model';
@@ -14,12 +14,12 @@ import { SectorService } from './sector.service';
 })
 export class SectorComponent implements OnInit, OnDestroy {
   public setor: Usuario[];
-  public formGroup: FormGroup;
+  public formGroup: UntypedFormGroup;
   private destroy: Subject<any> = new Subject();
   public notSearchedYet: boolean;
   constructor(
     private router: Router,
-    private fb: FormBuilder,
+    private fb: UntypedFormBuilder,
     private headerService: HeaderService,
     private sectorService: SectorService
   ) {}

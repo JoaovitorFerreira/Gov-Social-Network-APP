@@ -1,5 +1,5 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { UntypedFormBuilder, UntypedFormGroup, Validators } from '@angular/forms';
 import { MatDialog } from '@angular/material/dialog';
 import { Router } from '@angular/router';
 import { Subject } from 'rxjs';
@@ -19,8 +19,8 @@ import { FeedService } from './feed.service';
 export class FeedComponent implements OnInit, OnDestroy {
   public user: Usuario;
   public setor: Usuario[];
-  public formGroup: FormGroup;
-  public messageFormGroup: FormGroup;
+  public formGroup: UntypedFormGroup;
+  public messageFormGroup: UntypedFormGroup;
   private destroy: Subject<any> = new Subject();
   public posts: any[] = [];
   public selectedImg: { file: File; id: string; path: string };
@@ -31,7 +31,7 @@ export class FeedComponent implements OnInit, OnDestroy {
   public panelOpenState = false;
   constructor(
     private router: Router,
-    private fb: FormBuilder,
+    private fb: UntypedFormBuilder,
     private headerService: HeaderService,
     private feedService: FeedService,
     private dialog: MatDialog

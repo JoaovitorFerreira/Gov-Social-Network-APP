@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { UntypedFormBuilder, UntypedFormGroup, Validators } from '@angular/forms';
 import { OnlineSystemMessage } from 'src/app/model/message';
 import { Usuario } from '../models/usuario.model';
 import { ChatService } from './chat.service';
@@ -13,13 +13,13 @@ export class ChatComponent {
   public userChats: OnlineSystemMessage[] = [];
   public searchedChats: OnlineSystemMessage[] = [];
   public messageList: string[] = [];
-  public formGroup: FormGroup;
+  public formGroup: UntypedFormGroup;
   public user: Usuario;
   public selectedUser: any;
 
   constructor(
     private chatService: ChatService,
-    private fb: FormBuilder,
+    private fb: UntypedFormBuilder,
     public snackbar: MatSnackBar
   ) {}
 

@@ -1,5 +1,5 @@
 import { Component, Inject, OnInit } from '@angular/core';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { UntypedFormBuilder, UntypedFormGroup, Validators } from '@angular/forms';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 @Component({
   selector: 'single-user-modal-dialog',
@@ -7,13 +7,13 @@ import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
   styleUrls: ['./single-user-modal.component.css'],
 })
 export class SingleUserModalComponent implements OnInit {
-  public formGroup: FormGroup;
-  public promotionGroup: FormGroup;
+  public formGroup: UntypedFormGroup;
+  public promotionGroup: UntypedFormGroup;
 
   constructor(
     public dialogRef: MatDialogRef<SingleUserModalComponent>,
     @Inject(MAT_DIALOG_DATA) public data: any,
-    private fb: FormBuilder
+    private fb: UntypedFormBuilder
   ) {}
 
   ngOnInit() {

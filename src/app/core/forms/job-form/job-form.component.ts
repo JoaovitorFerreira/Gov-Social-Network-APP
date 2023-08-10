@@ -1,5 +1,5 @@
 import { Component, Inject, OnInit } from '@angular/core';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { UntypedFormBuilder, UntypedFormGroup, Validators } from '@angular/forms';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { Job } from '../../models/job.model';
 
@@ -9,8 +9,8 @@ import { Job } from '../../models/job.model';
   styleUrls: ['./job-form.component.scss']
 })
 export class JobFormComponent implements OnInit {
-  public formGroup: FormGroup;
-  constructor(@Inject(MAT_DIALOG_DATA) private data: Job, private matRef: MatDialogRef<JobFormComponent>, private fb: FormBuilder) { }
+  public formGroup: UntypedFormGroup;
+  constructor(@Inject(MAT_DIALOG_DATA) private data: Job, private matRef: MatDialogRef<JobFormComponent>, private fb: UntypedFormBuilder) { }
 
   ngOnInit(): void {
     this.formGroup = this.fb.group({

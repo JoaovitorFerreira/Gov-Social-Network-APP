@@ -1,5 +1,5 @@
 import { Component, Inject, OnInit } from '@angular/core';
-import { FormBuilder, FormControl, FormGroup } from '@angular/forms';
+import { UntypedFormBuilder, UntypedFormControl, UntypedFormGroup } from '@angular/forms';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { Hobbies } from '../../models/hobbies.model';
 
@@ -10,8 +10,8 @@ import { Hobbies } from '../../models/hobbies.model';
   styleUrls: ['./hobbies-form.component.scss']
 })
 export class HobbiesFormComponent implements OnInit {
-  public formGroup: FormGroup;
-  public outrosInput: FormGroup;
+  public formGroup: UntypedFormGroup;
+  public outrosInput: UntypedFormGroup;
   public padroes = [
     'artes',
     'esportes',
@@ -21,7 +21,7 @@ export class HobbiesFormComponent implements OnInit {
     'violino',
     'violão',
   ];
-  constructor(@Inject(MAT_DIALOG_DATA) private data: Hobbies, private matRef: MatDialogRef<HobbiesFormComponent>, private fb: FormBuilder) { }
+  constructor(@Inject(MAT_DIALOG_DATA) private data: Hobbies, private matRef: MatDialogRef<HobbiesFormComponent>, private fb: UntypedFormBuilder) { }
 
   ngOnInit(): void {
     this.createForms(this.data);
@@ -59,7 +59,7 @@ export class HobbiesFormComponent implements OnInit {
   }
 
   private addControl(key: string) {
-    this.formGroup.addControl(key, new FormControl(true));
+    this.formGroup.addControl(key, new UntypedFormControl(true));
   }
 
   public addConhecimento() {

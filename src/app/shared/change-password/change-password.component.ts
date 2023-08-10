@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { UntypedFormBuilder, UntypedFormGroup, Validators } from '@angular/forms';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { AuthService } from 'src/app/core/services/auth.service';
 import { HeaderService } from '../header/header.service';
@@ -13,13 +13,13 @@ import { Router } from '@angular/router';
 export class ChangePasswordComponent implements OnInit {
   constructor(
     //private firestore: Firestore,
-    private fb: FormBuilder,
+    private fb: UntypedFormBuilder,
     private router: Router,
     private headerService: HeaderService,
     private snack: MatSnackBar,
     private authService: AuthService
   ) {}
-  public formGroup: FormGroup;
+  public formGroup: UntypedFormGroup;
 
   ngOnInit(): void {
     this.formGroup = this.fb.group({

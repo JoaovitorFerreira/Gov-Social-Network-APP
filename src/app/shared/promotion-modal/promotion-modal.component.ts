@@ -1,5 +1,5 @@
 import { Component, Inject, OnInit } from '@angular/core';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { UntypedFormBuilder, UntypedFormGroup, Validators } from '@angular/forms';
 import { Job } from 'src/app/core/models/job.model';
 
 import {
@@ -21,7 +21,7 @@ import { MatSnackBar } from '@angular/material/snack-bar';
 })
 export class PromotionModalComponent implements OnInit {
   public resultado: Usuario[];
-  public formGroup: FormGroup;
+  public formGroup: UntypedFormGroup;
   public notSearchedYet = true;
   public addUserList: Usuario[] = [];
 
@@ -30,7 +30,7 @@ export class PromotionModalComponent implements OnInit {
     private dialog: MatDialog,
     @Inject(MAT_DIALOG_DATA) public data: any,
     private sectorService: SectorService,
-    private fb: FormBuilder,
+    private fb: UntypedFormBuilder,
     private userService: UserDetailsService,
     private snackBar: MatSnackBar
   ) {}

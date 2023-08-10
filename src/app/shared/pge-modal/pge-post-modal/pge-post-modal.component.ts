@@ -1,5 +1,5 @@
 import { Component, Inject, OnInit } from '@angular/core';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { UntypedFormBuilder, UntypedFormGroup, Validators } from '@angular/forms';
 import {
   MatDialog,
   MatDialogRef,
@@ -17,14 +17,14 @@ import { AddContactComponent } from '../../add-contact-modal/add-contact-modal.c
   providers: [FeedService],
 })
 export class PostModalPGEComponent implements OnInit {
-  public formGroup: FormGroup;
+  public formGroup: UntypedFormGroup;
   public selectedImg: { file: File; id: string; path: string };
   public usuariosMarcados: Usuario[];
   public hasImgSaved = false;
   constructor(
     public dialogRef: MatDialogRef<PostModalPGEComponent>,
     @Inject(MAT_DIALOG_DATA) public data: any,
-    private fb: FormBuilder,
+    private fb: UntypedFormBuilder,
     private feedService: FeedService,
     private dialog: MatDialog
   ) {}

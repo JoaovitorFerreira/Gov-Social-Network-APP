@@ -1,5 +1,5 @@
 import { Component, Inject, OnInit } from '@angular/core';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { UntypedFormBuilder, UntypedFormGroup, Validators } from '@angular/forms';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { Formacao, TipoFormacao } from '../../models/formacao.model';
 
@@ -9,7 +9,7 @@ import { Formacao, TipoFormacao } from '../../models/formacao.model';
   styleUrls: ['./formacao-form.component.scss']
 })
 export class FormacaoFormComponent implements OnInit {
-  public formGroup: FormGroup;
+  public formGroup: UntypedFormGroup;
   public tipos: TipoFormacao[] = [
     'Curso',
     'Doutorado',
@@ -20,7 +20,7 @@ export class FormacaoFormComponent implements OnInit {
     'Pós-Graduação',
     'Workshop'
   ];
-  constructor(@Inject(MAT_DIALOG_DATA) private data: Formacao, private matRef: MatDialogRef<FormacaoFormComponent>, private fb: FormBuilder) { }
+  constructor(@Inject(MAT_DIALOG_DATA) private data: Formacao, private matRef: MatDialogRef<FormacaoFormComponent>, private fb: UntypedFormBuilder) { }
 
   ngOnInit(): void {
     this.formGroup = this.fb.group({

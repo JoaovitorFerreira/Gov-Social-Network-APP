@@ -1,8 +1,8 @@
 import { Component, Inject, OnInit } from '@angular/core';
 import {
-  FormBuilder,
-  FormControl,
-  FormGroup,
+  UntypedFormBuilder,
+  UntypedFormControl,
+  UntypedFormGroup,
   Validators,
 } from '@angular/forms';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
@@ -14,13 +14,13 @@ import { IdealLocation } from '../../models/idealLocation.model';
   styleUrls: ['./locacao-ideal-form.component.scss'],
 })
 export class IdealLocationFormComponent implements OnInit {
-  public formGroup: FormGroup;
+  public formGroup: UntypedFormGroup;
   public contadorCampos: number = 1;
   public arrayCampos = [1];
   constructor(
     @Inject(MAT_DIALOG_DATA) private data: IdealLocation,
     private matRef: MatDialogRef<IdealLocationFormComponent>,
-    private fb: FormBuilder
+    private fb: UntypedFormBuilder
   ) {}
 
   ngOnInit(): void {
@@ -44,7 +44,7 @@ export class IdealLocationFormComponent implements OnInit {
     this.arrayCampos.push(this.contadorCampos);
     this.formGroup.addControl(
       `interesse${this.contadorCampos}`,
-      new FormControl(valorInteresse)
+      new UntypedFormControl(valorInteresse)
     );
   }
 
