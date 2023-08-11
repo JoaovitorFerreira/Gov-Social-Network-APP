@@ -5,18 +5,6 @@ import {
   Message,
   OnlineSystemMessage,
 } from 'src/app/model/message';
-import {
-  Firestore,
-  collection,
-  DocumentData,
-  getDocs,
-  QuerySnapshot,
-  where,
-  query,
-  setDoc,
-  doc,
-  Timestamp,
-} from '@angular/fire/firestore';
 import { Usuario } from '../../models/usuario.model';
 
 @Injectable({
@@ -24,13 +12,13 @@ import { Usuario } from '../../models/usuario.model';
 })
 export class UserChatService {
   public message$: BehaviorSubject<string> = new BehaviorSubject('');
-  constructor(private firestore: Firestore) {}
+  constructor() {}
 
   public async sendMessage(userData: OnlineSystemMessage, msg: string) {
     let date = new Date();
     let lastMsg: ChatMessage = {
       content: msg,
-      timestamp: Timestamp.fromDate(date),
+      timestamp: date.toDateString(),
       userId: userData.requestId,
       userName: userData.requestUser,
     };
@@ -43,23 +31,25 @@ export class UserChatService {
       chat: newChat,
       lastMsg: lastMsg,
     };
-    await setDoc(doc(this.firestore, 'user-chats/' + userData.id), {
-      ...userDataSimplified,
-    });
+    //await setDoc(doc(this.firestore, 'user-chats/' + userData.id), {
+    //  ...userDataSimplified,
+    //});
   }
 
   public userMessagesChat = (
-    docMsgs: QuerySnapshot<DocumentData>
+    docMsgs: any
+    //QuerySnapshot<DocumentData>
   ): Message[] => {
     if (docMsgs.empty) {
       return [];
     }
-    const chats: Message[] = [];
+    /* const chats: Message[] = [];
     for (const doc of docMsgs.docs) {
       const dados = doc.data() as Message;
       chats.push(dados);
     }
     return chats;
+    */
   };
 
   public getReponseUserChat = async (
@@ -67,7 +57,7 @@ export class UserChatService {
   ): Promise<Usuario> => {
     let usersCache: any[] =
       JSON.parse(sessionStorage.getItem('usersCache')) ?? [];
-    if (usersCache == undefined || usersCache.length == 0) {
+    /* if (usersCache == undefined || usersCache.length == 0) {
       let q = query(
         collection(this.firestore, 'usuarios'),
         where('username', '==', responseUsername)
@@ -80,5 +70,8 @@ export class UserChatService {
     return usersCache.find((user) => {
       return user.username == responseUsername;
     });
+    */
+    const user: Usuario = null;
+    return Promise.resolve(user as Usuario);
   };
 }

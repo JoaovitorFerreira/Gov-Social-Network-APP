@@ -1,13 +1,4 @@
 import { Injectable } from '@angular/core';
-import {
-  collection,
-  doc,
-  Firestore,
-  getDocs,
-  onSnapshot,
-  query,
-  where,
-} from '@angular/fire/firestore';
 import { BehaviorSubject } from 'rxjs';
 import { Message, OnlineSystemMessage } from 'src/app/model/message';
 import { Usuario } from '../models/usuario.model';
@@ -22,11 +13,11 @@ interface MessageChat {
 })
 export class ChatService {
   public message$: BehaviorSubject<MessageChat> = new BehaviorSubject(null);
-  constructor(private firestore: Firestore) {}
+  constructor() {}
   public user: Usuario = JSON.parse(sessionStorage.getItem('userData'));
 
   public getContinuosChat = async () => {
-    let q = query(
+    /*let q = query(
       collection(this.firestore, 'user-chats'),
       where('usersId', 'array-contains-any', [this.user.id])
     );
@@ -51,13 +42,14 @@ export class ChatService {
     querySnapshot.forEach((docs) => {
       docsArray.push(docs.data());
     });
-    return docsArray;
+    */
+    return [];
   };
 
   public async initUserChat() {
     this.user = JSON.parse(sessionStorage.getItem('userData'));
     let userChats = [];
-    let q = query(
+    /*let q = query(
       collection(this.firestore, 'user-chats'),
       where('usersId', 'array-contains-any', [this.user.id])
     );
@@ -92,5 +84,7 @@ export class ChatService {
         sessionStorage.setItem('userMsgsId', JSON.stringify(msgIds));
         return userChats;
       });
+      */
+    return userChats;
   }
 }
