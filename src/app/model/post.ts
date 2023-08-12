@@ -1,4 +1,3 @@
-import { InterestReaction } from './interestReaction';
 import { Usuario } from '../core/models/usuario.model';
 
 export interface Post {
@@ -10,7 +9,6 @@ export interface Post {
   dataPost: string;
   usuariosMarcados?: Usuario[];
   imagensAnexadas?: string;
-  reacoes?: InterestReaction[];
   evento?: Evento;
   postRh?: boolean;
 }

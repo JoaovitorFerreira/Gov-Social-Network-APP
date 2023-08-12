@@ -20,20 +20,9 @@ export class HeaderComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
-    this.authService.$user
-      .pipe(takeUntil(this.subject))
-      .subscribe((userExists) => {
-        this.headerService.getUsuario(this.authService.getUserId).then(user => {
-          if (!user) { return; }
-          this.username = user.username;
-        }).catch(error => {
-          if (!userExists) {
-            this.username = 'Procurador(a)';
-            return;
-          }
-          console.log('error getting user --> ', error);
-        });
-      });
+    this.username = this.authService.getUser
+      ? this.authService.getUser.username
+      : 'Procurador(a)';
   }
 
   ngOnDestroy(): void {
@@ -46,7 +35,7 @@ export class HeaderComponent implements OnInit {
   }
 
   public getFirstName(userName: string) {
-    return userName.split(' ')[0]
+    return userName.split(' ')[0];
   }
 
   public openMenu() {

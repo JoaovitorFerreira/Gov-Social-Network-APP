@@ -1,45 +1,78 @@
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 
-import { BehaviorSubject, Observable, map, tap } from 'rxjs';
-import { User } from 'src/app/model/user';
+import { BehaviorSubject, catchError, take, tap } from 'rxjs';
 import { Usuario } from '../models/usuario.model';
+import { MONGODB_DATABASE } from 'src/environments/environment.dev';
 
 @Injectable({ providedIn: 'root' })
 export class AuthService {
-  private http: HttpClient;
   private userId: string = null;
   private userJwt: string = null;
-  private user: User = null;
-  public $user = new BehaviorSubject<User>(this.user);
-  constructor() {}
+  private user: Usuario = null;
+  public $user = new BehaviorSubject<Usuario>(this.user);
+
+  constructor(private http: HttpClient) {}
 
   public get getUserId(): string {
-    return this.userId;
+    const user: Usuario = JSON.parse(sessionStorage.getItem('userData'));
+    return this.userId === null ? user.id : this.userId;
   }
 
-  public get getUser(): User {
-    return this.user;
+  public get getUserJwt() {
+    const jwt: string = JSON.parse(sessionStorage.getItem('access_token'));
+    return this.userJwt === null ? jwt : this.userJwt;
+  }
+
+  public get getUser(): Usuario {
+    return this.user === null
+      ? JSON.parse(sessionStorage.getItem('userData'))
+      : this.user;
   }
 
   public isUserLoggedIn(): boolean {
-    return this.user !== null && this.userId !== null && this.userJwt !== null;
-  }
+    const user: Usuario = JSON.parse(sessionStorage.getItem('userData'));
+    const jwt: string = JSON.parse(sessionStorage.getItem('access_token'));
+    const isLocal =
+      this.user !== null && this.userId !== null && this.userJwt !== null;
+    const notInSession = !(user && jwt);
 
-  public changePassword(userToRecover: string) {
-    const body = JSON.stringify({ userToRecover: userToRecover });
-    return this.http
-      .post(`http://localhost:3000/auth/login`, body)
-      .subscribe((result: any) => {
-        return result;
-      });
+    return isLocal ? true : !notInSession;
   }
 
   public async login(email: string, password: string) {
-    const body = JSON.stringify({ email, password });
-    return this.http
-      .post(`http://localhost:3000/auth/login`, body)
-      .pipe(tap((result: any) => console.log(result)));
+    const body = { email: email, password: password };
+    const result = this.http
+      .post(`${MONGODB_DATABASE}auth/login`, body)
+      .pipe()
+      .subscribe((result: any) => {
+        this.user = result.user;
+        this.userId = result.user.id;
+        this.userJwt = result.access_token;
+        sessionStorage.setItem('userData', JSON.stringify(result.user));
+        sessionStorage.setItem(
+          'access_token',
+          JSON.stringify(result.access_token)
+        );
+        return result;
+      });
+    console.log(result);
+    return result;
+  }
+
+  public async getUserData(userId: string) {
+    const headers = new HttpHeaders({
+      'Content-Type': 'application/json',
+      Authorization: `Bearer ${this.getUserJwt}`,
+    });
+    const result = this.http
+      .get(`${MONGODB_DATABASE}perfil/user/${userId}`, { headers: headers })
+      .pipe()
+      .subscribe((result) => {
+        sessionStorage.setItem('userData', JSON.stringify(result));
+        return result;
+      });
+    return result;
   }
 
   public logout(): void {

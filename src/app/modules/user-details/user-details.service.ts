@@ -2,6 +2,7 @@ import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { ChatService } from 'src/app/core/chat/chat.service';
 import { Usuario } from 'src/app/core/models/usuario.model';
+import { MONGODB_DATABASE } from 'src/environments/environment.dev';
 
 @Injectable()
 export class UserDetailsService {
@@ -9,7 +10,7 @@ export class UserDetailsService {
 
   public async getUsuario(uid: string): Promise<any> {
     const user = await this.http
-      .get(`http://localhost:3000/perfil/user/${uid}`)
+      .get(`${MONGODB_DATABASE}perfil/user/${uid}`)
       .subscribe((result) => {
         if (result !== null) {
           sessionStorage.setItem('detailedUser', JSON.stringify(result));
@@ -23,7 +24,7 @@ export class UserDetailsService {
 
   public async saveUsuario(usuario: Usuario) {
     return this.http
-      .put('http://localhost:3000/editar-perfil', usuario)
+      .put(`${MONGODB_DATABASE}editar-perfil`, usuario)
       .subscribe((result: any) => {
         if (result as boolean) {
           sessionStorage.setItem('userData', JSON.stringify(usuario));

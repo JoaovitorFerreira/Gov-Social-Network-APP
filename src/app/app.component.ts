@@ -1,6 +1,4 @@
 import { Component, OnInit } from '@angular/core';
-import {UserDetails} from './model/user-details';
-
 @Component({
   selector: 'app-root',
   templateUrl: './app.component.html',
@@ -8,7 +6,6 @@ import {UserDetails} from './model/user-details';
 })
 export class AppComponent implements OnInit {
   title = 'Base de conhecimento - PGE';
-  userDetails: UserDetails;
   redirectUrl: string;
 
   constructor() {

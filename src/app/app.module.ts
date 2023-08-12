@@ -6,7 +6,6 @@ import { AppComponent } from './app.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { LoginComponent } from './modules/auth/login/login.component';
 import { HttpClientModule } from '@angular/common/http';
-import { SignupComponent } from './modules/auth/signup/signup.component';
 import { UserDetailsComponent } from './modules/user-details/user-details.component';
 import { FeedComponent } from './modules/feed/feed.component';
 import { TooltipModule } from 'ngx-bootstrap/tooltip';
@@ -87,7 +86,6 @@ const appRoutes: Routes = [
   declarations: [
     AppComponent,
     LoginComponent,
-    SignupComponent,
     UserDetailsComponent,
     FeedComponent,
     UserChatComponent,

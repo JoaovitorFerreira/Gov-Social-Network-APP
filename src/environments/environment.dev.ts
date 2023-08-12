@@ -10,3 +10,4 @@ export const environment = {
     measurementId: 'G-HBKGXMCNY5',
   },
 };
+export const MONGODB_DATABASE ="http://192.168.0.17:3000/"
