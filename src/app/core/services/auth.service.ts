@@ -1,7 +1,7 @@
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 
-import { BehaviorSubject, catchError, take, tap } from 'rxjs';
+import { BehaviorSubject } from 'rxjs';
 import { Usuario } from '../models/usuario.model';
 import { MONGODB_DATABASE } from 'src/environments/environment.dev';
 
@@ -17,6 +17,14 @@ export class AuthService {
   public get getUserId(): string {
     const user: Usuario = JSON.parse(sessionStorage.getItem('userData'));
     return this.userId === null ? user.id : this.userId;
+  }
+
+  public get getReqHeaders(): HttpHeaders {
+    const headers = new HttpHeaders({
+      'Content-Type': 'application/json',
+      Authorization: `Bearer ${this.userJwt}`,
+    });
+    return headers;
   }
 
   public get getUserJwt() {
@@ -40,24 +48,15 @@ export class AuthService {
     return isLocal ? true : !notInSession;
   }
 
-  public async login(email: string, password: string) {
-    const body = { email: email, password: password };
-    const result = this.http
-      .post(`${MONGODB_DATABASE}auth/login`, body)
-      .pipe()
-      .subscribe((result: any) => {
-        this.user = result.user;
-        this.userId = result.user.id;
-        this.userJwt = result.access_token;
-        sessionStorage.setItem('userData', JSON.stringify(result.user));
-        sessionStorage.setItem(
-          'access_token',
-          JSON.stringify(result.access_token)
-        );
-        return result;
-      });
-    console.log(result);
-    return result;
+  public async setUserInfo(userData: any) {
+    this.user = userData.user;
+    this.userId = userData.user.id;
+    this.userJwt = userData.access_token;
+    sessionStorage.setItem('userData', JSON.stringify(userData.user));
+    sessionStorage.setItem(
+      'access_token',
+      JSON.stringify(userData.access_token)
+    );
   }
 
   public async getUserData(userId: string) {

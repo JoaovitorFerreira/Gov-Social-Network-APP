@@ -1,5 +1,9 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
-import { UntypedFormBuilder, UntypedFormGroup, Validators } from '@angular/forms';
+import {
+  UntypedFormBuilder,
+  UntypedFormGroup,
+  Validators,
+} from '@angular/forms';
 import { MatDialog } from '@angular/material/dialog';
 import { Router } from '@angular/router';
 import { Subject } from 'rxjs';
@@ -41,6 +45,10 @@ export class FeedComponent implements OnInit, OnDestroy {
     if (!this.headerService.dadosUsuario) {
       await new Promise((complete) => setTimeout(() => complete(true), 2000));
     }
+    this.feedService.open();
+    this.feedService.feedPost.subscribe((posts) =>
+      this.catchWebSocketPosts(posts)
+    );
     this.loadUserInfo();
     this.formGroup = this.fb.group({
       message: [null, Validators.required],
@@ -49,9 +57,6 @@ export class FeedComponent implements OnInit, OnDestroy {
       comment: [null, Validators.required],
     });
     this.checkFirstLogin();
-    this.posts = this.feedService
-      .getPosts()
-      .sort((a, b) => b.dataTratada - a.dataTratada);
   }
 
   ngOnDestroy(): void {
@@ -148,7 +153,6 @@ export class FeedComponent implements OnInit, OnDestroy {
         ? null
         : await this.feedService.savePostImg(this.selectedImg);
     let newPost: Post = {
-      id: `${this.user.id}-post-${date.toDateString()}`,
       donoPost: this.user,
       tipoPost: this.realizationOption,
       descricao: this.formGroup.getRawValue().message,
@@ -161,9 +165,7 @@ export class FeedComponent implements OnInit, OnDestroy {
         imagensAnexadas: imgPath,
       };
     }
-    this.feedService.savePost(newPost).then(() => {
-      window.location.reload();
-    });
+    this.feedService.savePost(newPost);
   }
 
   public async saveEventPost(eventoAcriar: any) {
@@ -173,7 +175,6 @@ export class FeedComponent implements OnInit, OnDestroy {
         ? null
         : await this.feedService.savePostImg(eventoAcriar.imagensAnexadas);
     let newPost: Post = {
-      id: `${this.user.id}-post-${date.toDateString()}`,
       donoPost: this.user,
       descricao: eventoAcriar.descricao,
       dataPost: date.toDateString(),
@@ -193,9 +194,7 @@ export class FeedComponent implements OnInit, OnDestroy {
         imagensAnexadas: imgPath,
       };
     }
-    this.feedService.savePost(newPost).then(() => {
-      window.location.reload();
-    });
+    this.feedService.savePost(newPost);
   }
 
   public addContact() {
@@ -258,9 +257,7 @@ export class FeedComponent implements OnInit, OnDestroy {
       ...post,
       evento: newEvent,
     };
-    this.feedService.savePost(newPost).then(() => {
-      window.location.reload();
-    });
+    this.feedService.savePost(newPost);
   }
 
   public userIsAtendee(post: Post) {
@@ -274,6 +271,30 @@ export class FeedComponent implements OnInit, OnDestroy {
       );
     } else {
       return false;
+    }
+  }
+
+  public catchWebSocketPosts(msg) {
+    if (Object.keys(msg)[0] === 'error') {
+      return;
+    }
+    if (msg.result) {
+      switch (Object.keys(msg.result)[0]) {
+        case 'new_message':
+          const newNessage = msg.result.new_message;
+          // Do something with your new message
+          break;
+        case 'new_user':
+          const newUser = msg.result.new_user;
+          // Do something with your new user
+          break;
+        case 'user_change':
+          //this.handleUserChange(msg.result.user_change);
+          // Do something with the changed user
+          break;
+      }
+    } else {
+      console.log('err', msg.result);
     }
   }
 }

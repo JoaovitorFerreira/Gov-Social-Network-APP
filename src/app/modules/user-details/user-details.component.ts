@@ -260,6 +260,7 @@ export class UserDetailsComponent implements OnInit {
         profilePicture: profilePath,
         ...this.user,
       });
+      window.location.reload();
     });
   }
 

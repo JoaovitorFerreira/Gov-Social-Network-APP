@@ -11,3 +11,4 @@ export const environment = {
   },
 };
 export const MONGODB_DATABASE ="http://192.168.0.17:3000/"
+export const WEBSOCKET_CONNECTION_URL="ws://192.168.0.17:3000/"

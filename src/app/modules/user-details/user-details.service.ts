@@ -1,12 +1,13 @@
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { ChatService } from 'src/app/core/chat/chat.service';
 import { Usuario } from 'src/app/core/models/usuario.model';
+import { AuthService } from 'src/app/core/services/auth.service';
 import { MONGODB_DATABASE } from 'src/environments/environment.dev';
 
 @Injectable()
 export class UserDetailsService {
-  constructor(private http: HttpClient, private chatService: ChatService) {}
+  constructor(private http: HttpClient, private chatService: ChatService, private authService: AuthService) {}
 
   public async getUsuario(uid: string): Promise<any> {
     const user = await this.http
@@ -23,8 +24,12 @@ export class UserDetailsService {
   }
 
   public async saveUsuario(usuario: Usuario) {
+    const headers = new HttpHeaders({
+      'Content-Type': 'application/json',
+      Authorization: `Bearer ${this.authService.getUserJwt}`,
+    });
     return this.http
-      .put(`${MONGODB_DATABASE}editar-perfil`, usuario)
+      .put(`${MONGODB_DATABASE}perfil/editar-perfil`, usuario, { headers: headers })
       .subscribe((result: any) => {
         if (result as boolean) {
           sessionStorage.setItem('userData', JSON.stringify(usuario));

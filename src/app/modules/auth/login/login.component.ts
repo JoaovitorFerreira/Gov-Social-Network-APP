@@ -1,8 +1,14 @@
+import { HttpClient } from '@angular/common/http';
 import { Component, OnInit } from '@angular/core';
-import { UntypedFormBuilder, UntypedFormGroup, Validators } from '@angular/forms';
+import {
+  UntypedFormBuilder,
+  UntypedFormGroup,
+  Validators,
+} from '@angular/forms';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { Router } from '@angular/router';
 import { AuthService } from 'src/app/core/services/auth.service';
+import { MONGODB_DATABASE } from 'src/environments/environment.dev';
 
 @Component({
   selector: 'app-login',
@@ -16,7 +22,8 @@ export class LoginComponent implements OnInit {
     private fb: UntypedFormBuilder,
     private authService: AuthService,
     private router: Router,
-    private snackBar: MatSnackBar
+    private snackBar: MatSnackBar,
+    private http: HttpClient
   ) {}
 
   ngOnInit(): void {
@@ -36,16 +43,23 @@ export class LoginComponent implements OnInit {
     }
     this.loading = true;
     const form = this.formGroup.getRawValue();
-    this.authService.login(form.email, form.pass).then((result) => {
-      this.loading = false;
-      if (result) {
-        this.router.navigateByUrl('feed');
-      } else {
-        this.snackBar.open('Email ou senha inválidos', null, {
-          duration: 5000,
-        });
-      }
-    });
+    const body = { email: form.email, password: form.pass };
+    this.http
+      .post(`${MONGODB_DATABASE}auth/login`, body)
+      .pipe()
+      .subscribe(
+        (result: any) => {
+          this.loading = false;
+          this.authService.setUserInfo(result);
+          this.router.navigateByUrl('feed');
+        },
+        (error: any) => {
+          this.loading = false;
+          this.snackBar.open('Email ou senha inválidos', null, {
+            duration: 5000,
+          });
+        }
+      );
   }
 
   public forgotPassword() {

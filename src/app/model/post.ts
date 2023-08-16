@@ -1,7 +1,7 @@
 import { Usuario } from '../core/models/usuario.model';
 
 export interface Post {
-  id: string;
+  id?: string;
   donoPost: Usuario;
   tipoPost?: tipoRealizacaoPost;
   comentarios?: comentarioPost[];

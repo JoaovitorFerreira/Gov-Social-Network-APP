@@ -28,12 +28,12 @@ export class ChangePasswordComponent implements OnInit {
   public formGroup: UntypedFormGroup;
 
   ngOnInit(): void {
+    if (!this.headerService.dadosUsuario.firstAccess) {
+      this.router.navigateByUrl('feed');
+    }
     this.formGroup = this.fb.group({
       password: [null, [Validators.required, Validators.minLength(8)]],
     });
-    if(!this.headerService.dadosUsuario.firstAccess){
-      this.router.navigateByUrl('feed');
-    }
   }
   public get userName() {
     return this.headerService.dadosUsuario.username;
@@ -44,7 +44,7 @@ export class ChangePasswordComponent implements OnInit {
   }
 
   public async saveNewPass() {
-    const result = await this.http
+    this.http
       .put(`${MONGODB_DATABASE}auth/change-pass`, {
         userId: this.authService.getUserId,
         passToChange: this.formGroup.getRawValue().password,
@@ -56,7 +56,7 @@ export class ChangePasswordComponent implements OnInit {
             duration: 5000,
           });
           this.authService.getUserData(this.authService.getUserId);
-          this.router.navigateByUrl('feed');
+          setTimeout(() => this.router.navigateByUrl('feed'), 3000);
         } else {
           this.snack.open(
             'Erro ao cadastrar nova senha. Por favor tente novamente.',
@@ -65,8 +65,5 @@ export class ChangePasswordComponent implements OnInit {
           );
         }
       });
-    return result;
   }
-
-
 }

@@ -1,68 +1,142 @@
+import { HttpClient } from '@angular/common/http';
 import { Injectable, OnInit } from '@angular/core';
+import {
+  Subject,
+  switchAll,
+  catchError,
+  tap,
+  EMPTY,
+  Observable,
+  Observer,
+  map,
+  retry,
+  share,
+} from 'rxjs';
+import { webSocket, WebSocketSubject } from 'rxjs/webSocket';
 import { Usuario } from 'src/app/core/models/usuario.model';
+import { AuthService } from 'src/app/core/services/auth.service';
 import {
   comentarioPost,
   Evento,
   OnlineSystemPost,
   Post,
 } from 'src/app/model/post';
+import {
+  MONGODB_DATABASE,
+  WEBSOCKET_CONNECTION_URL,
+} from 'src/environments/environment.dev';
 
 @Injectable()
 export class FeedService implements OnInit {
-  constructor() {}
+  public feedPost: Subject<any>;
+  public ws: any;
+  public isConnected = false;
+  private subject: Subject<MessageEvent>;
+  private myUserJWT = JSON.parse(sessionStorage.getItem('access_token'));
+  constructor(private http: HttpClient, private authService: AuthService) {}
 
   ngOnInit(): void {}
-
-  public getPosts() {
-    /*let q = query(
-      collection(this.firestore, 'posts'),
-      orderBy('dataPost', 'desc')
-    );*/
-    const docsArray = [];
-    /* getDocs(q).then((querySnapshot) => {
-      if (!querySnapshot.empty) {
-        querySnapshot.forEach(async (docs) => {
-          let result: any = {
-            ...docs.data(),
-            dataTratada: docs
-              .data()
-              .dataPost.toDate()
-              .toLocaleDateString('pt-BR'),
-          };
-          const treatedImgData = await this.checkImageData(docs.data());
-          result = { ...result, ...treatedImgData };
-          docsArray.push(result);
-        });
-      }
-    });*/
-    return docsArray;
-  }
-
-  public getPGEPosts() {
-    const docsArray = [];
-    /*let q = query(
-      collection(this.firestore, 'posts'),
-      orderBy('dataPost', 'desc'),
-      where('postRh', '==', true)
+  //websocket methods
+  public open() {
+    this.feedPost = <Subject<any>>this.connect(
+      `${WEBSOCKET_CONNECTION_URL}feed`
+    ).pipe(
+      map((response: MessageEvent): any => {
+        const data = JSON.parse(response.data);
+        return data;
+      })
     );
-    getDocs(q).then((querySnapshot) => {
-      if (!querySnapshot.empty) {
-        querySnapshot.forEach(async (docs) => {
-          let result: any = {
-            ...docs.data(),
-            dataTratada: docs
-              .data()
-              .dataPost.toDate()
-              .toLocaleDateString('pt-BR'),
-          };
-          const treatedImgData = await this.checkImageData(docs.data());
-          result = { ...result, ...treatedImgData };
-          docsArray.push(result);
-        });
-      }
-    });*/
-    return docsArray;
+    console.log(
+      'Websocket successfully connected to : ',
+      `${WEBSOCKET_CONNECTION_URL}feed`
+    );
   }
+
+  public connect(url): Subject<MessageEvent> {
+    if (!this.subject) {
+      this.subject = this.create(url);
+    }
+    return this.subject;
+  }
+
+  private create(url): Subject<MessageEvent> {
+    this.ws = new WebSocket(url, ['Bearer', this.myUserJWT]);
+    const observable = Observable.create((obs: Observer<MessageEvent>) => {
+      this.ws.onmessage = obs.next.bind(obs);
+      this.ws.onerror = obs.error.bind(obs);
+      this.ws.onclose = obs.complete.bind(obs);
+      return this.ws.close.bind(this.ws);
+    }).pipe(share(), retry());
+    const observer = {
+      next: (data: Object) => {
+        if (this.ws.readyState === WebSocket.OPEN) {
+          this.ws.send(JSON.stringify(data));
+        }
+      },
+    };
+    return Subject.create(observer, observable);
+  }
+
+  public close() {
+    if (this.ws) {
+      this.ws.close();
+      console.log('websocket connection closed');
+      this.subject = null;
+    }
+  }
+
+  // public getPosts() {
+  //   /*let q = query(
+  //     collection(this.firestore, 'posts'),
+  //     orderBy('dataPost', 'desc')
+  //   );*/
+  //   const docsArray = [];
+  //   /* getDocs(q).then((querySnapshot) => {
+  //     if (!querySnapshot.empty) {
+  //       querySnapshot.forEach(async (docs) => {
+  //         let result: any = {
+  //           ...docs.data(),
+  //           dataTratada: docs
+  //             .data()
+  //             .dataPost.toDate()
+  //             .toLocaleDateString('pt-BR'),
+  //         };
+  //         const treatedImgData = await this.checkImageData(docs.data());
+  //         result = { ...result, ...treatedImgData };
+  //         docsArray.push(result);
+  //       });
+  //     }
+  //   });*/
+  //   return docsArray;
+  // }
+
+  // public getPGEPosts() {
+  //   const docsArray = [];
+  //   /*let q = query(
+  //     collection(this.firestore, 'posts'),
+  //     orderBy('dataPost', 'desc'),
+  //     where('postRh', '==', true)
+  //   );
+  //   getDocs(q).then((querySnapshot) => {
+  //     if (!querySnapshot.empty) {
+  //       querySnapshot.forEach(async (docs) => {
+  //         let result: any = {
+  //           ...docs.data(),
+  //           dataTratada: docs
+  //             .data()
+  //             .dataPost.toDate()
+  //             .toLocaleDateString('pt-BR'),
+  //         };
+  //         const treatedImgData = await this.checkImageData(docs.data());
+  //         result = { ...result, ...treatedImgData };
+  //         docsArray.push(result);
+  //       });
+  //     }
+  //   });*/
+  //   return docsArray;
+  // }
+
+  //rest and view methods
 
   private async checkImageData(dados: any) {
     let result;
@@ -137,12 +211,26 @@ export class FeedService implements OnInit {
     return '';
   }
 
-  public savePost(post: Post): Promise<boolean> {
+  public savePost(post: Post) {
     /*const uid = post.id;
     return setDoc(doc(this.firestore, 'posts/' + uid), post).then(() => {
       return true;
     });*/
-    return Promise.resolve(true);
+    const savePost = this.http
+      .post(`${MONGODB_DATABASE}feed/criar-post`, post, {
+        headers: this.authService.getReqHeaders,
+      })
+      .pipe()
+      .subscribe(
+        (result) => {
+          window.location.reload();
+          return result;
+        },
+        (error) => {
+          return error;
+        }
+      );
+    return savePost;
   }
 
   public async savePostImg(archive: {

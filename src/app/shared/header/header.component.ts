@@ -1,6 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { Router } from '@angular/router';
-import { Subject, takeUntil } from 'rxjs';
+import { Subject } from 'rxjs';
 import { AuthService } from 'src/app/core/services/auth.service';
 import { HeaderService } from './header.service';
 
@@ -16,7 +15,6 @@ export class HeaderComponent implements OnInit {
   constructor(
     private authService: AuthService,
     private headerService: HeaderService,
-    private router: Router
   ) {}
 
   ngOnInit(): void {
