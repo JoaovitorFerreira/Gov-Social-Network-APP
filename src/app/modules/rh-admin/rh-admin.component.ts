@@ -26,7 +26,7 @@ export class RhAdminComponent implements OnInit, OnDestroy {
 
   async ngOnInit() {
     this.user = this.headerService.dadosUsuario;
-    this.pgeEvents = await this.feedService.getPGEPosts();
+    this.pgeEvents = null;
   }
 
   ngOnDestroy(): void {}

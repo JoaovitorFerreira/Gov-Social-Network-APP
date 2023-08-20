@@ -11,11 +11,13 @@ export interface Post {
   imagensAnexadas?: string;
   evento?: Evento;
   postRh?: boolean;
+  isEvento: boolean;
 }
 
 export interface Evento {
   dataInicioEvento: string;
   dataFimEvento: string;
+  donoEvento: Usuario;
   horarioInicio: string;
   horarioFim: string;
   nomeEvento: string;

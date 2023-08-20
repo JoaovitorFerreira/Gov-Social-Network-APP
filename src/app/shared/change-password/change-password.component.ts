@@ -56,7 +56,8 @@ export class ChangePasswordComponent implements OnInit {
             duration: 5000,
           });
           this.authService.getUserData(this.authService.getUserId);
-          setTimeout(() => this.router.navigateByUrl('feed'), 3000);
+          this.router.navigateByUrl('feed');
+          window.location.reload();
         } else {
           this.snack.open(
             'Erro ao cadastrar nova senha. Por favor tente novamente.',

@@ -51,7 +51,11 @@ export class LoginComponent implements OnInit {
         (result: any) => {
           this.loading = false;
           this.authService.setUserInfo(result);
-          this.router.navigateByUrl('feed');
+          if(this.authService.getUser.firstAccess){
+            this.router.navigateByUrl('change-password');
+          }else{
+            this.router.navigateByUrl('feed');
+          }
         },
         (error: any) => {
           this.loading = false;

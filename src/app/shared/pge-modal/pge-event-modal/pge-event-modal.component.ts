@@ -114,12 +114,14 @@ export class EventModalPGEComponent implements OnInit {
       evento: {
         nomeEvento: eventoAcriar.evento.nomeEvento,
         dataInicioEvento: eventoAcriar.evento.dataInicioEvento,
+        donoEvento:this.data, 
         dataFimEvento: eventoAcriar.evento.dataFimEvento,
         horarioInicio: eventoAcriar.evento.horarioInicio,
         horarioFim: eventoAcriar.evento.horarioFim,
         linkTransmissaoEvento: eventoAcriar.evento.linkTransmissaoEvento,
         linkInscricaoEvento: eventoAcriar.evento.linkInscricaoEvento,
       },
+      isEvento: true,
     };
     if (imgPath != null) {
       newPost = {

@@ -256,11 +256,14 @@ export class UserDetailsComponent implements OnInit {
       path: 'profile-pictures/' + this.user.id,
     };
     this.userService.saveProfileImage(fileObj).then((profilePath) => {
-      this.userService.saveUsuario({
-        profilePicture: profilePath,
-        ...this.user,
-      });
-      window.location.reload();
+      this.userService
+        .saveUsuario({
+          profilePicture: profilePath,
+          ...this.user,
+        })
+        .then(() => {
+          window.location.reload();
+        });
     });
   }
 

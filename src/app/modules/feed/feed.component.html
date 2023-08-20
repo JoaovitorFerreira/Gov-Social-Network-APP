@@ -43,42 +43,42 @@
     </mat-card-content>
   </mat-card>
   <hr>
-  <mat-card *ngFor="let p of posts" class="posts">
+  <mat-card *ngFor="let post of posts" class="posts">
     <mat-card-header class="posts__header">
-      <img mat-card-avatar alt="falha" [src]="p.donoPost.profilePicture" (click)="openProfile(p.donoPost)">
+      <img mat-card-avatar alt="falha" [src]="post.donoPost.profilePicture" (click)="openProfile(post.donoPost)">
       <div class="posts__header__right">
-        <div *ngIf="!p.evento">
-          <span>{{ p?.dataTratada }} - realização {{p?.tipoPost}}</span>
-          <h3>{{ p?.donoPost.username }}</h3>
-          <div *ngIf="p?.usuariosMarcados && p?.usuariosMarcados.length > 0" class="marked-users-div">
+        <div *ngIf="!post.isEvento">
+          <span>{{ post?.dataTratada }} - realização {{post?.tipoPost}}</span>
+          <h3>{{ post?.donoPost.username }}</h3>
+          <div *ngIf="post?.usuariosMarcados && post?.usuariosMarcados.length > 0" class="marked-users-div">
             <span class="initial-marked-user-word">com</span>
-            <div *ngFor="let usuarioMarcado of p?.usuariosMarcados; let last = last; let i = index">
+            <div *ngFor="let usuarioMarcado of post?.usuariosMarcados; let last = last; let i = index">
               <span class="marked-users-name-separators" *ngIf="last"> e </span>
               <span class="marked-users-name" (click)="openProfile(usuarioMarcado)">{{usuarioMarcado.username}}</span>
-              <span class="marked-users-name-comma" *ngIf="!last && i+2 < p?.usuariosMarcados.length">, </span>
+              <span class="marked-users-name-comma" *ngIf="!last && i+2 < post?.usuariosMarcados.length">, </span>
             </div>
           </div>
         </div>
-        <div *ngIf="p.evento">
+        <div *ngIf="post.isEvento">
           <div>
-            <span>{{ p?.dataTratada }}</span>
-            <h3>{{p.evento.nomeEvento}}</h3>
+            <span>{{ post?.dataTratada }}</span>
+            <h3>{{post.evento.nomeEvento}}</h3>
           </div>
           <div class="atendee-div">
             <div class="atendee-card">
               <span class="atendee-span">Participantes:</span>
-              <div class="atendee-ng" *ngIf="!userIsAtendee(p)">
+              <div class="atendee-ng" *ngIf="!userIsAtendee(post)">
                 <mat-icon matTooltip="Clique aqui para participar!" class="btn-clear"
-                  (click)="participateEvent(p, true)">add_circle_outline</mat-icon>
+                  (click)="participateEvent(post, true)">add_circle_outline</mat-icon>
               </div>
-              <div *ngIf="userIsAtendee(p)">
+              <div *ngIf="userIsAtendee(post)">
                 <mat-icon class="btn-clear" matTooltip="Clique aqui para sair do evento"
-                  (click)="participateEvent(p, false)">remove_circle_outline</mat-icon>
+                  (click)="participateEvent(post, false)">remove_circle_outline</mat-icon>
               </div>
             </div>
             <hr>
             <div class="atendees-div">
-              <div *ngFor="let participante of p?.evento.participantes">
+              <div *ngFor="let participante of post?.evento.participantes">
                 <img mat-card-avatar matTooltip="{{participante.username}}" (click)="openProfile(participante)"
                   alt="{{participante.username}}" [src]="participante.profilePicture">
               </div>
@@ -89,11 +89,11 @@
     </mat-card-header>
     <hr>
     <mat-card-content class="postsBody">
-      <div *ngIf="p?.imagensAnexadas!" class="imgDiv">
-        <img [src]="p?.imagemCarregada" class="imgFeed">
+      <div *ngIf="post?.imagensAnexadas!" class="imgDiv">
+        <img [src]="post?.imagemCarregada" class="imgFeed">
       </div>
-      <p class="postText">{{ p?.descricao }}</p>
-      <div *ngIf="p.evento">
+      <p class="postText">{{ post?.descricao }}</p>
+      <div *ngIf="post.isEvento">
         <mat-accordion>
           <mat-expansion-panel (opened)="panelOpenState = true" (closed)="panelOpenState = false">
             <mat-expansion-panel-header>
@@ -101,16 +101,16 @@
                 Informações Adicionais
               </mat-panel-title>
             </mat-expansion-panel-header>
-            <p class="postText">dia de inicio: {{p?.evento.dataInicioEvento}}</p>
-            <p class="postText">dia de fechamento: {{p?.evento.dataInicioEvento}}</p>
-            <p class="postText">duração: {{p?.evento.dataInicioEvento}}</p>
-              <a *ngIf="p?.evento.linkTransmissaoEvento !== null" class="postText">link do vídeo: {{p?.evento.linkTransmissaoEvento}}</a>
-              <a *ngIf="p?.evento.linkInscricaoEvento !== null" class="postText">link do formulário do evento: {{p?.evento.linkInscricaoEvento}}</a>
+            <p class="postText">dia de inicio: {{post?.evento.dataInicioEvento}}</p>
+            <p class="postText">dia de fechamento: {{post?.evento.dataInicioEvento}}</p>
+            <p class="postText">duração: {{post?.evento.dataInicioEvento}}</p>
+              <a *ngIf="post?.evento.linkTransmissaoEvento !== null" class="postText">link do vídeo: {{post?.evento.linkTransmissaoEvento}}</a>
+              <a *ngIf="post?.evento.linkInscricaoEvento !== null" class="postText">link do formulário do evento: {{post?.evento.linkInscricaoEvento}}</a>
           </mat-expansion-panel>
         </mat-accordion>
       </div>
       <br>
-      <div *ngFor="let comment of p?.comentarios">
+      <div *ngFor="let comment of post?.comentarios">
         <div>
           <img mat-card-avatar matTooltip="{{comment.donoComentario.username}}"
             (click)="openProfile(comment.donoComentario)" [src]="comment.donoComentario.profilePicture">
@@ -122,7 +122,7 @@
       </div>
     </mat-card-content>
     <mat-card-actions>
-      <form [formGroup]="messageFormGroup" (ngSubmit)="postComment(p)">
+      <form [formGroup]="messageFormGroup" (ngSubmit)="postComment(post)">
         <input class="on-your-mind" formControlName="comment" placeholder="Comente aqui" type="text">
         <button class="on-your-mind-btn" [disabled]="messageFormGroup.invalid" type="submit">Comentar</button>
       </form>
