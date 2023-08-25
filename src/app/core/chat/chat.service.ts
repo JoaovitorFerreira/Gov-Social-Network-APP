@@ -1,7 +1,14 @@
 import { Injectable } from '@angular/core';
 import { BehaviorSubject } from 'rxjs';
-import { Message, OnlineSystemMessage } from 'src/app/model/message';
+import {
+  Message,
+  OnlineSystemMessage,
+  UserChatPayload,
+} from 'src/app/model/message';
 import { Usuario } from '../models/usuario.model';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
+import { AuthService } from '../services/auth.service';
+import { MONGODB_DATABASE } from 'src/environments/environment.dev';
 
 interface MessageChat {
   tipo: string;
@@ -13,7 +20,7 @@ interface MessageChat {
 })
 export class ChatService {
   public message$: BehaviorSubject<MessageChat> = new BehaviorSubject(null);
-  constructor() {}
+  constructor(private authService: AuthService, private http: HttpClient) {}
   public user: Usuario = JSON.parse(sessionStorage.getItem('userData'));
 
   public getContinuosChat = async () => {
@@ -46,45 +53,17 @@ export class ChatService {
     return [];
   };
 
-  public async initUserChat() {
-    this.user = JSON.parse(sessionStorage.getItem('userData'));
-    let userChats = [];
-    /*let q = query(
-      collection(this.firestore, 'user-chats'),
-      where('usersId', 'array-contains-any', [this.user.id])
-    );
-    return getDocs(q)
-      .then((doc) => {
-        return (userChats = doc.docs.map((userChat) => {
-          const userChatData: Message = userChat.data() as Message;
-          let treatedUserChat: OnlineSystemMessage = {
-            ...userChatData,
-            responseUser: userChatData.usersName.find((name) => {
-              return name !== this.user.username;
-            }),
-            responseId: userChatData.usersId.find((id) => {
-              return id !== this.user.id;
-            }),
-            requestUser: this.user.username,
-            requestId: this.user.id,
-            lastMsg: userChatData.lastMsg ?? {
-              content: 'Não há ainda nenhuma mensagem a ser exibida',
-              userId: '',
-              userName: '',
-              timestamp: userChatData.createdAt,
-            },
-          };
-          return treatedUserChat;
-        }));
-      })
-      .finally(() => {
-        const msgIds = userChats.map((userChat) => {
-          return userChat.id;
-        });
-        sessionStorage.setItem('userMsgsId', JSON.stringify(msgIds));
-        return userChats;
+  public async initUserChat(userChatPayload: UserChatPayload) {
+    const body = userChatPayload;
+    const headers = new HttpHeaders({
+      'Content-Type': 'application/json',
+      Authorization: `Bearer ${this.authService.getUserJwt}`,
+    });
+    return this.http
+      .post(`${MONGODB_DATABASE}mensagens`, body, { headers: headers })
+      .pipe()
+      .subscribe((result) => {
+        return result;
       });
-      */
-    return userChats;
   }
 }

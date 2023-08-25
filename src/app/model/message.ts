@@ -10,6 +10,13 @@ export class IdChatMsg {
   id: string;
 }
 
+export class UserChatPayload {
+  resUserId: string;
+  reqUserId: string;
+  resUsername: string;
+  reqUsername: string;
+}
+
 export class OnlineSystemMessage extends Message {
   responseUser: string;
   responseId: string;

@@ -24,7 +24,6 @@ export class ChatComponent {
   ) {}
 
   ngOnInit() {
-    this.initUserChat();
     this.formGroup = this.fb.group({
       search: [null, Validators.required],
     });
@@ -71,10 +70,6 @@ export class ChatComponent {
 
   public cleanFilter() {
     this.searchedChats = [];
-  }
-
-  private async initUserChat() {
-    this.userChats = await this.chatService.initUserChat();
   }
 
   public openUserChat(userChat: any) {

@@ -52,14 +52,12 @@ export class UserDetailsComponent implements OnInit {
     this.alreadySentMessage = this.userService.checkIfHasSentMessage(
       this.userId
     );
-    console.log(this.alreadySentMessage);
   }
 
   public get showMsgButton() {
     if (this.isSelfUser) {
       return false;
     } else {
-      console.log(this.alreadySentMessage);
       return !this.alreadySentMessage;
     }
   }
@@ -177,7 +175,6 @@ export class UserDetailsComponent implements OnInit {
         .afterClosed()
         .pipe(take(1))
         .subscribe((idealLocation: IdealLocation) => {
-          console.log(idealLocation);
           this.user.idealLocations = idealLocation;
           this.userService.saveUsuario({ ...this.user });
         });
@@ -221,7 +218,6 @@ export class UserDetailsComponent implements OnInit {
             return;
           }
           this.user.idiomas = idiomas;
-          console.log('teste');
           this.createLanguagesArray();
           this.userService.saveUsuario({ ...this.user });
         });
@@ -268,20 +264,6 @@ export class UserDetailsComponent implements OnInit {
   }
 
   public async callMsgSystem() {
-    let newChatId = this.myUser.id + '-chat-' + this.userId;
-    let date = new Date();
-    let newChatData: Message = {
-      id: newChatId,
-      createdAt: date.toDateString(),
-      usersId: [this.userId, this.myUser.id],
-      usersName: [this.user.username, this.myUser.username],
-    };
-    /*await setDoc(
-      doc(this.firestore, 'user-chats', newChatId),
-      newChatData
-    ).then(() => {
-      this.router.navigateByUrl('chat');
-    });
-    */
+    return await this.userService.createChat();
   }
 }
