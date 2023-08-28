@@ -9,7 +9,6 @@ import {
 } from '@angular/forms';
 import { Socket, io } from 'socket.io-client';
 import { WEBSOCKET_CONNECTION_URL } from 'src/environments/environment.dev';
-import { AuthService } from '../../services/auth.service';
 
 @Component({
   selector: 'user-chat',
@@ -25,13 +24,11 @@ export class UserChatComponent {
   public formGroup: UntypedFormGroup;
 
   @Input() set userChat(userChat: OnlineSystemMessage) {
-    console.log(userChat);
     this._userChat = userChat;
     this.messageList = this._userChat.chat;
   }
 
   constructor(
-    private userChatService: UserChatService,
     private fb: UntypedFormBuilder
   ) {
     this.usuario = JSON.parse(sessionStorage.getItem('userData'));

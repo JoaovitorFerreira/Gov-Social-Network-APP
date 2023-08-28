@@ -48,7 +48,6 @@ export class FeedComponent implements OnInit, OnDestroy {
       .pipe()
       .subscribe((result) => {
         this.posts = this.checkNewPosts(result, this.liveData);
-        console.log(this.posts)
       });
   }
 
@@ -92,7 +91,6 @@ export class FeedComponent implements OnInit, OnDestroy {
   }
 
   public postComment(p: Post) {
-    console.log(p);
     let comment = this.messageFormGroup.getRawValue().comment;
     this.feedService
       .saveComment(comment, p, this.headerService.dadosUsuario)
