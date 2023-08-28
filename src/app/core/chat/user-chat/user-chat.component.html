@@ -1,10 +1,10 @@
 <mat-card style="width: 100%; padding-left: 10px; padding-top: 20px;">
     <mat-card-header>
         <img alt="user image" mat-card-avatar [src]="responseUser?.profilePicture">
-        <mat-card-title>{{responseUser.username}}</mat-card-title>
+        <mat-card-title>{{responseUser}}</mat-card-title>
     </mat-card-header>
     <mat-card-content #scrollMe [style.overflow]="'auto'" [style.height.px]="'480'">
-        <div *ngIf="messageList == undefined; else chatMsg">
+        <div *ngIf="messageList == undefined || messageList.length == 0; else chatMsg">
             <div class="centralizedMsg">
                 <h3>Não há ainda nenhuma mensagem a ser exibida.</h3>
             </div>
@@ -12,11 +12,11 @@
         <ng-template #chatMsg>
             <div *ngFor="let message of messageList">
 
-                <div [ngClass]="message.userId === _userChat.requestId ? 'reqMsg' : 'resMsg'">
+                <div [ngClass]="message.userId === _userChat.requestUserId ? 'reqMsg' : 'resMsg'">
                     <div class="msgBox">
-                        <p class="msgDate">{{message.userName}}</p>
+                        <p class="msgDate">{{message.userName }}</p>
                         <p class="msg">{{message.content}}</p>
-                        <p class="msgDate">{{message.timestamp | timestamp}}</p>
+                        <p class="msgDate">{{message.timestamp}}</p>
                     </div>
                 </div>
             </div>

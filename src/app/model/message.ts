@@ -5,6 +5,8 @@ export class Message {
   usersId: string[];
   lastMsg?: ChatMessage;
   usersName: string[];
+  _id: string;
+  msgId?: string;
 }
 export class IdChatMsg {
   id: string;
@@ -19,9 +21,9 @@ export class UserChatPayload {
 
 export class OnlineSystemMessage extends Message {
   responseUser: string;
-  responseId: string;
+  responseUserId: string;
   requestUser: string;
-  requestId: string;
+  requestUserId: string;
   hasNewMsg?: boolean;
 }
 

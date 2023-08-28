@@ -1,33 +1,45 @@
 import { Component } from '@angular/core';
-import { UntypedFormBuilder, UntypedFormGroup, Validators } from '@angular/forms';
-import { OnlineSystemMessage } from 'src/app/model/message';
+import {
+  UntypedFormBuilder,
+  UntypedFormGroup,
+  Validators,
+} from '@angular/forms';
+import { Message } from 'src/app/model/message';
 import { Usuario } from '../models/usuario.model';
 import { ChatService } from './chat.service';
 import { MatSnackBar } from '@angular/material/snack-bar';
+import { AuthService } from '../services/auth.service';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
+
+import { MONGODB_DATABASE } from 'src/environments/environment.dev';
 @Component({
   selector: 'pge-chat',
   templateUrl: './chat.component.html',
   styleUrls: ['./chat.component.scss'],
 })
 export class ChatComponent {
-  public userChats: OnlineSystemMessage[] = [];
-  public searchedChats: OnlineSystemMessage[] = [];
+  public userChats: any = [];
+  public searchedChats: any = [];
   public messageList: string[] = [];
   public formGroup: UntypedFormGroup;
   public user: Usuario;
   public selectedUser: any;
+  public localUser: Usuario = JSON.parse(sessionStorage.getItem('userData'));
+  public loading: boolean = true;
 
   constructor(
     private chatService: ChatService,
     private fb: UntypedFormBuilder,
-    public snackbar: MatSnackBar
+    private authService: AuthService,
+    public snackbar: MatSnackBar,
+    private http: HttpClient
   ) {}
 
   ngOnInit() {
     this.formGroup = this.fb.group({
       search: [null, Validators.required],
     });
-    this.chatService.getContinuosChat();
+    this.populateUserChats();
     this.observableContinuosChat();
   }
 
@@ -44,6 +56,22 @@ export class ChatComponent {
     }
     this.formGroup.reset();
   }
+
+  public populateUserChats = async () => {
+    this.loading = true;
+    const body = this.localUser.id;
+    const headers = new HttpHeaders({
+      'Content-Type': 'application/json',
+      Authorization: `Bearer ${this.authService.getUserJwt}`,
+    });
+    this.http
+      .get(`${MONGODB_DATABASE}mensagens/chats/${body}`, { headers: headers })
+      .pipe()
+      .subscribe((result) => {
+        this.userChats = result as Message[];
+        this.loading = false;
+      });
+  };
 
   public observableContinuosChat() {
     this.chatService.message$.subscribe((msg) => {

@@ -1,10 +1,6 @@
 import { Injectable } from '@angular/core';
 import { BehaviorSubject } from 'rxjs';
-import {
-  Message,
-  OnlineSystemMessage,
-  UserChatPayload,
-} from 'src/app/model/message';
+import { Message, UserChatPayload } from 'src/app/model/message';
 import { Usuario } from '../models/usuario.model';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { AuthService } from '../services/auth.service';
@@ -24,33 +20,18 @@ export class ChatService {
   public user: Usuario = JSON.parse(sessionStorage.getItem('userData'));
 
   public getContinuosChat = async () => {
-    /*let q = query(
-      collection(this.firestore, 'user-chats'),
-      where('usersId', 'array-contains-any', [this.user.id])
-    );
-    onSnapshot(q, (chatsData) => {
-      console.log(chatsData.docChanges);
-      for (const documents of chatsData.docChanges()) {
-        if (documents.type === 'added') {
-          this.message$.next({
-            tipo: 'added',
-            data: documents.doc.data(),
-          });
-        } else if (documents.type === 'modified') {
-          this.message$.next({
-            tipo: 'modified',
-            data: documents.doc.data(),
-          });
-        }
-      }
+    const body = this.user.id;
+    const headers = new HttpHeaders({
+      'Content-Type': 'application/json',
+      Authorization: `Bearer ${this.authService.getUserJwt}`,
     });
-    const querySnapshot = await getDocs(q);
-    const docsArray = [];
-    querySnapshot.forEach((docs) => {
-      docsArray.push(docs.data());
-    });
-    */
-    return [];
+    const result = this.http
+      .get(`${MONGODB_DATABASE}mensagens/chats/${body}`, { headers: headers })
+      .pipe()
+      .subscribe((result) => {
+        return result as Message[];
+      });
+    return result;
   };
 
   public async initUserChat(userChatPayload: UserChatPayload) {

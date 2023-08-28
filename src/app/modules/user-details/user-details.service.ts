@@ -73,7 +73,7 @@ export class UserDetailsService {
     const userChatPayload = {
       resUserId: resUser.id,
       reqUserId: reqUser.id,
-      resUsername: resUser.usename,
+      resUsername: resUser.username,
       reqUsername: reqUser.username,
     };
     return this.chatService.initUserChat(userChatPayload).then((result) => {

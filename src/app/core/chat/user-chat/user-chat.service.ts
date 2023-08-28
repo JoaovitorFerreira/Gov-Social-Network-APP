@@ -19,7 +19,7 @@ export class UserChatService {
     let lastMsg: ChatMessage = {
       content: msg,
       timestamp: date.toDateString(),
-      userId: userData.requestId,
+      userId: userData.requestUserId,
       userName: userData.requestUser,
     };
     let newChat: ChatMessage[] = userData.chat ?? [];
@@ -30,6 +30,7 @@ export class UserChatService {
       usersName: userData.usersName,
       chat: newChat,
       lastMsg: lastMsg,
+      _id: userData._id,
     };
     //await setDoc(doc(this.firestore, 'user-chats/' + userData.id), {
     //  ...userDataSimplified,
@@ -57,20 +58,6 @@ export class UserChatService {
   ): Promise<Usuario> => {
     let usersCache: any[] =
       JSON.parse(sessionStorage.getItem('usersCache')) ?? [];
-    /* if (usersCache == undefined || usersCache.length == 0) {
-      let q = query(
-        collection(this.firestore, 'usuarios'),
-        where('username', '==', responseUsername)
-      );
-      const querySnapshot = await getDocs(q);
-      querySnapshot.forEach((docs) => {
-        usersCache.push(docs.data());
-      });
-    }
-    return usersCache.find((user) => {
-      return user.username == responseUsername;
-    });
-    */
     const user: Usuario = null;
     return Promise.resolve(user as Usuario);
   };
