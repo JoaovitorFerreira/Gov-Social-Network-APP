@@ -39,7 +39,6 @@ export class EspecialidadesFormComponent implements OnInit {
   }
 
   private createForms(especialidades?: Especialidades) {
-    console.log('especialides create forms --> ', especialidades);
     this.outrosInput = this.fb.group({
       outros: [null]
     });

@@ -66,13 +66,7 @@ export class PostModalPGEComponent implements OnInit {
   }
 
   public removeImage() {
-    /*console.log('antes da remoção', this.selectedImg);
-    for (const prop of Object.getOwnPropertyNames(this.selectedImg)) {
-      delete this.selectedImg[prop];
-    }
-    this.hasImgSaved = false;
-    console.log('apos a remocao', this.selectedImg);
-    */
+
   }
 
   public addContact() {

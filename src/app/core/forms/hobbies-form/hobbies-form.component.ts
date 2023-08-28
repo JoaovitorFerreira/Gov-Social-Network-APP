@@ -28,7 +28,6 @@ export class HobbiesFormComponent implements OnInit {
   }
 
   private createForms(hobbies?: Hobbies) {
-    console.log('hobbies create forms --> ', hobbies);
     this.outrosInput = this.fb.group({
       outros: [null]
     });

@@ -29,19 +29,7 @@ export class AddContactComponent implements OnInit {
   }
 
   public search(userText: string) {
-    /*this.sectorService
-      .getUsersFromName(userText)
-      .then(async (usuarios) => {
-        for (const pessoa of usuarios) {
-          pessoa.profilePicture = await this.getPhoto(pessoa.profilePicture);
-        }
-        this.resultado = usuarios;
-        this.notSearchedYet = false;
-      })
-      .catch((error) => {
-        console.log(error);
-      });
-      */
+
   }
 
   public userListNames(userId: string): boolean {

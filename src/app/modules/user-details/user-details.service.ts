@@ -79,8 +79,6 @@ export class UserDetailsService {
     return this.chatService.initUserChat(userChatPayload).then((result) => {
       if (result) {
         this.router.navigateByUrl('chat');
-      } else {
-        console.log(result);
       }
     });
   }
